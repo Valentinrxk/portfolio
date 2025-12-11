@@ -1,48 +1,57 @@
 import { useRef } from 'react';
 import useScrollAnimation from '../../hooks/useScrollAnimation';
+import { 
+  SiReact, 
+  SiVuedotjs, 
+  SiNextdotjs, 
+  SiAstro, 
+  SiPython, 
+  SiPhp, 
+  SiNodedotjs, 
+  SiFigma 
+} from 'react-icons/si';
+import { FaPalette } from 'react-icons/fa';
 import './Skills.css';
+
+// Mapeo de iconos para cada tecnología
+const skillIcons = {
+  'React': SiReact,
+  'Vue': SiVuedotjs,
+  'Next.js': SiNextdotjs,
+  'Astro': SiAstro,
+  'Python': SiPython,
+  'PHP': SiPhp,
+  'Node.js': SiNodedotjs,
+  'UI/UX Design': FaPalette,
+  'Figma': SiFigma,
+};
 
 const SKILL_GROUPS = [
   {
     category: 'FRAMEWORKS JS',
     skills: [
-      { name: 'React', level: 95 },
-      { name: 'Vue', level: 85 },
-      { name: 'Next.js', level: 90 },
-      { name: 'Astro', level: 80 },
+      { name: 'React' },
+      { name: 'Vue' },
+      { name: 'Next.js' },
+      { name: 'Astro' },
     ],
   },
   {
     category: 'BACKEND',
     skills: [
-      { name: 'Python', level: 75 },
-      { name: 'PHP', level: 70 },
-      { name: 'Node.js', level: 80 },
+      { name: 'Python' },
+      { name: 'PHP' },
+      { name: 'Node.js' },
     ],
   },
   {
     category: 'DISEÑO',
     skills: [
-      { name: 'UI/UX Design', level: 88 },
-      { name: 'Figma', level: 85 },
+      { name: 'UI/UX Design' },
+      { name: 'Figma' },
     ],
   },
 ];
-
-function AsciiProgressBar({ level, isVisible }) {
-  const totalBlocks = 10;
-  const filledBlocks = Math.floor(level / 10);
-  const emptyBlocks = totalBlocks - filledBlocks;
-
-  const filled = '\u2588'.repeat(filledBlocks);
-  const empty = '\u2591'.repeat(emptyBlocks);
-
-  return (
-    <span className={`ascii-progress ${isVisible ? 'is-visible' : ''}`}>
-      [{filled}{empty}] {level}%
-    </span>
-  );
-}
 
 export default function Skills() {
   const sectionRef = useRef(null);
@@ -67,8 +76,17 @@ export default function Skills() {
                     className="skill-item"
                     style={{ '--skill-delay': `${(groupIndex * 0.15) + (skillIndex * 0.08)}s` }}
                   >
+                    <div className="skill-item__icon-wrapper">
+                      {skillIcons[skill.name] ? (
+                        (() => {
+                          const IconComponent = skillIcons[skill.name];
+                          return <IconComponent className="skill-icon" />;
+                        })()
+                      ) : (
+                        <FaPalette className="skill-icon" />
+                      )}
+                    </div>
                     <span className="skill-item__name">{skill.name}</span>
-                    <AsciiProgressBar level={skill.level} isVisible={isVisible} />
                   </div>
                 ))}
               </div>

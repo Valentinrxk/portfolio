@@ -197,9 +197,19 @@
 }
 
 /* Responsive */
+/* Tablet */
 @media (max-width: 1024px) {
+  .projects {
+    padding: 10vh 4vw;
+  }
+
+  .projects__header {
+    margin-bottom: 4rem;
+  }
+
   .projects__grid {
     grid-template-columns: repeat(6, 1fr);
+    gap: 1.5rem;
   }
 
   .project-card--large,
@@ -211,9 +221,30 @@
   .project-card--small {
     grid-column: span 3;
   }
+
+  .project-card__content {
+    padding: 1.25rem;
+  }
 }
 
+/* Mobile */
 @media (max-width: 768px) {
+  .projects {
+    padding: 8vh 4vw;
+  }
+
+  .projects__header {
+    margin-bottom: 3rem;
+  }
+
+  .projects__title {
+    font-size: clamp(2rem, 8vw, 3.5rem);
+  }
+
+  .projects__subtitle {
+    font-size: 0.75rem;
+  }
+
   .projects__grid {
     grid-template-columns: 1fr;
     gap: 3rem;
@@ -227,6 +258,92 @@
   }
 
   .project-card__number {
-    font-size: 2.5rem;
+    font-size: clamp(2rem, 6vw, 2.5rem);
+    top: -1rem;
+    left: -0.5rem;
+  }
+
+  .project-card__content {
+    padding: 1.25rem;
+  }
+
+  .project-card__title {
+    font-size: clamp(1.1rem, 4vw, 1.3rem);
+  }
+
+  .project-card__description {
+    font-size: 0.75rem;
+  }
+
+  .project-card__link {
+    width: 36px;
+    height: 36px;
+    font-size: 1.1rem;
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+}
+
+/* Mobile pequeño */
+@media (max-width: 480px) {
+  .projects {
+    padding: 6vh 3vw;
+  }
+
+  .projects__header {
+    margin-bottom: 2.5rem;
+  }
+
+  .projects__title {
+    font-size: clamp(1.75rem, 10vw, 3rem);
+    margin-bottom: 0.25rem;
+  }
+
+  .projects__subtitle {
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+  }
+
+  .projects__grid {
+    gap: 2.5rem;
+  }
+
+  .project-card__number {
+    font-size: clamp(1.75rem, 7vw, 2.25rem);
+    top: -0.875rem;
+    left: -0.375rem;
+  }
+
+  .project-card__content {
+    padding: 1rem;
+  }
+
+  .project-card__title {
+    font-size: clamp(1rem, 4.5vw, 1.2rem);
+    margin-bottom: 0.375rem;
+  }
+
+  .project-card__description {
+    font-size: 0.7rem;
+    line-height: 1.5;
+    margin-bottom: 0.875rem;
+  }
+
+  .project-card__tag {
+    font-size: 0.65rem;
+    padding: 0.2rem 0.4rem;
+  }
+
+  .project-card__link {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+    top: 0.625rem;
+    right: 0.625rem;
+  }
+
+  .project-card:hover {
+    transform: translateY(-4px) rotate(0.25deg);
+    box-shadow: 12px 12px 0 var(--color-accent);
   }
 }

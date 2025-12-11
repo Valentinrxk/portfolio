@@ -123,13 +123,28 @@
 }
 
 /* Responsive */
+/* Desktop pequeño */
 @media (max-width: 1200px) {
+  .about {
+    padding: 12vh 4vw;
+  }
+
   .about__content {
     gap: 3rem;
   }
+
+  .about__bg-number {
+    font-size: clamp(15rem, 30vw, 35rem);
+    right: -10%;
+  }
 }
 
+/* Tablet */
 @media (max-width: 1024px) {
+  .about {
+    padding: 10vh 4vw;
+  }
+
   .about__content {
     grid-template-columns: 1fr;
     gap: 3rem;
@@ -137,6 +152,7 @@
 
   .about__image-wrapper {
     justify-self: center;
+    max-width: 400px;
   }
 
   .about__title {
@@ -144,24 +160,107 @@
     margin-left: 0;
     text-align: center;
     transform-origin: center;
+    margin-bottom: 3rem;
   }
 
   .about__text {
     padding-top: 0;
   }
+
+  .about__bg-number {
+    font-size: clamp(12rem, 35vw, 30rem);
+    right: -12%;
+  }
 }
 
+/* Mobile */
 @media (max-width: 768px) {
   .about {
-    padding: 10vh 5vw;
+    padding: 10vh 4vw;
+    min-height: auto;
   }
 
   .about__bg-number {
-    font-size: 40vw;
-    top: 10%;
+    font-size: clamp(10rem, 40vw, 25rem);
+    top: 5%;
+    right: -15%;
+  }
+
+  .about__title {
+    font-size: clamp(2rem, 8vw, 3.5rem);
+    margin-bottom: 2.5rem;
+  }
+
+  .about__content {
+    gap: 2.5rem;
+  }
+
+  .about__paragraph {
+    font-size: clamp(1rem, 4vw, 1.2rem);
+  }
+
+  .about__paragraph--lead {
+    font-size: clamp(1.1rem, 4.5vw, 1.3rem);
+  }
+
+  .about__paragraph--accent {
+    padding-left: 1.5rem;
+    border-left-width: 2px;
+  }
+
+  .about__image-accent {
+    top: 0.75rem;
+    left: 0.75rem;
+    right: -0.75rem;
+    bottom: -0.75rem;
+  }
+}
+
+/* Mobile pequeño */
+@media (max-width: 480px) {
+  .about {
+    padding: 8vh 3vw;
+  }
+
+  .about__bg-number {
+    font-size: clamp(8rem, 45vw, 20rem);
+    top: 3%;
+    right: -20%;
+    opacity: 0.02;
+  }
+
+  .about__title {
+    font-size: clamp(1.75rem, 10vw, 3rem);
+    margin-bottom: 2rem;
+    transform: rotate(-2deg);
   }
 
   .about__content {
     gap: 2rem;
+  }
+
+  .about__paragraph {
+    font-size: clamp(0.95rem, 4.5vw, 1.1rem);
+    line-height: 1.7;
+  }
+
+  .about__paragraph--lead {
+    font-size: clamp(1.05rem, 5vw, 1.2rem);
+  }
+
+  .about__paragraph--accent {
+    padding-left: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .about__image-wrapper {
+    max-width: 100%;
+  }
+
+  .about__image-accent {
+    top: 0.5rem;
+    left: 0.5rem;
+    right: -0.5rem;
+    bottom: -0.5rem;
   }
 }

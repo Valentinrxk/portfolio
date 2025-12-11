@@ -114,18 +114,36 @@
 }
 
 /* Responsive */
+/* Desktop pequeño */
 @media (max-width: 1200px) {
   .ascii-portrait {
     font-size: clamp(0.18rem, 0.45vw, 0.32rem);
   }
+
+  .ascii-portrait-spotlight {
+    width: 100px;
+    height: 100px;
+  }
 }
 
+/* Tablet */
 @media (max-width: 1024px) {
   .ascii-portrait {
     font-size: clamp(0.16rem, 0.4vw, 0.28rem);
   }
+
+  .ascii-portrait-frame {
+    padding: 0.4rem;
+  }
+
+  .ascii-portrait-spotlight {
+    width: 90px;
+    height: 90px;
+    filter: blur(8px);
+  }
 }
 
+/* Mobile */
 @media (max-width: 768px) {
   .ascii-portrait {
     font-size: clamp(0.12rem, 0.5vw, 0.2rem);
@@ -133,5 +151,50 @@
 
   .ascii-portrait-frame {
     padding: 0.25rem;
+  }
+
+  .ascii-portrait-spotlight {
+    width: 80px;
+    height: 80px;
+    filter: blur(6px);
+  }
+
+  .ascii-portrait-glow {
+    background: radial-gradient(
+      ellipse at center,
+      color-mix(in srgb, var(--color-accent) 8%, transparent) 0%,
+      transparent 65%
+    );
+  }
+}
+
+/* Mobile pequeño */
+@media (max-width: 480px) {
+  .ascii-portrait {
+    font-size: clamp(0.1rem, 0.55vw, 0.18rem);
+    letter-spacing: 0.015em;
+  }
+
+  .ascii-portrait-frame {
+    padding: 0.2rem;
+  }
+
+  .ascii-portrait-spotlight {
+    width: 70px;
+    height: 70px;
+    filter: blur(5px);
+  }
+
+  .ascii-portrait-line {
+    text-shadow:
+      0 0 1.5px color-mix(in srgb, var(--color-accent) 40%, transparent),
+      0 0 4px color-mix(in srgb, var(--color-accent) 25%, transparent);
+  }
+
+  .ascii-portrait-line.is-hovering {
+    text-shadow:
+      0 0 2px color-mix(in srgb, var(--color-accent) 70%, transparent),
+      0 0 6px color-mix(in srgb, var(--color-accent) 40%, transparent),
+      0 0 12px color-mix(in srgb, var(--color-accent) 25%, transparent);
   }
 }

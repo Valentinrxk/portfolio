@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import './AsciiPortrait.css';
 
 const ASCII_PORTRAIT_RAW = `@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -88,7 +88,7 @@ export default function AsciiPortrait({ isVisible }) {
   const [waveOffset, setWaveOffset] = useState(0);
   const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 });
   const [isHovering, setIsHovering] = useState(false);
-  const containerRef = useState(null);
+  const containerRef = useRef(null);
 
   // Split portrait into lines for wave animation
   const lines = useMemo(() => ASCII_PORTRAIT_RAW.split('\n'), []);
@@ -96,10 +96,10 @@ export default function AsciiPortrait({ isVisible }) {
 
   // Continuous wave animation - always active, more noticeable
   useEffect(() => {
-    const waveInterval = setInterval(() => {
+      const waveInterval = setInterval(() => {
       setWaveOffset(prev => (prev + 2) % 360); // Faster wave speed
     }, 30); // More frequent updates for smoother animation
-    return () => clearInterval(waveInterval);
+      return () => clearInterval(waveInterval);
   }, []);
 
   // Handle mouse movement

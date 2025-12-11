@@ -189,12 +189,18 @@
 }
 
 /* Responsive */
+/* Desktop pequeño */
 @media (max-width: 1200px) {
   .ascii-cube {
     font-size: clamp(0.28rem, 0.75vw, 0.5rem);
   }
+
+  .ascii-cube-frame {
+    padding: 1.25rem 1.5rem;
+  }
 }
 
+/* Tablet */
 @media (max-width: 1024px) {
   .ascii-cube-container {
     padding: 0.5rem;
@@ -205,16 +211,61 @@
   }
 
   .ascii-cube-frame {
-    padding: 1rem;
+    padding: 1rem 1.25rem;
+  }
+
+  .ascii-cube-glow {
+    inset: -20%;
+    filter: blur(30px);
   }
 }
 
+/* Mobile */
 @media (max-width: 768px) {
+  .ascii-cube-container {
+    padding: 0.375rem;
+  }
+
   .ascii-cube {
     font-size: clamp(0.2rem, 0.55vw, 0.35rem);
   }
 
   .ascii-cube-frame {
-    padding: 0.75rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .ascii-cube-glow {
+    inset: -15%;
+    filter: blur(25px);
+  }
+}
+
+/* Mobile pequeño */
+@media (max-width: 480px) {
+  .ascii-cube-container {
+    padding: 0.25rem;
+  }
+
+  .ascii-cube {
+    font-size: clamp(0.18rem, 0.6vw, 0.3rem);
+  }
+
+  .ascii-cube-frame {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .ascii-cube-glow {
+    inset: -10%;
+    filter: blur(20px);
+  }
+
+  .ascii-cube-scanlines {
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 1px,
+      rgba(0, 0, 0, 0.02) 1px,
+      rgba(0, 0, 0, 0.02) 2px
+    );
   }
 }

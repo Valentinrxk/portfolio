@@ -1,0 +1,151 @@
+.skills {
+  padding: 12vh 5vw;
+  background: var(--color-bg);
+  position: relative;
+}
+
+.skills__container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.skills__title {
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  color: var(--color-text);
+  margin-bottom: 5rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s var(--ease-out-expo);
+}
+
+.skills__container.is-visible .skills__title {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.skills__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2.5rem;
+}
+
+/* Skill Group */
+.skill-group {
+  border: 2px solid var(--color-text);
+  padding: 2rem;
+  position: relative;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s var(--ease-out-expo);
+}
+
+.skills__container.is-visible .skill-group {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: var(--group-delay);
+}
+
+.skill-group::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 1.5rem;
+  right: 1.5rem;
+  height: 4px;
+  background: var(--color-accent);
+}
+
+.skill-group::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  right: -8px;
+  width: 100%;
+  height: 100%;
+  border: 2px solid var(--color-accent);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.skill-group:hover::after {
+  opacity: 1;
+}
+
+.skill-group__title {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  color: var(--color-accent);
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+}
+
+.skill-group__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+/* Skill Item */
+.skill-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px dashed var(--color-border);
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: opacity 0.5s ease, transform 0.5s var(--ease-out-expo);
+}
+
+.skills__container.is-visible .skill-item {
+  opacity: 1;
+  transform: translateX(0);
+  transition-delay: var(--skill-delay);
+}
+
+.skill-item:last-child {
+  border-bottom: none;
+}
+
+.skill-item__name {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* ASCII Progress Bar */
+.ascii-progress {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-accent);
+  letter-spacing: 0.05em;
+  opacity: 0;
+  transition: opacity 0.6s ease 0.3s;
+}
+
+.ascii-progress.is-visible {
+  opacity: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .skills {
+    padding: 10vh 5vw;
+  }
+
+  .skills__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .skill-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .ascii-progress {
+    font-size: 0.7rem;
+  }
+}

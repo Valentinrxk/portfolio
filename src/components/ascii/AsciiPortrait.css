@@ -1,0 +1,137 @@
+.ascii-portrait-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ascii-portrait-frame {
+  position: relative;
+  padding: 0.5rem;
+  border: 1px solid color-mix(in srgb, var(--color-accent) 20%, transparent);
+  background: color-mix(in srgb, var(--color-text) 2%, transparent);
+  overflow: hidden;
+}
+
+.ascii-portrait {
+  font-family: var(--font-mono);
+  font-size: clamp(0.22rem, 0.55vw, 0.4rem);
+  line-height: 1.0;
+  letter-spacing: 0.02em;
+  color: var(--color-accent);
+  white-space: pre;
+  user-select: none;
+  margin: 0;
+}
+
+.ascii-portrait--main {
+  position: relative;
+  z-index: 3;
+}
+
+/* Wave animation line */
+.ascii-portrait-line {
+  display: block;
+  transition: transform 0.05s linear, opacity 0.05s linear; /* Faster transitions for smoother waves */
+  text-shadow:
+    0 0 2px color-mix(in srgb, var(--color-accent) 50%, transparent),
+    0 0 5px color-mix(in srgb, var(--color-accent) 30%, transparent);
+  will-change: transform, opacity; /* Optimize for animation */
+}
+
+/* Subtle glow overlay that pulses */
+.ascii-portrait-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    color-mix(in srgb, var(--color-accent) 10%, transparent) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 4;
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.02);
+  }
+}
+
+/* Visible state - add subtle box glow */
+.ascii-portrait-container.is-visible .ascii-portrait-frame {
+  box-shadow:
+    0 0 20px color-mix(in srgb, var(--color-accent) 10%, transparent),
+    inset 0 0 30px color-mix(in srgb, var(--color-accent) 5%, transparent);
+}
+
+/* Hover state - intensify glow on lines near mouse */
+.ascii-portrait-line.is-hovering {
+  text-shadow:
+    0 0 3px color-mix(in srgb, var(--color-accent) 80%, transparent),
+    0 0 8px color-mix(in srgb, var(--color-accent) 50%, transparent),
+    0 0 15px color-mix(in srgb, var(--color-accent) 30%, transparent);
+}
+
+.ascii-portrait-container:hover .ascii-portrait-glow {
+  animation: glowPulseIntense 1.5s ease-in-out infinite;
+}
+
+@keyframes glowPulseIntense {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+/* Spotlight that follows mouse */
+.ascii-portrait-spotlight {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--color-accent) 40%, transparent) 0%,
+    color-mix(in srgb, var(--color-accent) 20%, transparent) 30%,
+    transparent 70%
+  );
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 5;
+  mix-blend-mode: screen;
+  filter: blur(10px);
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .ascii-portrait {
+    font-size: clamp(0.18rem, 0.45vw, 0.32rem);
+  }
+}
+
+@media (max-width: 1024px) {
+  .ascii-portrait {
+    font-size: clamp(0.16rem, 0.4vw, 0.28rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .ascii-portrait {
+    font-size: clamp(0.12rem, 0.5vw, 0.2rem);
+  }
+
+  .ascii-portrait-frame {
+    padding: 0.25rem;
+  }
+}

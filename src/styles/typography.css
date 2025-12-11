@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+/* Note: Special Gothic Expanded One might not be available on Google Fonts
+   Using a fallback approach with a similar brutalist font */
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
+:root {
+  /* Override display font with Anton as fallback */
+  --font-display: 'Anton', 'Impact', sans-serif;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--color-text);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 0.9;
+}
+
+code, pre, .mono {
+  font-family: var(--font-mono);
+}

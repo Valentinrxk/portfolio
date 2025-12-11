@@ -1,0 +1,60 @@
+:root {
+  /* Light Mode Colors (default) */
+  --color-bg: #E8E6E3;
+  --color-bg-secondary: #dbd9d6;
+  --color-accent: #9c4635;
+  --color-accent-hover: #b85443;
+  --color-text: #292726;
+  --color-text-light: rgba(41, 39, 38, 0.6);
+  --color-border: rgba(41, 39, 38, 0.15);
+  --color-nav-bg: rgba(232, 230, 227, 0.95);
+  --color-nav-shadow: rgba(41, 39, 38, 0.08);
+  --color-inverse-bg: #292726;
+  --color-inverse-text: #E8E6E3;
+
+  /* Typography */
+  --font-display: 'Special Gothic Expanded One', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+  --font-body: 'Cormorant', serif;
+
+  /* Spacing */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 4rem;
+  --space-xl: 8rem;
+
+  /* Transitions */
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  /* Shadows */
+  --shadow-brutal: 8px 8px 0 var(--color-accent);
+  --shadow-brutal-lg: 12px 12px 0 var(--color-accent);
+  --shadow-brutal-hover: 16px 16px 0 var(--color-accent);
+}
+
+/* Dark Mode */
+[data-theme="dark"] {
+  --color-bg: #1a1918;
+  --color-bg-secondary: #252322;
+  --color-accent: #c75d4a;
+  --color-accent-hover: #e07460;
+  --color-text: #E8E6E3;
+  --color-text-light: rgba(232, 230, 227, 0.6);
+  --color-border: rgba(232, 230, 227, 0.15);
+  --color-nav-bg: rgba(37, 35, 34, 0.98);
+  --color-nav-shadow: rgba(0, 0, 0, 0.6);
+  --color-inverse-bg: #252322;
+  --color-inverse-text: #E8E6E3;
+}
+
+/* Smooth theme transition */
+html {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+html[data-theme="dark"] body {
+  background-color: var(--color-bg);
+}

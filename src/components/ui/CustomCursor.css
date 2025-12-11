@@ -1,0 +1,204 @@
+.custom-cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--color-accent);
+  background: transparent;
+  pointer-events: none;
+  z-index: 99999;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s var(--ease-out-expo), height 0.3s var(--ease-out-expo), border-width 0.3s ease, border-color 0.3s ease;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  isolation: isolate;
+}
+
+/* Disable mix-blend-mode in Chrome for better performance */
+@supports (mix-blend-mode: difference) {
+  .custom-cursor:not(.chrome-optimized) {
+    mix-blend-mode: difference;
+  }
+}
+
+/* Chrome-specific optimizations */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  .custom-cursor {
+    mix-blend-mode: normal;
+    opacity: 0.9;
+  }
+}
+
+.custom-cursor::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  background: var(--color-accent);
+  transform: translate(-50%, -50%);
+  transition: transform 0.3s ease;
+}
+
+.custom-cursor::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border: 1px solid var(--color-accent);
+  opacity: 0.3;
+  animation: cursorPulse 2s ease-in-out infinite;
+}
+
+/* Disable pulse animation in Chrome for better performance */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  @supports (-webkit-appearance: none) {
+    .custom-cursor::after {
+      animation: none;
+      opacity: 0.2;
+    }
+  }
+}
+
+/* Disable pulse animation in Chrome for better performance */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  @supports (-webkit-appearance: none) {
+    .custom-cursor::after {
+      animation: none;
+      opacity: 0.2;
+    }
+  }
+}
+
+@keyframes cursorPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.1;
+  }
+}
+
+/* Hover state - expands */
+.custom-cursor.is-hovering {
+  width: 40px;
+  height: 40px;
+  border-width: 3px;
+  background: color-mix(in srgb, var(--color-accent) 10%, transparent);
+}
+
+.custom-cursor.is-hovering::before {
+  width: 8px;
+  height: 8px;
+  background: var(--color-accent);
+}
+
+.custom-cursor.is-hovering::after {
+  opacity: 0.5;
+  animation-duration: 1s;
+}
+
+/* Click state */
+.custom-cursor.is-clicking {
+  width: 16px;
+  height: 16px;
+  border-width: 3px;
+}
+
+.custom-cursor.is-clicking::before {
+  width: 6px;
+  height: 6px;
+}
+
+/* Trailing cursor - follows with delay */
+.custom-cursor-trail {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  background: var(--color-accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -50%);
+  opacity: 0.6;
+  transition: opacity 0.15s ease;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  isolation: isolate;
+}
+
+/* Disable mix-blend-mode in Chrome for better performance */
+@supports (mix-blend-mode: difference) {
+  .custom-cursor-trail:not(.chrome-optimized) {
+    mix-blend-mode: difference;
+  }
+}
+
+/* Chrome-specific optimizations */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  .custom-cursor-trail {
+    mix-blend-mode: normal;
+  }
+}
+
+.custom-cursor-trail::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background: var(--color-accent);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.3;
+  animation: trailPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes trailPulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+  }
+}
+
+/* Hide cursor on mobile/touch devices */
+@media (hover: none) or (pointer: coarse) {
+  .custom-cursor,
+  .custom-cursor-trail {
+    display: none;
+  }
+  
+  body {
+    cursor: auto !important;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .custom-cursor,
+  .custom-cursor-trail {
+    transition: none;
+    animation: none;
+  }
+  
+  .custom-cursor::after,
+  .custom-cursor-trail::before {
+    animation: none;
+  }
+}
+

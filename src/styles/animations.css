@@ -118,3 +118,184 @@
 .delay-300 { animation-delay: 0.3s; }
 .delay-400 { animation-delay: 0.4s; }
 .delay-500 { animation-delay: 0.5s; }
+
+/* Glitch RGB Split - Red channel */
+@keyframes glitchRed {
+  0%, 100% { transform: translate(-3px, 0); }
+  25% { transform: translate(-4px, 1px); }
+  50% { transform: translate(-2px, -1px); }
+  75% { transform: translate(-4px, 1px); }
+}
+
+/* Glitch RGB Split - Blue channel */
+@keyframes glitchBlue {
+  0%, 100% { transform: translate(3px, 0); }
+  25% { transform: translate(4px, -1px); }
+  50% { transform: translate(2px, 1px); }
+  75% { transform: translate(4px, -1px); }
+}
+
+/* Glitch shake effect */
+@keyframes glitchShake {
+  0%, 90%, 100% {
+    transform: translate(0);
+  }
+  91% {
+    transform: translate(-2px, 1px);
+  }
+  92% {
+    transform: translate(2px, -1px);
+  }
+  93% {
+    transform: translate(-1px, 2px);
+  }
+  94% {
+    transform: translate(1px, -2px);
+  }
+  95% {
+    transform: translate(-2px, 0);
+  }
+  96% {
+    transform: translate(2px, 0);
+  }
+}
+
+/* Glitch intense with clip-path */
+@keyframes glitchIntense {
+  0% {
+    transform: translate(0) skewX(0deg);
+    clip-path: inset(0 0 0 0);
+  }
+  10% {
+    transform: translate(-6px, 2px) skewX(-3deg);
+    clip-path: inset(10% 0 80% 0);
+  }
+  20% {
+    transform: translate(6px, -2px) skewX(3deg);
+    clip-path: inset(30% 0 50% 0);
+  }
+  30% {
+    transform: translate(-4px, -1px) skewX(-2deg);
+    clip-path: inset(50% 0 30% 0);
+  }
+  40% {
+    transform: translate(4px, 1px) skewX(2deg);
+    clip-path: inset(70% 0 10% 0);
+  }
+  50% {
+    transform: translate(-8px, 0) skewX(-5deg);
+    clip-path: inset(5% 0 5% 0);
+  }
+  60% {
+    transform: translate(8px, 0) skewX(5deg);
+    clip-path: inset(20% 0 60% 0);
+  }
+  70% {
+    transform: translate(-2px, 3px) skewX(-1deg);
+    clip-path: inset(40% 0 40% 0);
+  }
+  80% {
+    transform: translate(2px, -3px) skewX(1deg);
+    clip-path: inset(60% 0 20% 0);
+  }
+  90% {
+    transform: translate(-5px, 1px) skewX(-2deg);
+    clip-path: inset(80% 0 5% 0);
+  }
+  100% {
+    transform: translate(0) skewX(0deg);
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* Scanlines effect */
+@keyframes scanlines {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 4px;
+  }
+}
+
+/* ASCII reveal - character by character */
+@keyframes asciiReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.8);
+    filter: blur(4px);
+  }
+  50% {
+    opacity: 0.5;
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Text corruption - glitch text effect */
+@keyframes textCorrupt {
+  0%, 90%, 100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  91% {
+    opacity: 0.8;
+    transform: translateX(-1px);
+  }
+  92% {
+    opacity: 0.9;
+    transform: translateX(1px);
+  }
+  93% {
+    opacity: 0.7;
+    transform: translateX(-1px);
+  }
+  94% {
+    opacity: 0.95;
+    transform: translateX(1px);
+  }
+}
+
+/* Glow pulse for ASCII elements */
+@keyframes asciiGlow {
+  0%, 100% {
+    opacity: 0.6;
+    filter: brightness(1);
+  }
+  50% {
+    opacity: 1;
+    filter: brightness(1.3);
+  }
+}
+
+/* Fade in with glitch entrance */
+@keyframes fadeInGlitch {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  20% {
+    opacity: 0.3;
+    transform: translateY(15px) scale(0.97) translateX(-2px);
+  }
+  40% {
+    opacity: 0.6;
+    transform: translateY(10px) scale(0.98) translateX(2px);
+  }
+  60% {
+    opacity: 0.8;
+    transform: translateY(5px) scale(0.99) translateX(-1px);
+  }
+  80% {
+    opacity: 0.9;
+    transform: translateY(2px) scale(1) translateX(1px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1) translateX(0);
+  }
+}

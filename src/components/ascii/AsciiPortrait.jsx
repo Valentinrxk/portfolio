@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import './AsciiPortrait.css';
 
 const ASCII_PORTRAIT_RAW = `@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -86,37 +86,24 @@ const ASCII_PORTRAIT_RAW = `@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 export default function AsciiPortrait({ isVisible }) {
   const [waveOffset, setWaveOffset] = useState(0);
-  const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 });
   const [isHovering, setIsHovering] = useState(false);
-  const containerRef = useRef(null);
 
   // Split portrait into lines for wave animation
   const lines = useMemo(() => ASCII_PORTRAIT_RAW.split('\n'), []);
-  const totalLines = lines.length;
 
   // Continuous wave animation - always active, more noticeable
   useEffect(() => {
-      const waveInterval = setInterval(() => {
+    const waveInterval = setInterval(() => {
       setWaveOffset(prev => (prev + 2) % 360); // Faster wave speed
     }, 30); // More frequent updates for smoother animation
-      return () => clearInterval(waveInterval);
+    return () => clearInterval(waveInterval);
   }, []);
-
-  // Handle mouse movement
-  const handleMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width;
-    const y = (e.clientY - rect.top) / rect.height;
-    setMousePos({ x, y });
-  };
 
   return (
     <div
       className={`ascii-portrait-container ${isVisible ? 'is-visible' : ''}`}
-      onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
-      ref={containerRef}
     >
       <div className="ascii-portrait-frame">
         {/* Wave animated lines */}
@@ -125,29 +112,14 @@ export default function AsciiPortrait({ isVisible }) {
           aria-label="Retrato ASCII de Valentín Romero"
         >
           {lines.map((line, index) => {
-            // Calculate wave displacement and brightness for each line - more noticeable
-            const wavePhase = (index * 6 + waveOffset) * (Math.PI / 180); // Tighter wave frequency
-            const baseXOffset = Math.sin(wavePhase) * 6; // Increased amplitude from 2px to 6px
-            const baseBrightness = 0.8 + Math.sin(wavePhase * 0.5) * 0.2; // More brightness variation
+            // Calculate wave displacement and brightness for each line
+            const wavePhase = (index * 6 + waveOffset) * (Math.PI / 180);
+            const baseXOffset = Math.sin(wavePhase) * 6;
+            const baseBrightness = 0.8 + Math.sin(wavePhase * 0.5) * 0.2;
 
-            // Calculate distance from mouse (normalized 0-1)
-            const lineY = index / totalLines;
-            const distanceFromMouse = Math.abs(lineY - mousePos.y);
-
-            // Mouse interaction effects (only when hovering)
-            let xOffset = baseXOffset;
-            let brightness = baseBrightness;
-
-            if (isHovering) {
-              // Ripple effect - lines near mouse get displaced based on mouse X
-              const influence = Math.max(0, 1 - distanceFromMouse * 4);
-              const mouseDisplacement = (mousePos.x - 0.5) * 12 * influence; // Increased mouse displacement
-              xOffset = baseXOffset + mouseDisplacement;
-
-              // Spotlight effect - lines near mouse get brighter
-              const spotlightIntensity = Math.max(0, 1 - distanceFromMouse * 3);
-              brightness = baseBrightness + spotlightIntensity * 0.4; // More brightness boost
-            }
+            // When hovering: freeze animation and show full brightness
+            const xOffset = isHovering ? 0 : baseXOffset;
+            const brightness = isHovering ? 1 : baseBrightness;
 
             return (
               <div
@@ -164,17 +136,6 @@ export default function AsciiPortrait({ isVisible }) {
           })}
         </div>
 
-        {/* Mouse-following glow */}
-        {isHovering && (
-          <div
-            className="ascii-portrait-spotlight"
-            style={{
-              left: `${mousePos.x * 100}%`,
-              top: `${mousePos.y * 100}%`,
-            }}
-            aria-hidden="true"
-          />
-        )}
 
         {/* Subtle glow overlay */}
         <div className="ascii-portrait-glow" aria-hidden="true" />

@@ -1,16 +1,18 @@
 import { useRef } from 'react';
 import useScrollAnimation from '../../hooks/useScrollAnimation';
-import { 
-  SiReact, 
-  SiVuedotjs, 
-  SiNextdotjs, 
-  SiAstro, 
-  SiPython, 
-  SiPhp, 
-  SiNodedotjs, 
-  SiFigma 
+import {
+  SiReact,
+  SiVuedotjs,
+  SiNextdotjs,
+  SiAstro,
+  SiPython,
+  SiPhp,
+  SiNodedotjs,
+  SiFigma
 } from 'react-icons/si';
 import { FaPalette } from 'react-icons/fa';
+import AsciiDecoration from '../ui/AsciiDecoration';
+import DecryptedText from '../ui/DecryptedText';
 import './Skills.css';
 
 // Mapeo de iconos para cada tecnología
@@ -59,6 +61,13 @@ export default function Skills() {
 
   return (
     <section id="skills" className="skills" ref={sectionRef}>
+      {/* ASCII Decorations */}
+      {isVisible && (
+        <>
+          <AsciiDecoration position="top-left" type="brackets" lines={3} />
+          <AsciiDecoration position="bottom-right" type="code" lines={4} />
+        </>
+      )}
       <div className={`skills__container ${isVisible ? 'is-visible' : ''}`}>
         <h2 className="skills__title">HABILIDADES</h2>
         <div className="skills__grid">
@@ -68,7 +77,19 @@ export default function Skills() {
               className="skill-group"
               style={{ '--group-delay': `${groupIndex * 0.15}s` }}
             >
-              <h3 className="skill-group__title">{group.category}</h3>
+              <h3 className="skill-group__title">
+                <DecryptedText
+                  text={group.category}
+                  animateOn="view"
+                  speed={45}
+                  maxIterations={18}
+                  characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+                  revealDirection="start"
+                  sequential={true}
+                  className="skill-group__title--revealed"
+                  encryptedClassName="skill-group__title--encrypted"
+                />
+              </h3>
               <div className="skill-group__list">
                 {group.skills.map((skill, skillIndex) => (
                   <div
@@ -86,7 +107,19 @@ export default function Skills() {
                         <FaPalette className="skill-icon" />
                       )}
                     </div>
-                    <span className="skill-item__name">{skill.name}</span>
+                    <span className="skill-item__name">
+                      <DecryptedText
+                        text={skill.name}
+                        animateOn="view"
+                        speed={50}
+                        maxIterations={12}
+                        characters="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789/."
+                        revealDirection="start"
+                        sequential={true}
+                        className="skill-item__name--revealed"
+                        encryptedClassName="skill-item__name--encrypted"
+                      />
+                    </span>
                   </div>
                 ))}
               </div>

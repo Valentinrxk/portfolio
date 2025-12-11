@@ -3,6 +3,13 @@
   background: var(--color-inverse-bg);
   color: var(--color-inverse-text);
   position: relative;
+  overflow: hidden;
+}
+
+/* ASCII decorations with inverse colors */
+.projects .ascii-decoration {
+  color: var(--color-accent);
+  opacity: 0.35;
 }
 
 .projects__container {
@@ -51,12 +58,57 @@
   opacity: 0;
   transform: translateY(30px);
   contain: layout style paint;
+  overflow: hidden;
+}
+
+/* Scanlines overlay */
+.project-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.project-card:hover::before {
+  opacity: 1;
+}
+
+/* Glow effect */
+.project-card::after {
+  content: '';
+  position: absolute;
+  inset: -20%;
+  background: radial-gradient(
+    ellipse at center,
+    color-mix(in srgb, var(--color-accent) 15%, transparent) 0%,
+    transparent 70%
+  );
+  filter: blur(40px);
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.project-card:hover::after {
+  opacity: 1;
 }
 
 .projects__container.is-visible .project-card {
   opacity: 1;
   transform: translateY(0);
   transition-delay: var(--delay);
+  animation: fadeInGlitch 0.8s var(--ease-out-expo) var(--delay) forwards;
 }
 
 .project-card--large {
@@ -90,11 +142,32 @@
   color: var(--color-accent);
   line-height: 1;
   z-index: 10;
-  transition: transform 0.3s ease;
+  transition: transform 0.4s var(--ease-out-expo), text-shadow 0.4s ease;
+  text-shadow:
+    0 0 10px color-mix(in srgb, var(--color-accent) 60%, transparent),
+    0 0 20px color-mix(in srgb, var(--color-accent) 40%, transparent);
+}
+
+/* DecryptedText styles for number */
+.project-card__number--revealed {
+  color: var(--color-accent);
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.project-card__number--encrypted {
+  color: var(--color-accent);
+  opacity: 0.4;
+  filter: blur(1px);
+  transition: color 0.1s ease, opacity 0.1s ease, filter 0.1s ease;
 }
 
 .project-card:hover .project-card__number {
   transform: translate(-5px, -5px);
+  text-shadow: 
+    0 0 15px color-mix(in srgb, var(--color-accent) 70%, transparent),
+    0 0 30px color-mix(in srgb, var(--color-accent) 50%, transparent),
+    0 0 45px color-mix(in srgb, var(--color-accent) 30%, transparent);
+  animation: asciiGlow 2s ease-in-out infinite;
 }
 
 .project-card__image {
@@ -106,6 +179,41 @@
   overflow: hidden;
   position: relative;
   width: 100%;
+  z-index: 2;
+}
+
+/* RGB Split glitch layers for image on hover */
+.project-card__image::before,
+.project-card__image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: screen;
+}
+
+.project-card__image::before {
+  background: linear-gradient(135deg, var(--color-bg-secondary) 0%, color-mix(in srgb, var(--color-bg-secondary) 80%, var(--color-text) 20%) 100%);
+  filter: hue-rotate(90deg);
+}
+
+.project-card__image::after {
+  background: linear-gradient(135deg, var(--color-bg-secondary) 0%, color-mix(in srgb, var(--color-bg-secondary) 80%, var(--color-text) 20%) 100%);
+  filter: hue-rotate(-90deg);
+}
+
+.project-card:hover .project-card__image::before {
+  opacity: 0.3;
+  animation: glitchRed 0.2s steps(2) infinite;
+}
+
+.project-card:hover .project-card__image::after {
+  opacity: 0.3;
+  animation: glitchBlue 0.2s steps(2) infinite;
 }
 
 .project-card--large .project-card__image {
@@ -116,12 +224,16 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s var(--ease-smooth);
+  transition: transform 0.5s var(--ease-smooth), filter 0.3s ease;
   display: block;
+  position: relative;
+  z-index: 2;
 }
 
 .project-card:hover .project-card__image img {
   transform: scale(1.05);
+  filter: contrast(1.1) brightness(1.05);
+  animation: textCorrupt 0.4s ease-in-out;
 }
 
 .project-card--large .project-card__image {
@@ -130,6 +242,8 @@
 
 .project-card__content {
   padding: 1.5rem;
+  position: relative;
+  z-index: 2;
 }
 
 .project-card__title {
@@ -139,6 +253,26 @@
   margin-bottom: 0.5rem;
   text-transform: none;
   letter-spacing: 0;
+  position: relative;
+  z-index: 2;
+}
+
+/* DecryptedText styles for title */
+.project-card__title--revealed {
+  color: var(--color-text);
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.project-card__title--encrypted {
+  color: var(--color-accent);
+  opacity: 0.5;
+  filter: blur(0.5px);
+  transition: color 0.1s ease, opacity 0.1s ease, filter 0.1s ease;
+}
+
+.project-card:hover .project-card__title--revealed {
+  color: var(--color-accent);
+  text-shadow: 0 0 8px color-mix(in srgb, var(--color-accent) 40%, transparent);
 }
 
 .project-card__description {

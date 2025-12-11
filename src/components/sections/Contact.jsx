@@ -32,7 +32,7 @@ export default function Contact() {
       </div>
       <footer className="contact__footer">
         <span className="contact__copyright">
-          &copy; {new Date().getFullYear()} — Diseñado y desarrollado con pasión
+          &copy; {new Date().getFullYear()} — Diseñado y desarrollado por Valentín
         </span>
       </footer>
     </section>

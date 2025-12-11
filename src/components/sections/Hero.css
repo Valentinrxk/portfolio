@@ -11,7 +11,7 @@
   position: absolute;
   inset: 0;
   z-index: 0;
-  opacity: 0.15;
+  opacity: 0.2;
   pointer-events: none;
 }
 
@@ -162,7 +162,7 @@
   opacity: 0;
   animation: fadeIn 1.2s ease 0.5s forwards;
   min-width: 65ch;
-  min-height: 30em;
+  min-height: 40em;
 }
 
 .hero__scroll-indicator {
@@ -235,8 +235,8 @@
 
   .hero__content {
     grid-template-rows: auto auto auto;
-    padding: 15vh 4vw 3vh;
-    gap: 1rem;
+    padding: 8vh 4vw 2vh;
+    gap: 0.75rem;
   }
 
   .hero__text {
@@ -250,7 +250,8 @@
 
   .hero__title {
     font-size: clamp(2.5rem, 12vw, 4rem);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
+    line-height: 0.9;
   }
 
   .hero__title-line--outline {
@@ -259,17 +260,19 @@
 
   .hero__label {
     font-size: 0.65rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
   }
 
   .hero__subtitle {
     font-size: clamp(0.9rem, 4vw, 1.1rem);
-    margin-bottom: 2rem;
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
     max-width: 100%;
   }
 
   .hero__line {
-    margin: 1.5rem 0;
+    margin: 1rem 0;
+    height: 3px;
   }
 
   .hero__cta {
@@ -277,29 +280,34 @@
     justify-self: center;
     padding: 0.875rem 1.5rem;
     font-size: 0.75rem;
+    margin-top: 0.5rem;
   }
 
   .hero__ascii {
-    min-width: 40ch;
-    min-height: 20em;
+    min-width: 50ch;
+    min-height: 30em;
   }
 
   .hero__scroll-indicator {
     font-size: 0.6rem;
-    padding-bottom: 1rem;
+    padding-bottom: 0.75rem;
   }
 
   .hero__scroll-line {
-    height: 40px;
+    height: 35px;
     margin-top: 0.5rem;
   }
 }
 
 /* Mobile pequeño */
 @media (max-width: 480px) {
+  .hero__dither-bg {
+    opacity: 0.25;
+  }
+
   .hero__content {
-    padding: 12vh 3vw 2vh;
-    gap: 0.75rem;
+    padding: 6vh 3vw 1.5vh;
+    gap: 0.5rem;
   }
 
   .hero__text {
@@ -308,17 +316,25 @@
 
   .hero__title {
     font-size: clamp(2rem, 15vw, 3.5rem);
+    margin-bottom: 0.125rem;
+    line-height: 0.9;
   }
 
   .hero__label {
     font-size: 0.6rem;
     letter-spacing: 0.25em;
+    margin-bottom: 0.5rem;
   }
 
   .hero__subtitle {
     font-size: clamp(0.85rem, 4.5vw, 1rem);
-    line-height: 1.6;
-    margin-bottom: 1.5rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+
+  .hero__line {
+    margin: 0.75rem 0;
+    height: 3px;
   }
 
   .hero__cta {
@@ -328,19 +344,22 @@
     font-size: 0.7rem;
     width: 100%;
     justify-content: center;
+    margin-top: 0.25rem;
   }
 
   .hero__ascii {
-    min-width: 35ch;
-    min-height: 18em;
+    min-width: 45ch;
+    min-height: 28em;
   }
 
   .hero__scroll-indicator {
     font-size: 0.55rem;
     letter-spacing: 0.3em;
+    padding-bottom: 0.5rem;
   }
 
   .hero__scroll-line {
-    height: 35px;
+    height: 30px;
+    margin-top: 0.375rem;
   }
 }

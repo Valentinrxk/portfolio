@@ -60,7 +60,7 @@ export default function Hero() {
           </p>
         </div>
         <div className="hero__ascii">
-          <AsciiCube width={65} height={30} />
+          <AsciiCube width={65} height={40} />
         </div>
         <a href="#projects" className="hero__cta">
           Ver proyectos

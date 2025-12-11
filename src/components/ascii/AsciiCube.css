@@ -223,15 +223,15 @@
 /* Mobile */
 @media (max-width: 768px) {
   .ascii-cube-container {
-    padding: 0.375rem;
+    padding: 0.5rem;
   }
 
   .ascii-cube {
-    font-size: clamp(0.2rem, 0.55vw, 0.35rem);
+    font-size: clamp(0.35rem, 1.2vw, 0.5rem);
   }
 
   .ascii-cube-frame {
-    padding: 0.75rem 1rem;
+    padding: 1rem 1.25rem;
   }
 
   .ascii-cube-glow {
@@ -243,15 +243,15 @@
 /* Mobile pequeño */
 @media (max-width: 480px) {
   .ascii-cube-container {
-    padding: 0.25rem;
+    padding: 0.5rem;
   }
 
   .ascii-cube {
-    font-size: clamp(0.18rem, 0.6vw, 0.3rem);
+    font-size: clamp(0.32rem, 1.5vw, 0.45rem);
   }
 
   .ascii-cube-frame {
-    padding: 0.5rem 0.75rem;
+    padding: 0.75rem 1rem;
   }
 
   .ascii-cube-glow {

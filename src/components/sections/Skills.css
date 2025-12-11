@@ -2,6 +2,7 @@
   padding: 12vh 5vw;
   background: var(--color-bg);
   position: relative;
+  overflow: hidden;
 }
 
 .skills__container {
@@ -37,12 +38,58 @@
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.6s ease, transform 0.6s var(--ease-out-expo);
+  overflow: hidden;
+  background: var(--color-bg);
+}
+
+/* Scanlines for skill-group */
+.skill-group::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.02) 2px,
+    rgba(0, 0, 0, 0.02) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.skill-group:hover::before {
+  opacity: 1;
+}
+
+/* Glow effect for skill-group */
+.skill-group::after {
+  content: '';
+  position: absolute;
+  inset: -15%;
+  background: radial-gradient(
+    ellipse at center,
+    color-mix(in srgb, var(--color-accent) 12%, transparent) 0%,
+    transparent 70%
+  );
+  filter: blur(35px);
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.skill-group:hover::after {
+  opacity: 1;
 }
 
 .skills__container.is-visible .skill-group {
   opacity: 1;
   transform: translateY(0);
   transition-delay: var(--group-delay);
+  animation: fadeInGlitch 0.8s var(--ease-out-expo) var(--group-delay) forwards;
 }
 
 .skill-group::before {
@@ -79,6 +126,29 @@
   color: var(--color-accent);
   margin-bottom: 1.5rem;
   text-transform: uppercase;
+  position: relative;
+  z-index: 2;
+}
+
+/* DecryptedText styles for category title */
+.skill-group__title--revealed {
+  color: var(--color-accent);
+  transition: color 0.2s ease, opacity 0.2s ease;
+  text-shadow: 0 0 8px color-mix(in srgb, var(--color-accent) 50%, transparent);
+}
+
+.skill-group__title--encrypted {
+  color: var(--color-accent);
+  opacity: 0.4;
+  filter: blur(1px);
+  transition: color 0.1s ease, opacity 0.1s ease, filter 0.1s ease;
+}
+
+.skill-group:hover .skill-group__title--revealed {
+  animation: asciiGlow 2s ease-in-out infinite;
+  text-shadow: 
+    0 0 10px color-mix(in srgb, var(--color-accent) 60%, transparent),
+    0 0 20px color-mix(in srgb, var(--color-accent) 40%, transparent);
 }
 
 .skill-group__list {
@@ -103,6 +173,7 @@
   opacity: 1;
   transform: translateX(0);
   transition-delay: var(--skill-delay);
+  animation: fadeInGlitch 0.6s var(--ease-out-expo) var(--skill-delay) forwards;
 }
 
 .skill-item:last-child {
@@ -117,6 +188,13 @@
   justify-content: center;
   flex-shrink: 0;
   position: relative;
+  z-index: 2;
+}
+
+/* RGB Split glitch effect for icon wrapper */
+.skill-item__icon-wrapper {
+  position: relative;
+  overflow: visible;
 }
 
 .skill-icon {
@@ -126,12 +204,50 @@
   transition: all 0.4s var(--ease-out-expo);
   animation: iconFloat 3s ease-in-out infinite;
   animation-delay: var(--skill-delay);
+  position: relative;
+  z-index: 3;
+  display: block;
 }
 
+/* RGB Glitch effect on hover - using multiple shadows and filters */
 .skill-item:hover .skill-icon {
   color: var(--color-text);
   transform: scale(1.2) rotate(5deg);
-  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--color-accent) 60%, transparent));
+  /* RGB split glitch using multiple drop-shadows */
+  filter: 
+    drop-shadow(0 0 8px color-mix(in srgb, var(--color-accent) 60%, transparent))
+    drop-shadow(-3px 0 0 rgba(255, 0, 64, 0.8))
+    drop-shadow(3px 0 0 rgba(0, 255, 255, 0.8));
+  animation: iconFloat 3s ease-in-out infinite, iconGlitchRGB 0.2s steps(2) infinite;
+  animation-delay: var(--skill-delay), 0s;
+}
+
+/* RGB glitch animation for icons - only affects filter, not transform */
+@keyframes iconGlitchRGB {
+  0%, 100% {
+    filter: 
+      drop-shadow(0 0 8px color-mix(in srgb, var(--color-accent) 60%, transparent))
+      drop-shadow(-3px 0 0 rgba(255, 0, 64, 0.8))
+      drop-shadow(3px 0 0 rgba(0, 255, 255, 0.8));
+  }
+  25% {
+    filter: 
+      drop-shadow(0 0 8px color-mix(in srgb, var(--color-accent) 60%, transparent))
+      drop-shadow(-4px 1px 0 rgba(255, 0, 64, 0.9))
+      drop-shadow(4px -1px 0 rgba(0, 255, 255, 0.9));
+  }
+  50% {
+    filter: 
+      drop-shadow(0 0 8px color-mix(in srgb, var(--color-accent) 60%, transparent))
+      drop-shadow(-2px -1px 0 rgba(255, 0, 64, 0.7))
+      drop-shadow(2px 1px 0 rgba(0, 255, 255, 0.7));
+  }
+  75% {
+    filter: 
+      drop-shadow(0 0 8px color-mix(in srgb, var(--color-accent) 60%, transparent))
+      drop-shadow(-4px -1px 0 rgba(255, 0, 64, 0.9))
+      drop-shadow(4px 1px 0 rgba(0, 255, 255, 0.9));
+  }
 }
 
 .skill-item__name {
@@ -139,10 +255,26 @@
   font-size: 1.1rem;
   font-weight: 600;
   transition: color 0.3s ease;
+  position: relative;
+  z-index: 2;
 }
 
-.skill-item:hover .skill-item__name {
+/* DecryptedText styles for skill name */
+.skill-item__name--revealed {
+  color: var(--color-text);
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.skill-item__name--encrypted {
   color: var(--color-accent);
+  opacity: 0.5;
+  filter: blur(0.5px);
+  transition: color 0.1s ease, opacity 0.1s ease, filter 0.1s ease;
+}
+
+.skill-item:hover .skill-item__name--revealed {
+  color: var(--color-accent);
+  text-shadow: 0 0 6px color-mix(in srgb, var(--color-accent) 40%, transparent);
 }
 
 /* Icon animation */
@@ -155,25 +287,31 @@
   }
 }
 
-/* Pulse glow effect on icon */
+/* Enhanced glow effect on icon */
+.skill-item__icon-wrapper {
+  position: relative;
+}
+
 .skill-item__icon-wrapper::before {
   content: '';
   position: absolute;
-  inset: -4px;
+  inset: -6px;
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    color-mix(in srgb, var(--color-accent) 20%, transparent) 0%,
+    color-mix(in srgb, var(--color-accent) 25%, transparent) 0%,
+    color-mix(in srgb, var(--color-accent) 15%, transparent) 40%,
     transparent 70%
   );
   opacity: 0;
   transition: opacity 0.3s ease;
-  z-index: -1;
+  z-index: 0;
+  filter: blur(8px);
 }
 
 .skill-item:hover .skill-item__icon-wrapper::before {
   opacity: 1;
-  animation: iconGlow 1.5s ease-in-out infinite;
+  animation: iconGlow 1.5s ease-in-out infinite, asciiGlow 2s ease-in-out infinite;
 }
 
 @keyframes iconGlow {

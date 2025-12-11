@@ -1,6 +1,8 @@
 import { useRef } from 'react';
 import useScrollAnimation from '../../hooks/useScrollAnimation';
 import { HiArrowTopRightOnSquare } from 'react-icons/hi2';
+import AsciiDecoration from '../ui/AsciiDecoration';
+import DecryptedText from '../ui/DecryptedText';
 import './Projects.css';
 
 const PROJECTS = [
@@ -39,6 +41,13 @@ export default function Projects() {
 
   return (
     <section id="projects" className="projects" ref={sectionRef}>
+      {/* ASCII Decorations */}
+      {isVisible && (
+        <>
+          <AsciiDecoration position="top-right" type="code" lines={4} />
+          <AsciiDecoration position="bottom-left" type="symbols" lines={3} />
+        </>
+      )}
       <div className={`projects__container ${isVisible ? 'is-visible' : ''}`}>
         <div className="projects__header">
           <h2 className="projects__title">PROYECTOS</h2>
@@ -52,7 +61,17 @@ export default function Projects() {
               style={{ '--delay': `${index * 0.1}s` }}
             >
               <span className="project-card__number">
-                {String(project.id).padStart(2, '0')}
+                <DecryptedText
+                  text={String(project.id).padStart(2, '0')}
+                  animateOn="view"
+                  speed={40}
+                  maxIterations={12}
+                  characters="0123456789"
+                  revealDirection="start"
+                  sequential={true}
+                  className="project-card__number--revealed"
+                  encryptedClassName="project-card__number--encrypted"
+                />
               </span>
               <div className="project-card__image">
                 <img 
@@ -65,7 +84,19 @@ export default function Projects() {
                 />
               </div>
               <div className="project-card__content">
-                <h3 className="project-card__title">{project.title}</h3>
+                <h3 className="project-card__title">
+                  <DecryptedText
+                    text={project.title}
+                    animateOn="view"
+                    speed={50}
+                    maxIterations={15}
+                    characters="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+                    revealDirection="start"
+                    sequential={true}
+                    className="project-card__title--revealed"
+                    encryptedClassName="project-card__title--encrypted"
+                  />
+                </h3>
                 <p className="project-card__description">{project.description}</p>
                 <div className="project-card__tech">
                   {project.tech.map((t) => (

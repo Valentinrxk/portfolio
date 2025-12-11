@@ -1,0 +1,105 @@
+.ascii-decoration {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--color-accent);
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 5;
+  white-space: pre;
+  letter-spacing: 0.15em;
+}
+
+.ascii-decoration__line {
+  opacity: 0;
+  animation: asciiLineAppear 0.6s ease forwards;
+  animation-delay: var(--line-delay, 0s);
+}
+
+@keyframes asciiLineAppear {
+  from {
+    opacity: 0;
+    transform: translateX(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Positions */
+.ascii-decoration--top-left {
+  top: 2rem;
+  left: 2rem;
+  text-align: left;
+}
+
+.ascii-decoration--top-right {
+  top: 2rem;
+  right: 2rem;
+  text-align: right;
+}
+
+.ascii-decoration--bottom-left {
+  bottom: 2rem;
+  left: 2rem;
+  text-align: left;
+}
+
+.ascii-decoration--bottom-right {
+  bottom: 2rem;
+  right: 2rem;
+  text-align: right;
+}
+
+/* Inverse colors for dark backgrounds */
+.ascii-decoration--inverse {
+  color: var(--color-inverse-text);
+  opacity: 0.15;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .ascii-decoration {
+    font-size: 0.65rem;
+    opacity: 0.35;
+  }
+
+  .ascii-decoration--top-left,
+  .ascii-decoration--bottom-left {
+    left: 1rem;
+  }
+
+  .ascii-decoration--top-right,
+  .ascii-decoration--bottom-right {
+    right: 1rem;
+  }
+
+  .ascii-decoration--top-left,
+  .ascii-decoration--top-right {
+    top: 1.5rem;
+  }
+
+  .ascii-decoration--bottom-left,
+  .ascii-decoration--bottom-right {
+    bottom: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .ascii-decoration {
+    font-size: 0.6rem;
+    opacity: 0.3;
+  }
+
+  .ascii-decoration--top-left,
+  .ascii-decoration--bottom-left {
+    left: 0.75rem;
+  }
+
+  .ascii-decoration--top-right,
+  .ascii-decoration--bottom-right {
+    right: 0.75rem;
+  }
+}

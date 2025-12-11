@@ -11,6 +11,19 @@
   border: 1px solid color-mix(in srgb, var(--color-accent) 20%, transparent);
   background: color-mix(in srgb, var(--color-text) 2%, transparent);
   overflow: hidden;
+  transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+/* Depth effect on hover - freeze and elevate */
+.ascii-portrait-container:hover .ascii-portrait-frame {
+  transform: scale(1.02) translateY(-8px);
+  border-color: var(--color-accent);
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.3),
+    0 0 0 2px var(--color-accent),
+    0 0 30px color-mix(in srgb, var(--color-accent) 30%, transparent),
+    0 0 60px color-mix(in srgb, var(--color-accent) 15%, transparent),
+    inset 0 0 20px color-mix(in srgb, var(--color-accent) 10%, transparent);
 }
 
 .ascii-portrait {
@@ -32,11 +45,19 @@
 /* Wave animation line */
 .ascii-portrait-line {
   display: block;
-  transition: transform 0.05s linear, opacity 0.05s linear; /* Faster transitions for smoother waves */
+  transition: transform 0.3s var(--ease-out-expo), opacity 0.3s ease, text-shadow 0.3s ease;
   text-shadow:
     0 0 2px color-mix(in srgb, var(--color-accent) 50%, transparent),
     0 0 5px color-mix(in srgb, var(--color-accent) 30%, transparent);
-  will-change: transform, opacity; /* Optimize for animation */
+  will-change: transform, opacity;
+}
+
+/* Frozen state - crisp and bright */
+.ascii-portrait-line.is-hovering {
+  text-shadow:
+    0 0 1px var(--color-accent),
+    0 0 3px var(--color-accent),
+    0 0 8px color-mix(in srgb, var(--color-accent) 60%, transparent);
 }
 
 /* Subtle glow overlay that pulses */
@@ -71,46 +92,52 @@
     inset 0 0 30px color-mix(in srgb, var(--color-accent) 5%, transparent);
 }
 
-/* Hover state - intensify glow on lines near mouse */
-.ascii-portrait-line.is-hovering {
-  text-shadow:
-    0 0 3px color-mix(in srgb, var(--color-accent) 80%, transparent),
-    0 0 8px color-mix(in srgb, var(--color-accent) 50%, transparent),
-    0 0 15px color-mix(in srgb, var(--color-accent) 30%, transparent);
-}
-
+/* Hover state - static and sharp */
 .ascii-portrait-container:hover .ascii-portrait-glow {
-  animation: glowPulseIntense 1.5s ease-in-out infinite;
-}
-
-@keyframes glowPulseIntense {
-  0%, 100% {
-    opacity: 0.6;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.05);
-  }
-}
-
-/* Spotlight that follows mouse */
-.ascii-portrait-spotlight {
-  position: absolute;
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
+  animation: none;
+  opacity: 0.8;
   background: radial-gradient(
-    circle,
-    color-mix(in srgb, var(--color-accent) 40%, transparent) 0%,
-    color-mix(in srgb, var(--color-accent) 20%, transparent) 30%,
-    transparent 70%
+    ellipse at center,
+    color-mix(in srgb, var(--color-accent) 20%, transparent) 0%,
+    transparent 60%
   );
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  z-index: 5;
-  mix-blend-mode: screen;
-  filter: blur(10px);
+}
+
+/* Corner accents on hover */
+.ascii-portrait-frame::before,
+.ascii-portrait-frame::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--color-accent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+}
+
+.ascii-portrait-frame::before {
+  top: 8px;
+  left: 8px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.ascii-portrait-frame::after {
+  bottom: 8px;
+  right: 8px;
+  border-left: none;
+  border-top: none;
+}
+
+.ascii-portrait-container:hover .ascii-portrait-frame::before,
+.ascii-portrait-container:hover .ascii-portrait-frame::after {
+  opacity: 1;
+}
+
+/* Spotlight removed - replaced with static hologram effect */
+.ascii-portrait-spotlight {
+  display: none;
 }
 
 /* Responsive */

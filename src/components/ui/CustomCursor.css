@@ -16,19 +16,14 @@
   isolation: isolate;
 }
 
-/* Disable mix-blend-mode in Chrome for better performance */
-@supports (mix-blend-mode: difference) {
-  .custom-cursor:not(.chrome-optimized) {
-    mix-blend-mode: difference;
-  }
+/* Inverse background - silver color */
+.custom-cursor.is-inverse {
+  border-color: var(--color-cursor-silver);
 }
 
-/* Chrome-specific optimizations */
-@media screen and (-webkit-min-device-pixel-ratio: 0) {
-  .custom-cursor {
-    mix-blend-mode: normal;
-    opacity: 0.9;
-  }
+/* Disable mix-blend-mode to maintain correct colors */
+.custom-cursor {
+  mix-blend-mode: normal;
 }
 
 .custom-cursor::before {
@@ -40,7 +35,11 @@
   height: 4px;
   background: var(--color-accent);
   transform: translate(-50%, -50%);
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.custom-cursor.is-inverse::before {
+  background: var(--color-cursor-silver);
 }
 
 .custom-cursor::after {
@@ -53,6 +52,11 @@
   border: 1px solid var(--color-accent);
   opacity: 0.3;
   animation: cursorPulse 2s ease-in-out infinite;
+  transition: border-color 0.3s ease;
+}
+
+.custom-cursor.is-inverse::after {
+  border-color: var(--color-cursor-silver);
 }
 
 /* Disable pulse animation in Chrome for better performance */
@@ -94,10 +98,18 @@
   background: color-mix(in srgb, var(--color-accent) 10%, transparent);
 }
 
+.custom-cursor.is-hovering.is-inverse {
+  background: color-mix(in srgb, var(--color-cursor-silver) 10%, transparent);
+}
+
 .custom-cursor.is-hovering::before {
   width: 8px;
   height: 8px;
   background: var(--color-accent);
+}
+
+.custom-cursor.is-hovering.is-inverse::before {
+  background: var(--color-cursor-silver);
 }
 
 .custom-cursor.is-hovering::after {
@@ -130,25 +142,20 @@
   top: 0;
   transform: translate(-50%, -50%);
   opacity: 0.6;
-  transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease, background-color 0.3s ease;
   will-change: transform;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   isolation: isolate;
 }
 
-/* Disable mix-blend-mode in Chrome for better performance */
-@supports (mix-blend-mode: difference) {
-  .custom-cursor-trail:not(.chrome-optimized) {
-    mix-blend-mode: difference;
-  }
+.custom-cursor-trail.is-inverse {
+  background: var(--color-cursor-silver);
 }
 
-/* Chrome-specific optimizations */
-@media screen and (-webkit-min-device-pixel-ratio: 0) {
-  .custom-cursor-trail {
-    mix-blend-mode: normal;
-  }
+/* Disable mix-blend-mode to maintain correct colors */
+.custom-cursor-trail {
+  mix-blend-mode: normal;
 }
 
 .custom-cursor-trail::before {
@@ -163,6 +170,11 @@
   transform: translate(-50%, -50%);
   opacity: 0.3;
   animation: trailPulse 1.5s ease-in-out infinite;
+  transition: background-color 0.3s ease;
+}
+
+.custom-cursor-trail.is-inverse::before {
+  background: var(--color-cursor-silver);
 }
 
 @keyframes trailPulse {

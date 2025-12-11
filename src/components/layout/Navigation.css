@@ -6,15 +6,87 @@
   z-index: 1000;
   padding: 1.5rem 5vw;
   transition: all 0.4s var(--ease-smooth), background-color 0.3s ease;
+  background: transparent;
 }
 
 .nav--scrolled {
-  background: var(--color-nav-bg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: color-mix(in srgb, var(--color-nav-bg) 85%, transparent);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   padding: 1rem 5vw;
-  box-shadow: 0 2px 20px var(--color-nav-shadow);
+  margin: 1rem 1rem 0;
+  border-radius: 0 0 16px 16px;
+  box-shadow: 
+    0 8px 32px var(--color-nav-shadow),
+    0 2px 8px color-mix(in srgb, var(--color-nav-shadow) 50%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border) 30%, transparent);
   transition: all 0.4s var(--ease-smooth), background-color 0.3s ease;
+  max-width: calc(100% - 2rem);
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Inverse background sections (dark) */
+.nav--scrolled.nav--inverse {
+  background: color-mix(in srgb, var(--color-inverse-bg) 90%, transparent);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.5),
+    0 2px 8px rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-inverse-text) 10%, transparent);
+}
+
+.nav--scrolled.nav--inverse .nav__logo {
+  color: var(--color-inverse-text);
+}
+
+.nav--scrolled.nav--inverse .nav__logo-v,
+.nav--scrolled.nav--inverse .nav__logo-r,
+.nav--scrolled.nav--inverse .nav__logo-cursor {
+  color: var(--color-accent);
+}
+
+.nav--scrolled.nav--inverse .nav__logo-bracket {
+  color: var(--color-inverse-text);
+  opacity: 0.5;
+}
+
+.nav--scrolled.nav--inverse .nav__logo-slash {
+  color: var(--color-inverse-text);
+  opacity: 0.6;
+}
+
+.nav--scrolled.nav--inverse .nav__status,
+.nav--scrolled.nav--inverse .nav__link,
+.nav--scrolled.nav--inverse .nav__theme-toggle,
+.nav--scrolled.nav--inverse .nav__toggle {
+  color: var(--color-inverse-text);
+}
+
+.nav--scrolled.nav--inverse .nav__status {
+  border-color: color-mix(in srgb, var(--color-inverse-text) 20%, transparent);
+  background: color-mix(in srgb, var(--color-inverse-text) 5%, transparent);
+}
+
+.nav--scrolled.nav--inverse .nav__link {
+  color: var(--color-inverse-text);
+  border-color: transparent;
+}
+
+.nav--scrolled.nav--inverse .nav__link:hover {
+  border-color: color-mix(in srgb, var(--color-accent) 30%, transparent);
+  background: color-mix(in srgb, var(--color-accent) 8%, transparent);
+}
+
+.nav--scrolled.nav--inverse .nav__theme-toggle,
+.nav--scrolled.nav--inverse .nav__toggle {
+  border-color: color-mix(in srgb, var(--color-inverse-text) 20%, transparent);
+}
+
+.nav--scrolled.nav--inverse .nav__theme-toggle:hover,
+.nav--scrolled.nav--inverse .nav__toggle:hover {
+  border-color: var(--color-accent);
 }
 
 /* Progress bar */
@@ -369,10 +441,27 @@
 @media (max-width: 768px) {
   .nav {
     padding: 1rem 4vw;
+    background: transparent;
   }
 
   .nav--scrolled {
     padding: 0.75rem 4vw;
+    margin: 0.75rem 0.75rem 0;
+    border-radius: 0 0 20px 20px;
+    background: color-mix(in srgb, var(--color-nav-bg) 80%, transparent);
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    box-shadow: 
+      0 10px 40px var(--color-nav-shadow),
+      0 4px 12px color-mix(in srgb, var(--color-nav-shadow) 60%, transparent);
+    max-width: calc(100% - 1.5rem);
+  }
+
+  .nav--scrolled.nav--inverse {
+    background: color-mix(in srgb, var(--color-inverse-bg) 85%, transparent);
+    box-shadow: 
+      0 10px 40px rgba(0, 0, 0, 0.6),
+      0 4px 12px rgba(0, 0, 0, 0.4);
   }
 
   .nav__toggle {
@@ -396,7 +485,9 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: var(--color-bg);
+    background: color-mix(in srgb, var(--color-bg) 95%, transparent);
+    backdrop-filter: blur(30px) saturate(180%);
+    -webkit-backdrop-filter: blur(30px) saturate(180%);
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -404,6 +495,11 @@
     opacity: 0;
     visibility: hidden;
     transition: all 0.4s ease;
+    z-index: 999;
+  }
+
+  .nav--inverse .nav__list {
+    background: color-mix(in srgb, var(--color-inverse-bg) 95%, transparent);
   }
 
   .nav__list.is-open {
@@ -430,10 +526,27 @@
 @media (max-width: 480px) {
   .nav {
     padding: 0.875rem 3vw;
+    background: transparent;
   }
 
   .nav--scrolled {
     padding: 0.625rem 3vw;
+    margin: 0.625rem 0.5rem 0;
+    border-radius: 0 0 18px 18px;
+    background: color-mix(in srgb, var(--color-nav-bg) 80%, transparent);
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    box-shadow: 
+      0 10px 40px var(--color-nav-shadow),
+      0 4px 12px color-mix(in srgb, var(--color-nav-shadow) 60%, transparent);
+    max-width: calc(100% - 1rem);
+  }
+
+  .nav--scrolled.nav--inverse {
+    background: color-mix(in srgb, var(--color-inverse-bg) 85%, transparent);
+    box-shadow: 
+      0 10px 40px rgba(0, 0, 0, 0.6),
+      0 4px 12px rgba(0, 0, 0, 0.4);
   }
 
   .nav__logo {

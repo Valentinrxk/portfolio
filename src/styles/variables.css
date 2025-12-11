@@ -11,6 +11,7 @@
   --color-nav-shadow: rgba(41, 39, 38, 0.08);
   --color-inverse-bg: #292726;
   --color-inverse-text: #E8E6E3;
+  --color-cursor-silver: #C0C0C0;
 
   /* Typography */
   --font-display: 'Special Gothic Expanded One', sans-serif;
@@ -48,6 +49,7 @@
   --color-nav-shadow: rgba(0, 0, 0, 0.6);
   --color-inverse-bg: #252322;
   --color-inverse-text: #E8E6E3;
+  --color-cursor-silver: #A8A8A8;
 }
 
 /* Smooth theme transition */

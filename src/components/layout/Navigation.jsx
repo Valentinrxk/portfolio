@@ -11,12 +11,16 @@ const NAV_ITEMS = [
   { label: 'Contacto', href: '#contact', num: '04' },
 ];
 
+// Sections with inverse background (dark)
+const INVERSE_SECTIONS = ['projects', 'contact'];
+
 export default function Navigation() {
   const { theme, toggleTheme } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [isInverseBg, setIsInverseBg] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,11 +38,16 @@ export default function Navigation() {
           const rect = element.getBoundingClientRect();
           if (rect.top <= 150) {
             setActiveSection(section);
+            // Check if current section has inverse background
+            setIsInverseBg(INVERSE_SECTIONS.includes(section));
             break;
           }
         }
       }
     };
+
+    // Initial check
+    handleScroll();
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
@@ -56,7 +65,7 @@ export default function Navigation() {
   const activeIndex = NAV_ITEMS.findIndex(item => item.href.slice(1) === activeSection);
 
   return (
-    <nav className={`nav ${isScrolled ? 'nav--scrolled' : ''}`}>
+    <nav className={`nav ${isScrolled ? 'nav--scrolled' : ''} ${isInverseBg ? 'nav--inverse' : ''}`}>
       {/* Progress bar */}
       <div className="nav__progress" style={{ width: `${scrollProgress}%` }} />
 

@@ -196,6 +196,12 @@
   background: var(--color-accent);
 }
 
+.project-card__link-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  display: block;
+}
+
 /* Responsive */
 /* Tablet */
 @media (max-width: 1024px) {

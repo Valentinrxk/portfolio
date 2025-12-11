@@ -24,7 +24,7 @@ const PROJECTS = [
   },
   {
     id: 3,
-    title: 'Taxes',
+    title: 'Taxes Software',
     description: 'Aplicación para gestión de impuestos y declaraciones. Interfaz clara y eficiente para usuarios.',
     tech: ['Vue', 'Express', 'PostgreSQL'],
     size: 'small',

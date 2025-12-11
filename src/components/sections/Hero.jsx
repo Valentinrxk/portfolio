@@ -58,14 +58,14 @@ export default function Hero() {
             Creando experiencias digitales donde el código se encuentra con el diseño.
             Fullstack por necesidad, frontend por pasión.
           </p>
-          <a href="#projects" className="hero__cta">
-            Ver proyectos
-            <span className="hero__cta-arrow">&#8599;</span>
-          </a>
         </div>
         <div className="hero__ascii">
           <AsciiCube width={65} height={30} />
         </div>
+        <a href="#projects" className="hero__cta">
+          Ver proyectos
+          <span className="hero__cta-arrow">&#8599;</span>
+        </a>
       </div>
       <div className="hero__scroll-indicator">
         <span>SCROLL</span>

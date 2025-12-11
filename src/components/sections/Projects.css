@@ -202,6 +202,11 @@
   display: block;
 }
 
+.project-card__link-icon svg {
+  width: 1em;
+  height: 1em;
+}
+
 /* Responsive */
 /* Tablet */
 @media (max-width: 1024px) {

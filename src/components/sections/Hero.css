@@ -140,6 +140,11 @@
   transition: transform 0.3s ease;
 }
 
+.hero__cta-arrow svg {
+  width: 1em;
+  height: 1em;
+}
+
 .hero__cta:hover .hero__cta-arrow {
   transform: translate(3px, -3px);
 }

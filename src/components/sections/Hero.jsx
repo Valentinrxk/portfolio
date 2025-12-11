@@ -1,6 +1,7 @@
 import AsciiCube from '../ascii/AsciiCube';
 import Dither from '../backgrounds/Dither';
 import DecryptedText from '../ui/DecryptedText';
+import { HiArrowTopRightOnSquare } from 'react-icons/hi2';
 import './Hero.css';
 
 export default function Hero() {
@@ -60,7 +61,7 @@ export default function Hero() {
           </p>
           <a href="#projects" className="hero__cta">
             Ver proyectos
-            <span className="hero__cta-arrow">&#8599;</span>
+            <HiArrowTopRightOnSquare className="hero__cta-arrow" />
           </a>
         </div>
         <div className="hero__ascii">

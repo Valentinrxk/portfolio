@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import useScrollAnimation from '../../hooks/useScrollAnimation';
+import { HiArrowTopRightOnSquare } from 'react-icons/hi2';
 import './Projects.css';
 
 const PROJECTS = [
@@ -73,7 +74,7 @@ export default function Projects() {
                 </div>
               </div>
               <a href={project.link} className="project-card__link" aria-label={`Ver ${project.title}`} target="_blank" rel="noopener noreferrer">
-                <span className="project-card__link-icon">&#8599;</span>
+                <HiArrowTopRightOnSquare className="project-card__link-icon" />
               </a>
             </article>
           ))}

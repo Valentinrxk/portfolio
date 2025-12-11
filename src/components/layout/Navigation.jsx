@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import useTheme from '../../hooks/useTheme';
+import { FaSun, FaMoon } from 'react-icons/fa';
 import './Navigation.css';
 
 const NAV_ITEMS = [
@@ -84,7 +85,9 @@ export default function Navigation() {
           aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
           title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
         >
-          <span className="nav__theme-icon">{theme === 'light' ? '☀' : '☾'}</span>
+          <span className="nav__theme-icon">
+            {theme === 'light' ? <FaSun /> : <FaMoon />}
+          </span>
         </button>
 
         <button

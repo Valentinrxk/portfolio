@@ -261,7 +261,7 @@
 
   .hero__title {
     font-size: clamp(2.5rem, 12vw, 4rem);
-    margin-bottom: 0.25rem;
+    margin-bottom: 0;
     line-height: 0.9;
     order: 2;
   }
@@ -274,10 +274,11 @@
     min-width: 50ch;
     min-height: 30em;
     order: 3;
+    margin-top: -1rem;
   }
 
   .hero__line {
-    margin: 1rem 0;
+    margin: 0.5rem 0 1rem;
     height: 3px;
     order: 4;
   }
@@ -326,7 +327,7 @@
 
   .hero__title {
     font-size: clamp(2rem, 15vw, 3.5rem);
-    margin-bottom: 0.125rem;
+    margin-bottom: 0;
     line-height: 0.9;
   }
 
@@ -343,7 +344,7 @@
   }
 
   .hero__line {
-    margin: 0.75rem 0;
+    margin: 0.5rem 0 0.75rem;
     height: 3px;
   }
 
@@ -360,6 +361,7 @@
   .hero__ascii {
     min-width: 45ch;
     min-height: 28em;
+    margin-top: -1.5rem;
   }
 
   .hero__scroll-indicator {

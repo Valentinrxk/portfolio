@@ -20,25 +20,24 @@
 }
 
 .hero__content {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 45% 55%;
   align-items: center;
-  justify-content: center;
   padding: 0 5vw;
-  gap: 3rem;
+  gap: 2rem;
   position: relative;
   z-index: 1;
-  text-align: center;
 }
 
-.hero__title-wrapper {
-  width: 100%;
-  max-width: 1000px;
+.hero__cta {
+  grid-column: 1;
+  justify-self: start;
+  width: auto;
 }
 
-.hero__description-wrapper {
-  width: 100%;
-  max-width: 600px;
+.hero__text {
+  padding-left: 2vw;
+  padding-top: 5rem;
 }
 
 .hero__label {
@@ -100,7 +99,7 @@
   width: 0;
   height: 4px;
   background: var(--color-accent);
-  margin: 0 auto 2rem;
+  margin: 2rem 0;
   animation: drawLine 1s var(--ease-out-expo) 0.7s forwards;
 }
 
@@ -109,8 +108,8 @@
   font-size: clamp(1rem, 1.3vw, 1.25rem);
   line-height: 1.7;
   color: var(--color-text);
-  max-width: 600px;
-  margin: 0 auto;
+  max-width: 450px;
+  margin-bottom: 2.5rem;
   opacity: 0;
   animation: fadeInUp 0.8s var(--ease-out-expo) 0.9s forwards;
 }
@@ -130,7 +129,6 @@
   transition: all 0.4s var(--ease-smooth);
   opacity: 0;
   animation: fadeInUp 0.8s var(--ease-out-expo) 1.1s forwards;
-  align-self: center;
 }
 
 .hero__cta:hover {
@@ -236,33 +234,44 @@
   }
 
   .hero__content {
-    grid-template-rows: auto auto auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
     padding: 8vh 4vw 2vh;
     gap: 0.75rem;
   }
 
   .hero__text {
     padding-top: 0;
+    padding-left: 0;
+    order: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
   }
 
-  .hero__cta {
-    order: 3;
-    justify-self: center;
+  .hero__label {
+    font-size: 0.65rem;
+    margin-bottom: 0.75rem;
+    order: 1;
   }
 
   .hero__title {
     font-size: clamp(2.5rem, 12vw, 4rem);
     margin-bottom: 0.25rem;
     line-height: 0.9;
+    order: 2;
   }
 
   .hero__title-line--outline {
     -webkit-text-stroke: 1.5px var(--color-accent);
   }
 
-  .hero__label {
-    font-size: 0.65rem;
-    margin-bottom: 0.75rem;
+  .hero__line {
+    margin: 1rem 0;
+    height: 3px;
+    order: 4;
   }
 
   .hero__subtitle {
@@ -270,24 +279,21 @@
     line-height: 1.5;
     margin-bottom: 1.25rem;
     max-width: 100%;
-  }
-
-  .hero__line {
-    margin: 1rem 0;
-    height: 3px;
-  }
-
-  .hero__cta {
-    order: 3;
-    justify-self: center;
-    padding: 0.875rem 1.5rem;
-    font-size: 0.75rem;
-    margin-top: 0.5rem;
+    order: 5;
   }
 
   .hero__ascii {
     min-width: 50ch;
     min-height: 30em;
+    order: 3;
+  }
+
+  .hero__cta {
+    order: 6;
+    justify-self: center;
+    padding: 0.875rem 1.5rem;
+    font-size: 0.75rem;
+    margin-top: 0.5rem;
   }
 
   .hero__scroll-indicator {

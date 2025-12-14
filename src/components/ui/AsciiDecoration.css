@@ -1,10 +1,10 @@
 .ascii-decoration {
   position: absolute;
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   line-height: 1.4;
   color: var(--color-accent);
-  opacity: 0.4;
+  opacity: 0.25;
   pointer-events: none;
   z-index: 5;
   white-space: pre;
@@ -63,7 +63,7 @@
 @media (max-width: 768px) {
   .ascii-decoration {
     font-size: 0.65rem;
-    opacity: 0.35;
+    opacity: 0.2;
   }
 
   .ascii-decoration--top-left,
@@ -90,7 +90,7 @@
 @media (max-width: 480px) {
   .ascii-decoration {
     font-size: 0.6rem;
-    opacity: 0.3;
+    opacity: 0.15;
   }
 
   .ascii-decoration--top-left,

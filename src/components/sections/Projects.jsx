@@ -3,6 +3,7 @@ import useScrollAnimation from '../../hooks/useScrollAnimation';
 import { HiArrowTopRightOnSquare } from 'react-icons/hi2';
 import AsciiDecoration from '../ui/AsciiDecoration';
 import DecryptedText from '../ui/DecryptedText';
+import TechnicalGrid from '../backgrounds/TechnicalGrid';
 import './Projects.css';
 
 const PROJECTS = [
@@ -41,11 +42,13 @@ export default function Projects() {
 
   return (
     <section id="projects" className="projects" ref={sectionRef}>
+      {/* Technical Grid Background */}
+      <TechnicalGrid opacity={0.06} gridSize={50} accentLineEvery={4} />
+
       {/* ASCII Decorations */}
       {isVisible && (
         <>
-          <AsciiDecoration position="top-right" type="code" lines={4} />
-          <AsciiDecoration position="bottom-left" type="symbols" lines={3} />
+          <AsciiDecoration position="top-right" type="code" lines={2} animated={false} />
         </>
       )}
       <div className={`projects__container ${isVisible ? 'is-visible' : ''}`}>

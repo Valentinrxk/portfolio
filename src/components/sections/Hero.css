@@ -11,7 +11,7 @@
   position: absolute;
   inset: 0;
   z-index: 0;
-  opacity: 0.2;
+  opacity: 0.28;
   pointer-events: none;
 }
 
@@ -302,7 +302,7 @@
 /* Mobile pequeño */
 @media (max-width: 480px) {
   .hero__dither-bg {
-    opacity: 0.25;
+    opacity: 0.08;
   }
 
   .hero__content {

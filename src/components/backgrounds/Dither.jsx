@@ -26,6 +26,7 @@ uniform float waveSpeed;
 uniform float waveFrequency;
 uniform float waveAmplitude;
 uniform vec3 waveColor;
+uniform vec3 baseColor;
 uniform vec2 mousePos;
 uniform int enableMouseInteraction;
 uniform float mouseRadius;
@@ -93,7 +94,7 @@ void main() {
     float effect = 1.0 - smoothstep(0.0, mouseRadius, dist);
     f -= 0.5 * effect;
   }
-  vec3 col = mix(vec3(0.0), waveColor, f);
+  vec3 col = mix(baseColor, waveColor, f);
   gl_FragColor = vec4(col, 1.0);
 }
 `;
@@ -170,6 +171,7 @@ function DitheredWaves({
   waveFrequency,
   waveAmplitude,
   waveColor,
+  baseColor,
   colorNum,
   pixelSize,
   disableAnimation,
@@ -187,6 +189,7 @@ function DitheredWaves({
     waveFrequency: new THREE.Uniform(waveFrequency),
     waveAmplitude: new THREE.Uniform(waveAmplitude),
     waveColor: new THREE.Uniform(new THREE.Color(...waveColor)),
+    baseColor: new THREE.Uniform(new THREE.Color(...baseColor)),
     mousePos: new THREE.Uniform(new THREE.Vector2(0, 0)),
     enableMouseInteraction: new THREE.Uniform(enableMouseInteraction ? 1 : 0),
     mouseRadius: new THREE.Uniform(mouseRadius)
@@ -203,16 +206,17 @@ function DitheredWaves({
   }, [size, gl]);
 
   const prevColor = useRef([...waveColor]);
+  const prevBaseColor = useRef([...baseColor]);
   const lastFrameTime = useRef(0);
   // Detect Chrome for performance optimizations
   const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
   const frameThrottle = isChrome ? 1000 / 30 : 1000 / 60; // 30fps for Chrome, 60fps for others
-  
+
   useFrame(({ clock }) => {
     const currentTime = performance.now();
     if (currentTime - lastFrameTime.current < frameThrottle) return;
     lastFrameTime.current = currentTime;
-    
+
     const u = waveUniformsRef.current;
 
     if (!disableAnimation) {
@@ -226,6 +230,11 @@ function DitheredWaves({
     if (!prevColor.current.every((v, i) => v === waveColor[i])) {
       u.waveColor.value.set(...waveColor);
       prevColor.current = [...waveColor];
+    }
+
+    if (!prevBaseColor.current.every((v, i) => v === baseColor[i])) {
+      u.baseColor.value.set(...baseColor);
+      prevBaseColor.current = [...baseColor];
     }
 
     u.enableMouseInteraction.value = enableMouseInteraction ? 1 : 0;
@@ -276,6 +285,7 @@ export default function Dither({
   waveFrequency = 3,
   waveAmplitude = 0.3,
   waveColor = [0.5, 0.5, 0.5],
+  baseColor = [0.0, 0.0, 0.0],
   colorNum = 4,
   pixelSize = 2,
   disableAnimation = false,
@@ -307,6 +317,7 @@ export default function Dither({
         waveFrequency={waveFrequency}
         waveAmplitude={waveAmplitude}
         waveColor={waveColor}
+        baseColor={baseColor}
         colorNum={colorNum}
         pixelSize={pixelSize}
         disableAnimation={disableAnimation}

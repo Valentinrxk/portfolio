@@ -31,7 +31,9 @@ export default function AsciiDecoration({
     const interval = setInterval(() => {
       setPatterns(prev =>
         prev.map((line, i) => {
-          // Only update one random character per line for subtle animation
+          // Very subtle animation - only occasionally update
+          if (Math.random() > 0.3) return line;
+
           const chars = line.split('');
           const randomIndex = Math.floor(Math.random() * chars.length);
           const availableChars = PATTERNS[type] || PATTERNS.code;
@@ -39,7 +41,7 @@ export default function AsciiDecoration({
           return chars.join('');
         })
       );
-    }, 150);
+    }, 800);
 
     return () => clearInterval(interval);
   }, [animated, type]);

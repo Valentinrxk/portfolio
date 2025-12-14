@@ -10,8 +10,11 @@
   position: relative;
   z-index: 2;
   padding: 1.5rem 2rem;
-  border: 1px solid color-mix(in srgb, var(--color-accent) 30%, transparent);
-  background: color-mix(in srgb, var(--color-text) 3%, transparent);
+  border: 2px solid color-mix(in srgb, var(--color-accent) 40%, transparent);
+  background: color-mix(in srgb, var(--color-bg) 95%, var(--color-text) 5%);
+  box-shadow:
+    0 0 40px color-mix(in srgb, var(--color-accent) 20%, transparent),
+    inset 0 0 60px color-mix(in srgb, var(--color-bg) 90%, transparent);
 }
 
 .ascii-cube {
@@ -22,9 +25,10 @@
   white-space: pre;
   user-select: none;
   text-shadow:
-    0 0 5px color-mix(in srgb, var(--color-accent) 80%, transparent),
-    0 0 10px color-mix(in srgb, var(--color-accent) 50%, transparent),
-    0 0 20px color-mix(in srgb, var(--color-accent) 30%, transparent);
+    0 0 8px color-mix(in srgb, var(--color-accent) 90%, transparent),
+    0 0 15px color-mix(in srgb, var(--color-accent) 60%, transparent),
+    0 0 25px color-mix(in srgb, var(--color-accent) 40%, transparent);
+  filter: contrast(1.1) brightness(1.1);
 }
 
 /* Main layer */
@@ -155,22 +159,22 @@
 /* Glow effect */
 .ascii-cube-glow {
   position: absolute;
-  inset: -25%;
+  inset: -30%;
   background: radial-gradient(
     ellipse at center,
-    color-mix(in srgb, var(--color-accent) 25%, transparent) 0%,
-    color-mix(in srgb, var(--color-accent) 10%, transparent) 35%,
+    color-mix(in srgb, var(--color-accent) 35%, transparent) 0%,
+    color-mix(in srgb, var(--color-accent) 15%, transparent) 35%,
     transparent 65%
   );
-  filter: blur(35px);
+  filter: blur(45px);
   z-index: 1;
   pointer-events: none;
-  animation: glowPulse 3s ease-in-out infinite;
+  animation: glowPulse 4s ease-in-out infinite;
 }
 
 @keyframes glowPulse {
-  0%, 100% { opacity: 0.7; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.08); }
+  0%, 100% { opacity: 0.8; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.12); }
 }
 
 /* Scanlines */

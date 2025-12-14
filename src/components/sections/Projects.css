@@ -8,8 +8,8 @@
 
 /* ASCII decorations with inverse colors */
 .projects .ascii-decoration {
-  color: var(--color-accent);
-  opacity: 0.35;
+  color: var(--color-inverse-text);
+  opacity: 0.15;
 }
 
 .projects__container {
@@ -61,46 +61,19 @@
   overflow: hidden;
 }
 
-/* Scanlines overlay */
+/* Subtle border accent on hover */
 .project-card::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0, 0, 0, 0.03) 2px,
-    rgba(0, 0, 0, 0.03) 4px
-  );
-  pointer-events: none;
-  z-index: 1;
+  border: 2px solid var(--color-accent);
   opacity: 0;
   transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 3;
 }
 
 .project-card:hover::before {
-  opacity: 1;
-}
-
-/* Glow effect */
-.project-card::after {
-  content: '';
-  position: absolute;
-  inset: -20%;
-  background: radial-gradient(
-    ellipse at center,
-    color-mix(in srgb, var(--color-accent) 15%, transparent) 0%,
-    transparent 70%
-  );
-  filter: blur(40px);
-  z-index: 0;
-  opacity: 0;
-  transition: opacity 0.5s ease;
-  pointer-events: none;
-}
-
-.project-card:hover::after {
   opacity: 1;
 }
 
@@ -142,10 +115,8 @@
   color: var(--color-accent);
   line-height: 1;
   z-index: 10;
-  transition: transform 0.4s var(--ease-out-expo), text-shadow 0.4s ease;
-  text-shadow:
-    0 0 10px color-mix(in srgb, var(--color-accent) 60%, transparent),
-    0 0 20px color-mix(in srgb, var(--color-accent) 40%, transparent);
+  transition: transform 0.4s var(--ease-out-expo);
+  opacity: 0.85;
 }
 
 /* DecryptedText styles for number */
@@ -157,17 +128,12 @@
 .project-card__number--encrypted {
   color: var(--color-accent);
   opacity: 0.4;
-  filter: blur(1px);
-  transition: color 0.1s ease, opacity 0.1s ease, filter 0.1s ease;
+  transition: color 0.1s ease, opacity 0.1s ease;
 }
 
 .project-card:hover .project-card__number {
-  transform: translate(-5px, -5px);
-  text-shadow: 
-    0 0 15px color-mix(in srgb, var(--color-accent) 70%, transparent),
-    0 0 30px color-mix(in srgb, var(--color-accent) 50%, transparent),
-    0 0 45px color-mix(in srgb, var(--color-accent) 30%, transparent);
-  animation: asciiGlow 2s ease-in-out infinite;
+  transform: translate(-3px, -3px);
+  opacity: 1;
 }
 
 .project-card__image {
@@ -182,38 +148,20 @@
   z-index: 2;
 }
 
-/* RGB Split glitch layers for image on hover */
-.project-card__image::before,
-.project-card__image::after {
+/* Subtle overlay on image */
+.project-card__image::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: inherit;
+  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.1) 100%);
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.4s ease;
   pointer-events: none;
   z-index: 1;
-  mix-blend-mode: screen;
-}
-
-.project-card__image::before {
-  background: linear-gradient(135deg, var(--color-bg-secondary) 0%, color-mix(in srgb, var(--color-bg-secondary) 80%, var(--color-text) 20%) 100%);
-  filter: hue-rotate(90deg);
-}
-
-.project-card__image::after {
-  background: linear-gradient(135deg, var(--color-bg-secondary) 0%, color-mix(in srgb, var(--color-bg-secondary) 80%, var(--color-text) 20%) 100%);
-  filter: hue-rotate(-90deg);
 }
 
 .project-card:hover .project-card__image::before {
-  opacity: 0.3;
-  animation: glitchRed 0.2s steps(2) infinite;
-}
-
-.project-card:hover .project-card__image::after {
-  opacity: 0.3;
-  animation: glitchBlue 0.2s steps(2) infinite;
+  opacity: 1;
 }
 
 .project-card--large .project-card__image {
@@ -224,16 +172,14 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s var(--ease-smooth), filter 0.3s ease;
+  transition: transform 0.6s var(--ease-smooth);
   display: block;
   position: relative;
   z-index: 2;
 }
 
 .project-card:hover .project-card__image img {
-  transform: scale(1.05);
-  filter: contrast(1.1) brightness(1.05);
-  animation: textCorrupt 0.4s ease-in-out;
+  transform: scale(1.03);
 }
 
 .project-card--large .project-card__image {
@@ -272,7 +218,6 @@
 
 .project-card:hover .project-card__title--revealed {
   color: var(--color-accent);
-  text-shadow: 0 0 8px color-mix(in srgb, var(--color-accent) 40%, transparent);
 }
 
 .project-card__description {

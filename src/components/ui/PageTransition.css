@@ -1,0 +1,116 @@
+.page-transition {
+  position: fixed;
+  inset: 0;
+  background: var(--color-bg);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeOut 0.5s ease 1.3s forwards;
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+.page-transition__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.page-transition__logo {
+  font-family: var(--font-mono);
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--color-text);
+  letter-spacing: 0.1em;
+  animation: glitchLogo 0.8s ease infinite;
+}
+
+@keyframes glitchLogo {
+  0%, 90%, 100% {
+    transform: translate(0, 0);
+    filter: blur(0);
+  }
+  92% {
+    transform: translate(-2px, 1px);
+    filter: blur(0.5px);
+  }
+  94% {
+    transform: translate(2px, -1px);
+    filter: blur(0.5px);
+  }
+  96% {
+    transform: translate(-1px, 2px);
+    filter: blur(0.5px);
+  }
+}
+
+.page-transition__bracket {
+  color: var(--color-accent);
+}
+
+.page-transition__v,
+.page-transition__r {
+  color: var(--color-text);
+}
+
+.page-transition__slash {
+  color: var(--color-accent);
+  opacity: 0.6;
+}
+
+.page-transition__bar {
+  width: 300px;
+  height: 2px;
+  background: color-mix(in srgb, var(--color-text) 20%, transparent);
+  position: relative;
+  overflow: hidden;
+}
+
+.page-transition__bar-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: var(--color-accent);
+  transition: width 0.3s ease;
+  box-shadow: 0 0 10px var(--color-accent);
+}
+
+.page-transition__bar-fill::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 20px;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--color-accent));
+  filter: blur(4px);
+}
+
+.page-transition__text {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  color: var(--color-accent);
+  opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  .page-transition__logo {
+    font-size: clamp(1.5rem, 6vw, 2.5rem);
+  }
+
+  .page-transition__bar {
+    width: 200px;
+  }
+
+  .page-transition__text {
+    font-size: 0.65rem;
+  }
+}

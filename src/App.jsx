@@ -6,6 +6,8 @@ import Skills from './components/sections/Skills'
 import Contact from './components/sections/Contact'
 import CustomCursor from './components/ui/CustomCursor'
 import ScrollToTop from './components/ui/ScrollToTop'
+import ScrollProgress from './components/ui/ScrollProgress'
+import PageTransition from './components/ui/PageTransition'
 import useTheme from './hooks/useTheme'
 
 function App() {
@@ -13,7 +15,9 @@ function App() {
 
   return (
     <>
+      <PageTransition />
       <CustomCursor />
+      <ScrollProgress />
       <Navigation />
       <main>
         <Hero />

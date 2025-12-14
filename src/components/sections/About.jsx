@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import useScrollAnimation from '../../hooks/useScrollAnimation';
 import AsciiPortrait from '../ascii/AsciiPortrait';
+import TechnicalGrid from '../backgrounds/TechnicalGrid';
 import './About.css';
 
 export default function About() {
@@ -9,6 +10,9 @@ export default function About() {
 
   return (
     <section id="about" className="about" ref={sectionRef}>
+      {/* Technical Grid Background */}
+      <TechnicalGrid opacity={0.08} gridSize={60} accentLineEvery={5} />
+
       <span className="about__bg-number" aria-hidden="true">01</span>
       <div className={`about__container ${isVisible ? 'is-visible' : ''}`}>
         <h2 className="about__title">SOBRE MÍ</h2>

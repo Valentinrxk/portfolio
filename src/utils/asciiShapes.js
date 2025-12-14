@@ -191,3 +191,77 @@ export function generateCodeStructure(width, height, time) {
 
   return output.map(row => row.join('')).join('\n');
 }
+
+/**
+ * Generate a rotating torus knot - complex mathematical shape
+ */
+export function generateTorusKnot(width, height, time) {
+  const output = [];
+  const zbuffer = [];
+
+  for (let i = 0; i < width * height; i++) {
+    output[i] = ' ';
+    zbuffer[i] = 0;
+  }
+
+  const A = time * 0.001;
+  const B = time * 0.0015;
+
+  const cosA = Math.cos(A), sinA = Math.sin(A);
+  const cosB = Math.cos(B), sinB = Math.sin(B);
+
+  const K2 = 5;
+  const K1 = width * K2 * 3 / (8 * 4);
+
+  // Torus knot parameters
+  const p = 2; // number of times it winds around
+  const q = 3; // number of times through the hole
+  const tubeRadius = 0.4;
+  const torusRadius = 1.5;
+
+  for (let u = 0; u < 2 * Math.PI; u += 0.08) {
+    for (let v = 0; v < 2 * Math.PI; v += 0.08) {
+      // Torus knot parametric equations
+      const r = torusRadius + tubeRadius * Math.cos(v);
+      const x0 = r * Math.cos(p * u);
+      const y0 = r * Math.sin(p * u);
+      const z0 = tubeRadius * Math.sin(v) + torusRadius * Math.sin(q * u);
+
+      // Rotation
+      const y1 = y0 * cosA - z0 * sinA;
+      const z1 = y0 * sinA + z0 * cosA;
+      const x2 = x0 * cosB + z1 * sinB;
+      const z2 = -x0 * sinB + z1 * cosB;
+
+      const z = K2 + z2;
+      const ooz = 1 / z;
+
+      const xp = Math.floor(width / 2 + K1 * ooz * x2);
+      const yp = Math.floor(height / 2 - K1 * ooz * y1 * 0.5);
+
+      // Normal vector for lighting
+      const nx = Math.cos(p * u) * Math.cos(v);
+      const ny = Math.sin(p * u) * Math.cos(v);
+      const nz = Math.sin(v);
+      const L = 0.6 * nx + 0.5 * ny + 0.6 * nz;
+
+      if (L > 0 && xp >= 0 && xp < width && yp >= 0 && yp < height) {
+        const idx = xp + yp * width;
+        if (ooz > zbuffer[idx]) {
+          zbuffer[idx] = ooz;
+          const luminanceIndex = Math.floor(L * 10);
+          output[idx] = ASCII_CHARS[Math.min(luminanceIndex, ASCII_CHARS.length - 1)];
+        }
+      }
+    }
+  }
+
+  let result = '';
+  for (let j = 0; j < height; j++) {
+    for (let i = 0; i < width; i++) {
+      result += output[i + j * width];
+    }
+    result += '\n';
+  }
+  return result;
+}

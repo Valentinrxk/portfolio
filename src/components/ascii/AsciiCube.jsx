@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { generateCodeRain, generateMorphingShape } from '../../utils/asciiShapes';
+import { generateCodeStructure, generateMorphingShape, generateTorusKnot } from '../../utils/asciiShapes';
 import './AsciiCube.css';
 
 export default function AsciiCube({ width = 70, height = 32 }) {
@@ -9,7 +9,7 @@ export default function AsciiCube({ width = 70, height = 32 }) {
   const animationRef = useRef(null);
   const startTimeRef = useRef(Date.now());
 
-  const shapes = ['code', 'sphere'];
+  const shapes = ['brackets', 'sphere', 'torus'];
 
   // Detect Chrome for performance optimizations
   const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
@@ -28,10 +28,12 @@ export default function AsciiCube({ width = 70, height = 32 }) {
     const currentShape = shapes[shapeIndex];
 
     let newFrame;
-    if (currentShape === 'code') {
-      newFrame = generateCodeRain(width, height, elapsed);
-    } else {
+    if (currentShape === 'brackets') {
+      newFrame = generateCodeStructure(width, height, elapsed);
+    } else if (currentShape === 'sphere') {
       newFrame = generateMorphingShape(width, height, elapsed);
+    } else if (currentShape === 'torus') {
+      newFrame = generateTorusKnot(width, height, elapsed);
     }
 
     setFrame(newFrame);

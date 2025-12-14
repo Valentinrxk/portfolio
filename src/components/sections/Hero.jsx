@@ -74,8 +74,9 @@ export default function Hero() {
         />
       </div>
       <div className="hero__content">
+        {/* Título */}
         <div
-          className="hero__text"
+          className="hero__title-wrapper"
           style={{
             transform: `translateY(${parallaxText}px)`,
             opacity
@@ -110,18 +111,31 @@ export default function Hero() {
               />
             </span>
           </h1>
-          <div className="hero__line" />
-          <p className="hero__subtitle">
-            Creando experiencias digitales donde el código se encuentra con el diseño.
-            Fullstack por necesidad, frontend por pasión.
-          </p>
         </div>
+
+        {/* ASCII Animation */}
         <div
           className="hero__ascii"
           style={{ transform: `translateY(${parallaxAscii}px)` }}
         >
           <AsciiCube width={65} height={40} />
         </div>
+
+        {/* Descripción */}
+        <div
+          className="hero__description-wrapper"
+          style={{
+            transform: `translateY(${parallaxText}px)`,
+            opacity
+          }}
+        >
+          <div className="hero__line" />
+          <p className="hero__subtitle">
+            Creando experiencias digitales donde el código se encuentra con el diseño.
+            Fullstack por necesidad, frontend por pasión.
+          </p>
+        </div>
+
         <MagneticButton
           href="#projects"
           className="hero__cta"

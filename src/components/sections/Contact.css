@@ -288,9 +288,11 @@
 }
 
 .contact__social-card-arrow {
-  font-size: 1.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
   transition: transform 0.4s var(--ease-out-expo);
   color: var(--color-inverse-text);
+  flex-shrink: 0;
 }
 
 .contact__social-card:hover .contact__social-card-arrow,
@@ -545,7 +547,8 @@
   }
 
   .contact__social-card-arrow {
-    font-size: 1.3rem;
+    width: 1.3rem;
+    height: 1.3rem;
   }
 
   .contact__social-card-label {

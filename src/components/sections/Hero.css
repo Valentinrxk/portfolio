@@ -20,24 +20,25 @@
 }
 
 .hero__content {
-  display: grid;
-  grid-template-columns: 45% 55%;
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
   padding: 0 5vw;
-  gap: 2rem;
+  gap: 3rem;
   position: relative;
   z-index: 1;
+  text-align: center;
 }
 
-.hero__cta {
-  grid-column: 1;
-  justify-self: start;
-  width: auto;
+.hero__title-wrapper {
+  width: 100%;
+  max-width: 1000px;
 }
 
-.hero__text {
-  padding-left: 2vw;
-  padding-top: 5rem;
+.hero__description-wrapper {
+  width: 100%;
+  max-width: 600px;
 }
 
 .hero__label {
@@ -99,7 +100,7 @@
   width: 0;
   height: 4px;
   background: var(--color-accent);
-  margin: 2rem 0;
+  margin: 0 auto 2rem;
   animation: drawLine 1s var(--ease-out-expo) 0.7s forwards;
 }
 
@@ -108,8 +109,8 @@
   font-size: clamp(1rem, 1.3vw, 1.25rem);
   line-height: 1.7;
   color: var(--color-text);
-  max-width: 450px;
-  margin-bottom: 2.5rem;
+  max-width: 600px;
+  margin: 0 auto;
   opacity: 0;
   animation: fadeInUp 0.8s var(--ease-out-expo) 0.9s forwards;
 }
@@ -129,6 +130,7 @@
   transition: all 0.4s var(--ease-smooth);
   opacity: 0;
   animation: fadeInUp 0.8s var(--ease-out-expo) 1.1s forwards;
+  align-self: center;
 }
 
 .hero__cta:hover {

@@ -73,7 +73,7 @@ export default function Contact() {
           </a>
 
           <a
-            href="https://github.com/plasticvalentin"
+            href="https://github.com/valentinrxk"
             className={`contact__social-card ${hoveredSocial === 'github' ? 'is-hovered' : ''}`}
             target="_blank"
             rel="noopener noreferrer"

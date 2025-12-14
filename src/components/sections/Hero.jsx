@@ -30,15 +30,15 @@ export default function Hero() {
   }, []);
 
   // Terracotta color adjusted for theme
-  // Light mode: use light base color for better visibility
-  // Dark mode: use dark base color
+  // Light mode: darker, more saturated terracotta for better visibility
+  // Dark mode: lighter terracotta
   const ditherColor = theme === 'dark'
     ? [0.78, 0.36, 0.29]  // #c75d4a - lighter terracotta for dark mode
-    : [0.61, 0.27, 0.21]; // #9c4635 - darker terracotta for light mode
+    : [0.75, 0.32, 0.24]; // #bf5240 - more saturated terracotta for light mode
 
   const baseColor = theme === 'dark'
     ? [0.0, 0.0, 0.0]     // Black base for dark mode
-    : [0.91, 0.90, 0.89]; // #E8E6E3 - light bg color for light mode
+    : [0.95, 0.94, 0.93]; // #F2F0ED - slightly lighter than bg for subtle contrast
 
   useEffect(() => {
     const handleScroll = () => {

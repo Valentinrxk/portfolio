@@ -34,7 +34,6 @@ export default function Contact() {
         </h2>
 
         <p className="contact__description">
-          ¿Tienes un proyecto en mente? Me encantaría escucharlo.
           Diseñemos algo memorable.
         </p>
 

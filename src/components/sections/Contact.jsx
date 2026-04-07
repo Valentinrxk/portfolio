@@ -41,12 +41,12 @@ export default function Contact() {
         {/* Email CTA */}
         <div className="contact__cta-wrapper">
           <MagneticButton
-            href="mailto:plasticvalentin@gmail.com"
+            href="mailto:hi@valentinromero.com"
             className="contact__email-cta"
             strength={0.4}
           >
             <span className="contact__email-icon">✉</span>
-            <span className="contact__email-text">plasticvalentin@gmail.com</span>
+            <span className="contact__email-text">hi@valentinromero.com</span>
           </MagneticButton>
         </div>
 

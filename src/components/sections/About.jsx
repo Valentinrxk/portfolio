@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react';
 import AsciiPortraitLive from '../ascii/AsciiPortraitLive';
 import { useLang } from '../../i18n';
+import { useTheme } from '../../theme';
 import './About.css';
 
 // Ventanas de scrub [entra-a, llega, empieza-a-salir, sale] por bloque
@@ -30,6 +31,7 @@ export default function About() {
   const sectionRef = useRef(null);
   const reduced = useReducedMotion();
   const { t } = useLang();
+  const { theme } = useTheme();
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -46,6 +48,7 @@ export default function About() {
             <div className="about__panel">
               <AsciiPortraitLive
                 progressValue={reduced ? null : scrollYProgress}
+                dark={theme === 'dark'}
                 className="about__portrait-canvas"
               />
             </div>

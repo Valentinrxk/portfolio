@@ -88,14 +88,14 @@
   width: clamp(190px, 18vw, 260px);
   border: 1px solid var(--color-border-strong);
   background: var(--silver-200);
-  box-shadow: 0 18px 40px rgba(35, 35, 39, 0.12);
+  box-shadow: 0 18px 40px rgba(var(--shadow-ink), 0.32);
   will-change: transform;
   transition: border-color 0.3s var(--ease-smooth), box-shadow 0.3s var(--ease-smooth);
 }
 
 .dna__card:hover {
   border-color: var(--red);
-  box-shadow: 0 24px 50px rgba(35, 35, 39, 0.18);
+  box-shadow: 0 24px 50px rgba(var(--shadow-ink), 0.42);
 }
 
 .dna__card-bar {

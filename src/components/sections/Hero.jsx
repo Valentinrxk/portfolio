@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react';
 import AsciiGif from '../ascii/AsciiGif';
 import { useLang, EMAIL } from '../../i18n';
+import { useTheme } from '../../theme';
 import './Hero.css';
 
 /**
@@ -13,6 +14,7 @@ export default function Hero({ play }) {
   const sectionRef = useRef(null);
   const reduced = useReducedMotion();
   const { t } = useLang();
+  const { theme } = useTheme();
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -31,7 +33,11 @@ export default function Hero({ play }) {
     <section id="hero" ref={sectionRef} className={`hero ${play ? 'is-playing' : ''}`}>
       <div className="hero__frame">
         <div className="hero__portrait">
-          <AsciiGif progressValue={reduced ? null : tear} className="hero__canvas" />
+          <AsciiGif
+            progressValue={reduced ? null : tear}
+            ink={theme === 'dark' ? 'rgba(226, 227, 231, 0.8)' : 'rgba(35, 35, 39, 0.78)'}
+            className="hero__canvas"
+          />
         </div>
 
         <motion.div className="hero__type" style={typeStyle}>

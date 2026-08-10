@@ -11,8 +11,9 @@
   padding: 0.4rem 0.5rem;
   font-size: 1.35rem;
   font-weight: 700;
-  color: var(--silver-100);
+  color: #e6e7eb; /* literal: el blend difference necesita tinta clara en ambos temas */
   mix-blend-mode: difference;
+  filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.35));
   opacity: 0;
   transform: translateY(14px);
   pointer-events: none;

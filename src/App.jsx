@@ -11,6 +11,7 @@ import Skills from './components/sections/Skills'
 import Contact from './components/sections/Contact'
 import useSmoothScroll from './hooks/useSmoothScroll'
 import { LangProvider } from './i18n'
+import { ThemeProvider } from './theme'
 
 // El splash abre cada carga (es corto y se saltea con un clic);
 // solo se omite con reduced-motion
@@ -23,6 +24,7 @@ function App() {
   useSmoothScroll()
 
   return (
+    <ThemeProvider>
     <LangProvider>
       {!introDone && <Intro onDone={() => setIntroDone(true)} />}
       <CustomCursor />
@@ -45,6 +47,7 @@ function App() {
         <span className="film-layer__corner film-layer__corner--br" />
       </div>
     </LangProvider>
+    </ThemeProvider>
   )
 }
 

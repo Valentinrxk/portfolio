@@ -31,7 +31,7 @@
   color: var(--graphite);
   opacity: 0;
   animation: glitch-in 0.5s steps(5, end) 0.45s forwards;
-  filter: drop-shadow(0 0 22px rgba(207, 208, 214, 0.95));
+  filter: drop-shadow(0 0 22px var(--intro-glow));
 }
 
 .intro__monkey {
@@ -56,6 +56,6 @@
   color: var(--steel-700);
   opacity: 0;
   animation: fade-in 0.5s var(--ease-smooth) 1.2s forwards;
-  text-shadow: 0 0 14px rgba(207, 208, 214, 0.9);
+  text-shadow: 0 0 14px var(--intro-glow);
 }
 

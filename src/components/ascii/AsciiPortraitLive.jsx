@@ -24,7 +24,7 @@ const hash = (a, b, c) => {
  * scrub), respira con una onda por fila y el puntero lo afirma y enciende
  * celdas en rojo.
  */
-export default function AsciiPortraitLive({ progressValue = null, className = '' }) {
+export default function AsciiPortraitLive({ progressValue = null, dark = false, className = '' }) {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -124,7 +124,7 @@ export default function AsciiPortraitLive({ progressValue = null, className = ''
           ctx.fillText(line, x - 3, y);
         }
 
-        ctx.fillStyle = banded ? 'rgba(35, 35, 39, 0.9)' : 'rgba(53, 53, 60, 0.66)';
+        ctx.fillStyle = banded ? (dark ? 'rgba(230, 231, 235, 0.92)' : 'rgba(35, 35, 39, 0.9)') : (dark ? 'rgba(206, 207, 213, 0.62)' : 'rgba(53, 53, 60, 0.66)');
         ctx.fillText(line, x, y);
 
         // Lente del puntero: las celdas cercanas se afirman y algunas queman
@@ -138,7 +138,7 @@ export default function AsciiPortraitLive({ progressValue = null, className = ''
               const w = WEIGHT[line[c]] ?? 0.5;
               if (w > 0.05) {
                 const hot = w > 0.75 && d < 48;
-                ctx.fillStyle = hot ? '#e10600' : `rgba(35, 35, 39, ${0.7 + (1 - d / 100) * 0.3})`;
+                ctx.fillStyle = hot ? '#e10600' : (dark ? `rgba(230, 231, 235, ${0.7 + (1 - d / 100) * 0.3})` : `rgba(35, 35, 39, ${0.7 + (1 - d / 100) * 0.3})`);
                 ctx.fillText(line[c], cx, y);
               }
             }
@@ -194,7 +194,7 @@ export default function AsciiPortraitLive({ progressValue = null, className = ''
       host.removeEventListener('pointermove', onPointer);
       host.removeEventListener('pointerleave', onLeave);
     };
-  }, [progressValue]);
+  }, [progressValue, dark]);
 
   return <canvas ref={canvasRef} className={className} aria-hidden="true" />;
 }

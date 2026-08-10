@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useReducedMotion, useVelocity, useSpring } from 'motion/react';
 import AsciiVariation from '../ascii/AsciiVariation';
 import { useLang } from '../../i18n';
+import { useTheme } from '../../theme';
 import './Skills.css';
 
 const MODES = ['wave', 'noise', 'flow'];
@@ -23,7 +24,7 @@ function SeedTag() {
   return <span className="dna__card-seed tnum">{seed}</span>;
 }
 
-function Card({ progress, drift, rotate, skew, title, mode, reduced }) {
+function Card({ progress, drift, rotate, skew, title, mode, reduced, dark }) {
   const y = useTransform(progress, [0, 1], drift);
 
   return (
@@ -37,7 +38,7 @@ function Card({ progress, drift, rotate, skew, title, mode, reduced }) {
         <SeedTag />
       </header>
       <div className="dna__card-canvas">
-        <AsciiVariation mode={mode} className="dna__card-field" />
+        <AsciiVariation mode={mode} dark={dark} className="dna__card-field" />
       </div>
     </motion.article>
   );
@@ -51,6 +52,7 @@ export default function Skills() {
   const sectionRef = useRef(null);
   const reduced = useReducedMotion();
   const { t } = useLang();
+  const { theme } = useTheme();
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -119,6 +121,7 @@ export default function Skills() {
                 title={t.skills.cards[mode]}
                 mode={mode}
                 reduced={reduced}
+                dark={theme === 'dark'}
               />
             </div>
           );

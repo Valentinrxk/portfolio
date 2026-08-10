@@ -80,7 +80,7 @@
   display: block;
   aspect-ratio: 16 / 9.5;
   max-height: 52vh;
-  border: 1px solid rgba(230, 231, 235, 0.22);
+  border: 1px solid color-mix(in srgb, var(--silver-100) 26%, transparent);
   background: var(--steel-800);
   overflow: hidden;
   transition: border-color 0.35s var(--ease-smooth);
@@ -120,7 +120,7 @@
   z-index: 2;
   padding: 0.55rem 0.9rem;
   background: var(--red);
-  color: var(--silver-100);
+  color: #e6e7eb; /* sobre rojo siempre claro, en ambos temas */
   transform: translateY(101%);
   transition: transform 0.35s var(--ease-out-expo);
 }

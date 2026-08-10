@@ -22,7 +22,7 @@ const MODES = {
  * visita y el patrón evoluciona sin ciclo: nunca lo mismo dos veces,
  * literalmente.
  */
-export default function AsciiVariation({ mode = 'wave', className = '' }) {
+export default function AsciiVariation({ mode = 'wave', dark = false, className = '' }) {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -65,7 +65,7 @@ export default function AsciiVariation({ mode = 'wave', className = '' }) {
       ctx.clearRect(0, 0, W, H);
       const shake = Math.min(1, Math.abs(getScrollVelocity()) / 70);
       const accents = [];
-      ctx.fillStyle = 'rgba(53, 53, 60, 0.55)';
+      ctx.fillStyle = dark ? 'rgba(206, 207, 213, 0.55)' : 'rgba(53, 53, 60, 0.55)';
 
       for (let r = 0; r < rows; r++) {
         let line = '';
@@ -121,7 +121,7 @@ export default function AsciiVariation({ mode = 'wave', className = '' }) {
       io.disconnect();
       window.removeEventListener('resize', resize);
     };
-  }, [mode]);
+  }, [mode, dark]);
 
   return <canvas ref={canvasRef} className={className} aria-hidden="true" />;
 }

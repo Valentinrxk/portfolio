@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useSpring } from 'motion/react';
 import { smoothScrollTo } from '../../hooks/useSmoothScroll';
 import { useLang, EMAIL } from '../../i18n';
+import { useTheme } from '../../theme';
 import MonkeyMark from '../ui/MonkeyMark';
 import './Hud.css';
 
@@ -12,13 +13,14 @@ const SECTION_IDS = ['hero', 'about', 'projects', 'skills', 'contact'];
 const LANDING_FRACTION = { about: 0.16, contact: 0.55 };
 
 /** Medidor de señal: barras que reaccionan a la velocidad del scroll. */
-function SignalMeter() {
+function SignalMeter({ dark }) {
   const canvasRef = useRef(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const barInk = dark ? 'rgba(226, 227, 231, 0.5)' : 'rgba(35, 35, 39, 0.5)';
     const W = 96;
     const H = 16;
     const BARS = 20;
@@ -40,7 +42,7 @@ function SignalMeter() {
       ctx.clearRect(0, 0, W, H);
       vals.forEach((v, i) => {
         const h = Math.max(2, v * H);
-        ctx.fillStyle = v > 0.55 ? '#e10600' : 'rgba(35, 35, 39, 0.5)';
+        ctx.fillStyle = v > 0.55 ? '#e10600' : barInk;
         ctx.fillRect(i * (W / BARS), H - h, W / BARS - 1.5, h);
       });
     };
@@ -70,7 +72,7 @@ function SignalMeter() {
       cancelAnimationFrame(raf);
       window.removeEventListener('resize', setup);
     };
-  }, []);
+  }, [dark]);
 
   return <canvas ref={canvasRef} className="hud__meter" aria-hidden="true" />;
 }
@@ -82,6 +84,7 @@ function SignalMeter() {
 export default function Hud({ live }) {
   const [active, setActive] = useState(0);
   const { lang, setLang, t } = useLang();
+  const { theme, setTheme } = useTheme();
 
   const { scrollYProgress } = useScroll();
   const playhead = useSpring(scrollYProgress, { stiffness: 140, damping: 28, mass: 0.4 });
@@ -153,6 +156,26 @@ export default function Hud({ live }) {
             </button>
           </div>
 
+          <div className="hud__lang caps" role="group" aria-label="tema / theme">
+            <button
+              type="button"
+              className={`hud__lang-opt ${theme === 'light' ? 'is-active' : ''}`}
+              onClick={() => setTheme('light')}
+              aria-pressed={theme === 'light'}
+            >
+              {t.theme.light}
+            </button>
+            <span className="hud__lang-slash" aria-hidden="true">/</span>
+            <button
+              type="button"
+              className={`hud__lang-opt ${theme === 'dark' ? 'is-active' : ''}`}
+              onClick={() => setTheme('dark')}
+              aria-pressed={theme === 'dark'}
+            >
+              {t.theme.dark}
+            </button>
+          </div>
+
           <a
             className="hud__mail"
             href={`mailto:${EMAIL}`}
@@ -161,7 +184,7 @@ export default function Hud({ live }) {
             <span className="hud__mail-bracket">[</span><span className="hud__mail-at">@</span><span className="hud__mail-bracket">]</span>
           </a>
 
-          <SignalMeter />
+          <SignalMeter dark={theme === 'dark'} />
         </div>
       </header>
 

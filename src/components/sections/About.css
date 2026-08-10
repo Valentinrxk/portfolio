@@ -48,7 +48,7 @@
   max-width: 100%;
   padding: 0.6rem;
   border: 1px solid var(--color-border);
-  background: rgba(35, 35, 39, 0.04);
+  background: color-mix(in srgb, var(--graphite) 4%, transparent);
   transition: border-color 0.35s var(--ease-smooth);
 }
 

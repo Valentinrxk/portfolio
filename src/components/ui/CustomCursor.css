@@ -25,7 +25,7 @@
   width: 7px;
   height: 7px;
   background: var(--red);
-  box-shadow: 0 0 0 1.5px rgba(230, 231, 235, 0.9);
+  box-shadow: 0 0 0 1.5px var(--cursor-halo);
   transform: translate(-50%, -50%);
   transition: width 0.2s var(--ease-out-expo), height 0.2s var(--ease-out-expo);
 }
@@ -39,7 +39,7 @@
 .vf-cursor__line {
   position: absolute;
   background: var(--graphite);
-  box-shadow: 0 0 0 1px rgba(230, 231, 235, 0.85);
+  box-shadow: 0 0 0 1px var(--cursor-halo);
   transition: width 0.25s var(--ease-out-expo), height 0.25s var(--ease-out-expo);
 }
 

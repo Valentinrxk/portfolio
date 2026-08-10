@@ -3,6 +3,7 @@ import { useMotionValue, animate } from 'motion/react';
 import AsciiField from '../ascii/AsciiField';
 import MonkeyMark from '../ui/MonkeyMark';
 import { useLang } from '../../i18n';
+import { useTheme } from '../../theme';
 import './Intro.css';
 
 const DURATION_MS = 2350;
@@ -25,6 +26,7 @@ export default function Intro({ onDone }) {
   const turbulence = useMotionValue(1);
   const doneRef = useRef(false);
   const { t } = useLang();
+  const { theme } = useTheme();
   const [face, setFace] = useState(EXPRESSIONS[0]);
 
   useEffect(() => {
@@ -56,7 +58,7 @@ export default function Intro({ onDone }) {
     <div className="intro" role="presentation" aria-hidden="true">
       <div className="intro__field">
         <AsciiField
-          ink="rgba(35, 35, 39, 0.5)"
+          ink={theme === 'dark' ? 'rgba(226, 227, 231, 0.5)' : 'rgba(35, 35, 39, 0.5)'}
           accent="#e10600"
           accent2="#6d0f16"
           cell={13}

@@ -11,7 +11,7 @@ const { fps, rows: ROWS } = data;
  * chispas rojas sobre el trazo denso y el scroll desarma la señal
  * fila por fila.
  */
-export default function AsciiGif({ progressValue = null, className = '' }) {
+export default function AsciiGif({ progressValue = null, ink = 'rgba(35, 35, 39, 0.78)', className = '' }) {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -100,7 +100,7 @@ export default function AsciiGif({ progressValue = null, className = '' }) {
           ctx.fillText(line, x - k * 9, y);
         }
 
-        ctx.fillStyle = 'rgba(35, 35, 39, 0.78)';
+        ctx.fillStyle = ink;
         ctx.fillText(line, x, y);
 
         // Chispas rojas solo sobre el trazo denso, distintas por frame
@@ -109,7 +109,7 @@ export default function AsciiGif({ progressValue = null, className = '' }) {
           if ((ch === '@' || ch === '%') && (r * 31 + c * 17 + frame * 7) % 29 === 0) {
             ctx.fillStyle = '#e10600';
             ctx.fillText(ch, x + c * cw, y);
-            ctx.fillStyle = 'rgba(35, 35, 39, 0.78)';
+            ctx.fillStyle = ink;
           }
         }
       }
@@ -157,7 +157,7 @@ export default function AsciiGif({ progressValue = null, className = '' }) {
       io.disconnect();
       window.removeEventListener('resize', resize);
     };
-  }, [progressValue]);
+  }, [progressValue, ink]);
 
   return <canvas ref={canvasRef} className={className} aria-hidden="true" />;
 }

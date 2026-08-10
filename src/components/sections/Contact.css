@@ -10,7 +10,7 @@
   height: 100svh;
   overflow: hidden;
   background: var(--bordo-deep);
-  color: var(--silver-200);
+  color: #dadbe0;
 }
 
 .contact__field {
@@ -62,7 +62,7 @@
   font-size: clamp(1.05rem, 2vw, 1.5rem);
   font-weight: 600;
   letter-spacing: -0.01em;
-  color: var(--silver-500);
+  color: #a6a7af;
 }
 
 /* El mail ES el titular: único llamado que importa */
@@ -72,7 +72,7 @@
   font-weight: 700;
   letter-spacing: -0.035em;
   line-height: 1;
-  color: var(--silver-100);
+  color: #e6e7eb;
   white-space: nowrap;
   transition: color 0.3s var(--ease-smooth);
 }
@@ -109,7 +109,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
-  color: var(--silver-200);
+  color: #dadbe0;
 }
 
 .contact__status i {
@@ -124,7 +124,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  color: var(--silver-500);
+  color: #a6a7af;
   transition: color 0.25s var(--ease-smooth);
 }
 
@@ -146,19 +146,20 @@
 .contact__footer {
   position: absolute;
   left: var(--frame-x);
-  right: var(--frame-x);
+  /* deja el carril del [↑] libre a la derecha */
+  right: calc(var(--frame-x) + 3.4rem);
   bottom: calc(var(--hud-h) + 1.25rem);
   z-index: 2;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  color: var(--silver-500);
+  color: #a6a7af;
 }
 
 .contact__mark {
   display: inline-flex;
-  color: var(--silver-200);
+  color: #dadbe0;
 }
 
 @media (max-width: 640px) {

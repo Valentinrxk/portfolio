@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react';
 import AsciiPlayer from '../ascii/AsciiPlayer';
 import { useLang, EMAIL } from '../../i18n';
+import { useTheme } from '../../theme';
 import './Projects.css';
 
 // Recorridos grabados de cada obra, pre-renderizados a ASCII.
@@ -12,7 +13,7 @@ const WORK_FRAMES = {
   taxes: () => import('../../assets/works/taxes-frames.json'),
 };
 
-function WorkAscii({ workKey }) {
+function WorkAscii({ workKey, dark }) {
   const [data, setData] = useState(null);
 
   useEffect(() => {
@@ -29,7 +30,7 @@ function WorkAscii({ workKey }) {
   return (
     <AsciiPlayer
       data={data}
-      ink="rgba(230, 231, 235, 0.8)"
+      ink={dark ? 'rgba(35, 35, 39, 0.82)' : 'rgba(230, 231, 235, 0.8)'}
       accent="#e10600"
       className="frame__ascii"
     />
@@ -74,6 +75,7 @@ export default function Projects() {
   const [maxShift, setMaxShift] = useState(0);
   const reduced = useReducedMotion();
   const { t } = useLang();
+  const { theme } = useTheme();
 
   useEffect(() => {
     const track = trackRef.current;
@@ -146,7 +148,7 @@ export default function Projects() {
                 aria-label={project.title}
                 onFocus={bringIntoView}
               >
-                <WorkAscii workKey={project.key} />
+                <WorkAscii workKey={project.key} dark={theme === 'dark'} />
                 <img
                   className="frame__real"
                   src={project.image}

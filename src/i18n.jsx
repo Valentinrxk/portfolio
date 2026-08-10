@@ -5,6 +5,7 @@ export const EMAIL = 'hi@valentinromero.com';
 const DICT = {
   es: {
     nav: { hero: 'inicio', about: 'perfil', projects: 'obras', skills: 'adn', contact: 'contacto' },
+    theme: { light: 'día', dark: 'noche' },
     intro: { sign: 'valentín romero — portfolio' },
     hero: {
       kicker: 'valentín romero — buenos aires',
@@ -40,6 +41,7 @@ const DICT = {
   },
   en: {
     nav: { hero: 'home', about: 'profile', projects: 'works', skills: 'dna', contact: 'contact' },
+    theme: { light: 'day', dark: 'night' },
     intro: { sign: 'valentín romero — portfolio' },
     hero: {
       kicker: 'valentín romero — buenos aires',

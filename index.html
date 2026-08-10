@@ -13,6 +13,16 @@
     <meta property="og:type" content="website" />
   </head>
   <body>
+    <script>
+      // aplicar el tema guardado antes del primer paint (sin flash)
+      try {
+        if (localStorage.getItem('vr.theme') === 'dark') {
+          document.documentElement.dataset.theme = 'dark';
+          document.documentElement.style.background = '#232328';
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#232328');
+        }
+      } catch (e) { /* modo privado */ }
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

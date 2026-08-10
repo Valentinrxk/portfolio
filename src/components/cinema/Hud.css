@@ -6,7 +6,7 @@
   z-index: var(--z-hud);
   display: flex;
   align-items: center;
-  background: rgba(230, 231, 235, 0.92);
+  background: var(--hud-bg);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   padding: 0 clamp(1rem, 2.5vw, 2rem);
@@ -65,7 +65,7 @@
 
 .hud__lang-opt {
   padding: 0.4rem 0.1rem;
-  color: var(--steel-600);
+  color: var(--steel-700);
   transition: color 0.25s var(--ease-smooth);
 }
 
@@ -135,7 +135,7 @@
 .hud__link {
   position: relative;
   padding: 0.5rem 0;
-  color: var(--steel-600);
+  color: var(--steel-700);
   white-space: nowrap;
   transition: color 0.25s var(--ease-smooth);
 }
@@ -169,7 +169,7 @@
   position: relative;
   flex: 0 1 260px;
   height: 3px;
-  background: rgba(35, 35, 39, 0.16);
+  background: var(--color-border);
   overflow: hidden;
 }
 
@@ -182,9 +182,27 @@
 
 /* ——— Responsive ——— */
 @media (max-width: 640px) {
+  .hud--top,
+  .hud--bottom {
+    gap: 0.8rem;
+  }
+
+  .hud__right {
+    gap: 0.8rem;
+  }
+
+  .hud__mail {
+    white-space: nowrap;
+  }
+
+  .hud__nav {
+    gap: 0.8rem;
+  }
+
   /* área táctil de al menos ~44px sin cambiar la estética */
   .hud__link {
-    padding: 0.85rem 0.35rem;
+    padding: 0.85rem 0.3rem;
+    letter-spacing: 0.08em;
   }
 
   .hud__lang-opt {
@@ -192,6 +210,6 @@
   }
 
   .hud__timeline {
-    flex: 1 1 60px;
+    flex: 0 0 44px;
   }
 }

@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import './ClickBurst.css';
 
 const CHARS = '@%#*+=<>/[]:';
-const COLORS = ['#232327', '#e10600', '#6d0f16', '#75767f'];
 
 /**
  * Cada click detona una ráfaga de caracteres ASCII desde el puntero.
@@ -13,6 +12,10 @@ export default function ClickBurst() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
 
     const spawn = (x, y) => {
+      const css = getComputedStyle(document.documentElement);
+      const ink = css.getPropertyValue('--graphite').trim() || '#232327';
+      const steel = css.getPropertyValue('--steel-600').trim() || '#75767f';
+      const COLORS = [ink, '#e10600', '#6d0f16', steel];
       const count = 10 + ((Math.random() * 5) | 0);
       const root = document.createElement('div');
       root.className = 'click-burst';

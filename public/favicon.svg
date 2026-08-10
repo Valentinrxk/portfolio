@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 92 92">
+  <style>@media (prefers-color-scheme: dark) { g { fill: #e2e3e7; } }</style>
   <!-- el monito en ASCII real: V nariz y oreja derecha de R, en rojo -->
   <g font-family="Consolas, 'Courier New', monospace" font-size="10" font-weight="700" fill="#232327" xml:space="preserve">
     <text x="1" y="18" xml:space="preserve">   .==#%#==.</text>

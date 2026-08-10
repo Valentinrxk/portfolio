@@ -45,7 +45,7 @@ main {
   background: radial-gradient(
     ellipse 120% 90% at 50% 50%,
     transparent 68%,
-    rgba(35, 35, 39, 0.16) 100%
+    var(--vignette-ink) 100%
   );
 }
 
@@ -62,10 +62,16 @@ main {
 .film-layer__corner--bl { bottom: calc(var(--hud-h) + 10px); left: 12px; border-right: 0; border-top: 0; }
 .film-layer__corner--br { bottom: calc(var(--hud-h) + 10px); right: 12px; border-left: 0; border-top: 0; }
 
+/* En modo noche el grano negro desaparece: se invierte a blanco */
+[data-theme='dark'] .film-layer__grain {
+  filter: invert(1);
+  opacity: 0.09;
+}
+
 /* ——— Selección y foco ——— */
 ::selection {
   background-color: var(--red);
-  color: var(--silver-100);
+  color: #e6e7eb; /* sobre rojo siempre claro, en ambos temas */
 }
 
 :focus-visible {

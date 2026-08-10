@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { getScrollVelocity } from '../../hooks/useSmoothScroll';
 import portraitRaw from '../../assets/ascii-portrait.txt?raw';
 
 const LINES = portraitRaw.replace(/\r/g, '').split('\n').filter((l) => l.length > 0);
@@ -77,8 +78,13 @@ export default function AsciiPortraitLive({ progressValue = null, className = ''
       ctx.clearRect(0, 0, W, H);
       const p = progressValue ? Math.max(0, Math.min(1, progressValue.get())) : 1;
 
-      // Materialización: al entrar a la escena la señal se sintoniza
-      const turb = reduced ? 0 : Math.max(0, 1 - p / 0.12);
+      // Materialización al entrar + degradación por velocidad de scroll:
+      // moverse es ruido, frenar es señal
+      const vel = reduced ? 0 : getScrollVelocity();
+      const k = Math.max(-1, Math.min(1, vel / 60));
+      const turb = reduced
+        ? 0
+        : Math.max(Math.max(0, 1 - p / 0.12), Math.min(0.55, Math.abs(vel) / 90));
 
       // Glitch: fuerte cuando el scrub cruza un cambio de toma,
       // más un espasmo breve cada ~5.3s para que nunca esté muerto
@@ -96,6 +102,7 @@ export default function AsciiPortraitLive({ progressValue = null, className = ''
         const y = y0 + r * cellH;
 
         let x = x0 + (reduced ? 0 : Math.sin(r * 0.13 + t * 1.5) * 3);
+        x += k * (8 + 22 * hash(r, 7, 0));
 
         const banded = glitch > 0.05 && (Math.abs(r - bandA) < 3 || Math.abs(r - bandB) < 2);
         if (banded) {
@@ -143,7 +150,9 @@ export default function AsciiPortraitLive({ progressValue = null, className = ''
     const draw = (now) => {
       if (!running) return;
       raf = requestAnimationFrame(draw);
-      if (!visible || now - last < frameTime) return;
+      if (!visible) return;
+      // Con scroll activo renderiza a 60fps; en reposo, a 30
+      if (now - last < frameTime && Math.abs(getScrollVelocity()) < 0.4) return;
       last = now;
       renderFrame(now * 0.001);
     };

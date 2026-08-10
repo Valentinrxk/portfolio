@@ -1,78 +1,128 @@
-import { motion, useReducedMotion } from 'motion/react';
+import { useEffect, useRef, useState } from 'react';
+import { motion, useScroll, useTransform, useReducedMotion, useVelocity, useSpring } from 'motion/react';
+import AsciiVariation from '../ascii/AsciiVariation';
 import { useLang } from '../../i18n';
 import './Skills.css';
 
-const GROUPS = [
-  { key: 'js', skills: ['react', 'vue', 'next.js', 'astro'] },
-  { key: 'backend', skills: ['python', 'php', 'node.js'] },
-  { key: 'design', skills: ['ui/ux', 'figma'] },
-];
+const MODES = ['wave', 'noise', 'flow'];
 
-const MARQUEE = '/ = + * # % @ # * + = ';
+const HEX = '0123456789abcdef';
+const randomSeed = () =>
+  Array.from({ length: 4 }, () => HEX[(Math.random() * 16) | 0]).join('');
 
-const rowVariants = {
-  hidden: { opacity: 0, y: 42, clipPath: 'inset(0 0 100% 0)' },
-  shown: (i) => ({
-    opacity: 1,
-    y: 0,
-    clipPath: 'inset(0 0 0% 0)',
-    transition: { duration: 0.7, ease: [0.19, 1, 0.22, 1], delay: i * 0.06 },
-  }),
-};
+/** Id de variación que muta: nunca vas a ver el mismo dos veces. */
+function SeedTag() {
+  const [seed, setSeed] = useState(randomSeed);
 
-function AsciiMarquee() {
-  const text = MARQUEE.repeat(24);
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+    const timer = setInterval(() => setSeed(randomSeed()), 900);
+    return () => clearInterval(timer);
+  }, []);
+
+  return <span className="dna__card-seed tnum">{seed}</span>;
+}
+
+function Card({ progress, drift, rotate, skew, title, mode, reduced }) {
+  const y = useTransform(progress, [0, 1], drift);
+
   return (
-    <div className="skills__marquee" aria-hidden="true">
-      <span>{text}</span>
-      <span>{text}</span>
-    </div>
+    <motion.article
+      className="dna__card"
+      style={reduced ? undefined : { y, rotate, skewY: skew }}
+    >
+      <header className="dna__card-bar">
+        <span className="dna__card-dots" aria-hidden="true"><i /><i /><i /></span>
+        <span className="dna__card-title caps">{title}</span>
+        <SeedTag />
+      </header>
+      <div className="dna__card-canvas">
+        <AsciiVariation mode={mode} className="dna__card-field" />
+      </div>
+    </motion.article>
   );
 }
 
 /**
- * Arsenal: placas tipográficas separadas por marquesinas ASCII.
- * Sin iconos, sin barras de nivel, sin numeración.
+ * adn — la declaración en zigzag acompañada por tres piezas generativas
+ * que la encarnan: onda, ruido y flujo mutando sin repetirse jamás.
  */
 export default function Skills() {
+  const sectionRef = useRef(null);
   const reduced = useReducedMotion();
   const { t } = useLang();
-  let rowIndex = 0;
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  });
+
+  const wordDrifts = [
+    useTransform(scrollYProgress, [0, 1], [30, -30]),
+    useTransform(scrollYProgress, [0, 1], [-20, 20]),
+    useTransform(scrollYProgress, [0, 1], [40, -40]),
+  ];
+
+  // El envión del scroll inclina las tarjetas; el spring las endereza
+  const progressVelocity = useVelocity(scrollYProgress);
+  const skewRaw = useTransform(progressVelocity, [-1.5, 1.5], [6, -6]);
+  const skew = useSpring(skewRaw, { stiffness: 280, damping: 34 });
+
+  const cardDrifts = [
+    [70, -90],
+    [-50, 90],
+    [50, -110],
+  ];
+
+  const rotations = [-2.5, 2, -1.5];
 
   return (
-    <section id="skills" className="skills">
-      <header className="skills__header">
-        <span className="section-slash" aria-hidden="true">///</span>
-        <h2 className="skills__title">{t.skills.title}</h2>
-      </header>
+    <section id="skills" ref={sectionRef} className="dna">
+      <span className="section-slash dna__slash" aria-hidden="true">///</span>
 
-      <div className="skills__list">
-        {GROUPS.map((group) => (
-          <div key={group.key} className="skills__group">
-            <AsciiMarquee />
-            <h3 className="skills__category caps">{t.skills.groups[group.key]}</h3>
-            <ul>
-              {group.skills.map((skill) => {
-                const i = rowIndex++;
-                return (
-                  <motion.li
-                    key={skill}
-                    className="skills__row"
-                    custom={i % 4}
-                    initial={reduced ? false : 'hidden'}
-                    whileInView="shown"
-                    viewport={{ once: true, margin: '-12% 0px' }}
-                    variants={reduced ? undefined : rowVariants}
+      <div className="dna__grid">
+        {t.skills.lines.map((line, i) => {
+          const mode = MODES[i];
+          return (
+            <div key={i} className={`dna__row dna__row--${i + 1}`}>
+              <motion.h2
+                className={`dna__word dna__word--${i + 1}`}
+                style={reduced ? undefined : { y: wordDrifts[i] }}
+                initial={reduced ? false : 'hidden'}
+                whileInView="shown"
+                viewport={{ once: true, margin: '-12% 0px' }}
+              >
+                <span className="dna__mask">
+                  {/* el lift vive recortado por la máscara: el observer va
+                      en el h2 (nunca recortado) y el hijo hereda el estado */}
+                  <motion.span
+                    className="dna__lift"
+                    variants={reduced ? undefined : {
+                      hidden: { y: '112%' },
+                      shown: {
+                        y: '0%',
+                        transition: { duration: 0.85, ease: [0.19, 1, 0.22, 1], delay: i * 0.14 },
+                      },
+                    }}
                   >
-                    <span className="skills__bullet" aria-hidden="true">/</span>
-                    <span className="skills__name">{skill}</span>
-                  </motion.li>
-                );
-              })}
-            </ul>
-          </div>
-        ))}
-        <AsciiMarquee />
+                    <span className="dna__word-inner" style={{ '--gd': `${2.8 + i * 1.7}s` }}>
+                      {line}
+                    </span>
+                  </motion.span>
+                </span>
+              </motion.h2>
+              <Card
+                progress={scrollYProgress}
+                drift={cardDrifts[i]}
+                rotate={rotations[i]}
+                skew={skew}
+                title={t.skills.cards[mode]}
+                mode={mode}
+                reduced={reduced}
+              />
+            </div>
+          );
+        })}
       </div>
     </section>
   );

@@ -1,5 +1,5 @@
 .projects {
-  height: 400vh;
+  height: 560vh;
   position: relative;
 }
 
@@ -148,6 +148,59 @@
   color: var(--silver-500);
   line-height: 1.6;
   font-size: 0.95rem;
+}
+
+/* ——— Cierre: la próxima obra ——— */
+.projects__cta {
+  flex: 0 0 auto;
+  width: min(44rem, 78vw);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.4rem;
+  padding-right: 8vw;
+}
+
+.projects__cta-line {
+  font-size: clamp(2.6rem, 7vw, 6.5rem);
+  font-weight: 700;
+  letter-spacing: var(--track-display);
+  line-height: 0.95;
+  color: var(--silver-100);
+}
+
+.projects__cta-mail {
+  position: relative;
+  font-size: clamp(1.1rem, 2.2vw, 1.7rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--silver-500);
+  transition: color 0.25s var(--ease-smooth);
+}
+
+.projects__cta-mail span {
+  color: var(--red);
+}
+
+.projects__cta-mail::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 2px;
+  background: var(--red);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.4s var(--ease-out-expo);
+}
+
+.projects__cta-mail:hover {
+  color: var(--silver-100);
+}
+
+.projects__cta-mail:hover::after {
+  transform: scaleX(1);
 }
 
 /* ——— Responsive ——— */

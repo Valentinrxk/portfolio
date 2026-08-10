@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { getScrollVelocity } from '../../hooks/useSmoothScroll';
 import data from '../../assets/monito-frames.json';
 
 const FRAMES = data.frames.map((f) => f.split('\n'));
@@ -42,15 +43,32 @@ export default function AsciiGif({ progressValue = null, className = '' }) {
       canvas.style.height = `${H}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      cellH = (H * 0.92) / ROWS;
-      ctx.font = `${cellH * 1.05}px ${getComputedStyle(document.documentElement).getPropertyValue('--font-mono') || 'monospace'}`;
-      ctx.textBaseline = 'top';
+      const setFont = (size) => {
+        ctx.font = `${size * 1.05}px ${getComputedStyle(document.documentElement).getPropertyValue('--font-mono') || 'monospace'}`;
+        ctx.textBaseline = 'top';
+      };
+
+      const mobile = W < 760;
+      cellH = (H * (mobile ? 0.6 : 0.92)) / ROWS;
+      setFont(cellH);
       cw = ctx.measureText('M').width;
 
+      // En pantallas angostas manda el ancho: el mono entra entero
+      if (data.cols * cw > W * 0.96) {
+        cellH *= (W * 0.96) / (data.cols * cw);
+        setFont(cellH);
+        cw = ctx.measureText('M').width;
+      }
+
       const totalW = data.cols * cw;
-      const mobile = W < 760;
-      x0 = mobile ? (W - totalW) / 2 : Math.max(W * 0.38, W - totalW - W * 0.05);
-      y0 = (H - ROWS * cellH) / 2;
+      if (mobile) {
+        // Arriba, dejándole la franja de abajo al texto
+        x0 = (W - totalW) / 2;
+        y0 = H * 0.08;
+      } else {
+        x0 = Math.max(W * 0.38, W - totalW - W * 0.05);
+        y0 = (H - ROWS * cellH) / 2;
+      }
     };
 
     const rowSeed = (r) => {
@@ -61,6 +79,8 @@ export default function AsciiGif({ progressValue = null, className = '' }) {
     const renderFrame = () => {
       ctx.clearRect(0, 0, W, H);
       const p = progressValue ? Math.max(0, Math.min(1, progressValue.get())) : 0;
+      // La señal se arrastra con la velocidad del scroll
+      const k = Math.max(-1, Math.min(1, getScrollVelocity() / 60));
       const lines = FRAMES[frame];
 
       for (let r = 0; r < lines.length; r++) {
@@ -72,6 +92,12 @@ export default function AsciiGif({ progressValue = null, className = '' }) {
         if (p > 0.01) {
           const dir = r % 2 === 0 ? 1 : -1;
           x += dir * p * (0.25 + rowSeed(r)) * W * 1.1;
+        }
+        x += k * (14 + 34 * rowSeed(r));
+
+        if (Math.abs(k) > 0.3) {
+          ctx.fillStyle = `rgba(225, 6, 0, ${Math.abs(k) * 0.5})`;
+          ctx.fillText(line, x - k * 9, y);
         }
 
         ctx.fillStyle = 'rgba(35, 35, 39, 0.78)';
@@ -89,13 +115,25 @@ export default function AsciiGif({ progressValue = null, className = '' }) {
       }
     };
 
+    let lastP = -1;
     const draw = (now) => {
       if (!running) return;
       raf = requestAnimationFrame(draw);
-      if (!visible || now - last < frameTime) return;
-      last = now;
-      frame = (frame + 1) % FRAMES.length;
-      renderFrame();
+      if (!visible) return;
+
+      // El gif avanza a su fps, pero mientras hay scroll (desarme o
+      // smear cambiando) se re-renderiza a 60fps para que sea fluido
+      const p = progressValue ? progressValue.get() : 0;
+      const scrolling = Math.abs(getScrollVelocity()) > 0.4 || Math.abs(p - lastP) > 0.0005;
+      lastP = p;
+
+      if (now - last >= frameTime) {
+        last = now;
+        frame = (frame + 1) % FRAMES.length;
+        renderFrame();
+      } else if (scrolling) {
+        renderFrame();
+      }
     };
 
     resize();

@@ -91,6 +91,35 @@
   font-weight: 700;
 }
 
+/* [@] — el mail siempre a un click, familia del monograma */
+.hud__mail {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--graphite);
+  padding: 0.3rem 0;
+}
+
+.hud__mail-bracket {
+  color: var(--steel-600);
+  font-weight: 400;
+  transition: color 0.25s var(--ease-smooth);
+}
+
+.hud__mail-at {
+  color: var(--red);
+  display: inline-block;
+  transition: transform 0.3s var(--ease-out-expo);
+}
+
+.hud__mail:hover .hud__mail-at {
+  transform: rotate(-14deg) scale(1.15);
+}
+
+.hud__mail:hover .hud__mail-bracket {
+  color: var(--graphite);
+}
+
 .hud__meter {
   flex: 0 0 auto;
   width: 96px;

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { getScrollVelocity } from '../../hooks/useSmoothScroll';
 
 /**
  * Reproductor genérico de animación ASCII pre-renderizada (pipeline
@@ -62,8 +63,14 @@ export default function AsciiPlayer({
       y0 = (H - data.rows * cellH) / 2;
     };
 
+    const rowSeed = (r) => {
+      const s = Math.sin(r * 127.1 + 311.7) * 43758.5453;
+      return s - Math.floor(s);
+    };
+
     const renderFrame = () => {
       ctx.clearRect(0, 0, W, H);
+      const k = Math.max(-1, Math.min(1, getScrollVelocity() / 60));
       const lines = frames[frame];
 
       for (let r = 0; r < lines.length; r++) {
@@ -72,14 +79,21 @@ export default function AsciiPlayer({
         const y = y0 + r * cellH;
         if (y < -cellH || y > H) continue;
 
+        const x = x0 + k * (10 + 26 * rowSeed(r));
+
+        if (Math.abs(k) > 0.3) {
+          ctx.fillStyle = `rgba(225, 6, 0, ${Math.abs(k) * 0.4})`;
+          ctx.fillText(line, x - k * 8, y);
+        }
+
         ctx.fillStyle = ink;
-        ctx.fillText(line, x0, y);
+        ctx.fillText(line, x, y);
 
         for (let c = 0; c < line.length; c++) {
           const ch = line[c];
           if ((ch === '@' || ch === '%') && (r * 31 + c * 17 + frame * 7) % 43 === 0) {
             ctx.fillStyle = accent;
-            ctx.fillText(ch, x0 + c * cw, y);
+            ctx.fillText(ch, x + c * cw, y);
             ctx.fillStyle = ink;
           }
         }
@@ -89,10 +103,16 @@ export default function AsciiPlayer({
     const draw = (now) => {
       if (!running) return;
       raf = requestAnimationFrame(draw);
-      if (!visible || now - last < frameTime) return;
-      last = now;
-      frame = (frame + 1) % frames.length;
-      renderFrame();
+      if (!visible) return;
+
+      if (now - last >= frameTime) {
+        last = now;
+        frame = (frame + 1) % frames.length;
+        renderFrame();
+      } else if (Math.abs(getScrollVelocity()) > 0.4) {
+        // smear fluido mientras la banda se arrastra
+        renderFrame();
+      }
     };
 
     resize();

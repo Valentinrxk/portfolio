@@ -1,52 +1,22 @@
 import { useEffect } from 'react';
+import Lenis from 'lenis';
+import 'lenis/dist/lenis.css';
 
-// Estado a nivel módulo para que smoothScrollTo (HUD) comparta el mismo lerp
-const state = {
-  active: false,
-  target: 0,
-  current: 0,
-  raf: null,
-};
+// Instancia única a nivel módulo: el HUD y el [↑] scrollean por acá
+let lenis = null;
+let velocity = 0;
 
-const maxScroll = () =>
-  Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-
-const clamp = (v) => Math.min(Math.max(v, 0), maxScroll());
-
-function loop() {
-  // Si algo externo movió la página (teclado, anclas, find-in-page),
-  // esa entrada gana: adoptamos la posición y soltamos el lerp
-  if (Math.abs(window.scrollY - state.current) > 2) {
-    state.current = state.target = window.scrollY;
-    state.raf = null;
-    return;
-  }
-
-  state.current += (state.target - state.current) * 0.095;
-
-  if (Math.abs(state.target - state.current) < 0.5) {
-    state.current = state.target;
-    window.scrollTo(0, state.current);
-    state.raf = null;
-    return;
-  }
-
-  window.scrollTo(0, state.current);
-  state.raf = requestAnimationFrame(loop);
+/** Velocidad instantánea del scroll (px/frame). Los canvas ASCII la usan
+ *  para degradar la señal mientras te movés: ruido en movimiento,
+ *  señal al frenar. Con reduced-motion queda en 0. */
+export function getScrollVelocity() {
+  return velocity;
 }
 
-function kick() {
-  if (state.raf == null) {
-    state.raf = requestAnimationFrame(loop);
-  }
-}
-
-/** Scroll programático (nav del HUD) por el mismo carril suave. */
+/** Scroll programático por el mismo carril suave. */
 export function smoothScrollTo(y) {
-  if (state.active) {
-    state.current = window.scrollY;
-    state.target = clamp(y);
-    kick();
+  if (lenis) {
+    lenis.scrollTo(y, { duration: 1.2 });
   } else {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     window.scrollTo({ top: y, behavior: reduced ? 'auto' : 'smooth' });
@@ -54,46 +24,49 @@ export function smoothScrollTo(y) {
 }
 
 /**
- * Scroll inercial tipo dolly: la rueda alimenta un target y un lerp
- * lo persigue en rAF. Solo puntero fino y sin reduced-motion;
- * en touch el scroll queda nativo.
+ * Scroll inercial con Lenis. Touch queda nativo (default de Lenis),
+ * el teclado y los medios externos interrumpen sin pelear, y con
+ * reduced-motion no se instancia nada.
  */
 export default function useSmoothScroll() {
   useEffect(() => {
-    const fine = window.matchMedia('(pointer: fine)').matches;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!fine || reduced) return undefined;
+    if (reduced) return undefined;
 
-    state.active = true;
-    state.target = state.current = window.scrollY;
+    lenis = new Lenis({
+      duration: 1.15,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    });
 
-    const onWheel = (e) => {
-      if (e.ctrlKey) return; // no interferir con el zoom
-      // Durante el splash el wheel solo lo saltea: acumular target acá
-      // catapultaría la página apenas se desbloquee el scroll
-      if (document.body.classList.contains('intro-lock')) return;
-      e.preventDefault();
-      const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? window.innerHeight : 1;
-      state.target = clamp(state.target + e.deltaY * unit);
-      kick();
-    };
+    lenis.on('scroll', (e) => {
+      velocity = e.velocity;
+    });
 
-    // Scroll por otros medios con el lerp en reposo: re-sincronizar
-    const onScroll = () => {
-      if (state.raf == null) {
-        state.target = state.current = window.scrollY;
+    let raf = requestAnimationFrame(function loop(time) {
+      lenis.raf(time);
+      raf = requestAnimationFrame(loop);
+    });
+
+    // El splash bloquea el scroll (body.intro-lock): pausar Lenis
+    // mientras dura para que el wheel de salteo no acumule desplazamiento
+    const syncLock = () => {
+      if (!lenis) return;
+      if (document.body.classList.contains('intro-lock')) {
+        lenis.stop();
+      } else {
+        lenis.start();
       }
     };
-
-    window.addEventListener('wheel', onWheel, { passive: false });
-    window.addEventListener('scroll', onScroll, { passive: true });
+    syncLock();
+    const observer = new MutationObserver(syncLock);
+    observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
 
     return () => {
-      state.active = false;
-      if (state.raf != null) cancelAnimationFrame(state.raf);
-      state.raf = null;
-      window.removeEventListener('wheel', onWheel);
-      window.removeEventListener('scroll', onScroll);
+      cancelAnimationFrame(raf);
+      observer.disconnect();
+      lenis.destroy();
+      lenis = null;
+      velocity = 0;
     };
   }, []);
 }

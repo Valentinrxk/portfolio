@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useSpring } from 'motion/react';
 import { smoothScrollTo } from '../../hooks/useSmoothScroll';
-import { useLang } from '../../i18n';
+import { useLang, EMAIL } from '../../i18n';
 import './Hud.css';
 
 const SECTION_IDS = ['hero', 'about', 'projects', 'skills', 'contact'];
 
 // Secciones cuyo contenido emerge con el scrub: aterrizar en el inicio
-// exacto las muestra vacías, así que el nav apunta más adentro
-const LANDING_FRACTION = { contact: 0.55 };
+// exacto las muestra vacías o en ruido, así que el nav apunta más adentro
+const LANDING_FRACTION = { about: 0.16, contact: 0.55 };
 
 /** Medidor de señal: barras que reaccionan a la velocidad del scroll. */
 function SignalMeter() {
@@ -151,6 +151,14 @@ export default function Hud({ live }) {
               en
             </button>
           </div>
+
+          <a
+            className="hud__mail"
+            href={`mailto:${EMAIL}`}
+            aria-label={t.projects.write}
+          >
+            <span className="hud__mail-bracket">[</span><span className="hud__mail-at">@</span><span className="hud__mail-bracket">]</span>
+          </a>
 
           <SignalMeter />
         </div>

@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react';
 import AsciiGif from '../ascii/AsciiGif';
-import { useLang } from '../../i18n';
+import { useLang, EMAIL } from '../../i18n';
 import './Hero.css';
 
 /**
@@ -43,6 +43,10 @@ export default function Hero({ play }) {
             <span className="hero__caret" aria-hidden="true">_</span>
           </h1>
           <p className="hero__sub">{t.hero.sub}</p>
+          <a className="hero__cta" href={`mailto:${EMAIL}`}>
+            {EMAIL}
+            <span className="hero__cta-arrow" aria-hidden="true">⟶</span>
+          </a>
         </motion.div>
       </div>
     </section>

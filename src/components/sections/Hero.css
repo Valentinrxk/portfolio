@@ -92,14 +92,55 @@
   animation: fade-in 0.8s var(--ease-smooth) 0.85s forwards;
 }
 
-/* ——— Responsive: el retrato pasa a fondo y el texto pisa encima ——— */
-@media (max-width: 760px) {
-  .hero__portrait {
-    opacity: 0.55;
-  }
+/* ——— CTA: el mail crudo, sin verbo ni chamuyo ——— */
+.hero__cta {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-top: clamp(0.4rem, 1.2vh, 0.8rem);
+  font-size: clamp(1rem, 1.7vw, 1.3rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--graphite);
+  opacity: 0;
+}
 
+.is-playing .hero__cta {
+  animation: fade-in 0.8s var(--ease-smooth) 1.05s forwards;
+}
+
+.hero__cta::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 2px;
+  background: var(--red);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.4s var(--ease-out-expo);
+}
+
+.hero__cta:hover::after {
+  transform: scaleX(1);
+}
+
+.hero__cta-arrow {
+  color: var(--red);
+  transition: transform 0.3s var(--ease-out-expo);
+}
+
+.hero__cta:hover .hero__cta-arrow {
+  transform: translateX(4px);
+}
+
+/* ——— Responsive: el mono arriba entero, el texto abajo con aire ——— */
+@media (max-width: 760px) {
   .hero__type {
     max-width: calc(100vw - 2 * var(--frame-x));
+    bottom: calc(var(--hud-h) + clamp(1.2rem, 4vh, 2.5rem));
   }
 
   .hero__statement {

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { getScrollVelocity } from '../../hooks/useSmoothScroll';
 
 const DEFAULT_RAMP = ' .:-=+*#%@';
 
@@ -70,7 +71,9 @@ export default function AsciiField({
     };
 
     const renderFrame = (now) => {
-      const turb = turbulenceValue ? turbulenceValue.get() : turbulence;
+      // La velocidad del scroll agita el campo: movimiento = ruido
+      const velTurb = Math.min(0.5, Math.abs(getScrollVelocity()) / 90);
+      const turb = Math.min(1, (turbulenceValue ? turbulenceValue.get() : turbulence) + velTurb);
       const t = now * 0.001;
       const w = canvas.width / dpr;
       const h = canvas.height / dpr;

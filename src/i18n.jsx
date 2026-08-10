@@ -1,8 +1,10 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
+export const EMAIL = 'hi@valentinromero.com';
+
 const DICT = {
   es: {
-    nav: { hero: 'inicio', about: 'perfil', projects: 'obras', skills: 'arsenal', contact: 'contacto' },
+    nav: { hero: 'inicio', about: 'perfil', projects: 'obras', skills: 'adn', contact: 'contacto' },
     intro: { sign: 'valentín romero — portfolio' },
     hero: {
       kicker: 'valentín romero — buenos aires',
@@ -19,6 +21,8 @@ const DICT = {
     projects: {
       title: 'obras',
       view: 'ver ⟶',
+      missing: 'falta la tuya.',
+      write: 'escribime',
       items: {
         oclucrm: 'crm para clínicas: pacientes, turnos y administración en una pantalla que no te pelea.',
         grip: 'landing para grip®, agencia de marketing de buenos aires. marcas que se te pegan, cero chamuyo corporativo.',
@@ -26,8 +30,8 @@ const DICT = {
       },
     },
     skills: {
-      title: 'arsenal',
-      groups: { js: 'frameworks js', backend: 'backend', design: 'diseño' },
+      lines: ['nunca', 'lo mismo', 'dos veces.'],
+      cards: { wave: 'onda', noise: 'ruido', flow: 'flujo' },
     },
     contact: {
       kicker: '¿tenés algo que no quiere ser genérico?',
@@ -36,7 +40,7 @@ const DICT = {
     },
   },
   en: {
-    nav: { hero: 'home', about: 'profile', projects: 'works', skills: 'arsenal', contact: 'contact' },
+    nav: { hero: 'home', about: 'profile', projects: 'works', skills: 'dna', contact: 'contact' },
     intro: { sign: 'valentín romero — portfolio' },
     hero: {
       kicker: 'valentín romero — buenos aires',
@@ -53,6 +57,8 @@ const DICT = {
     projects: {
       title: 'works',
       view: 'view ⟶',
+      missing: 'yours is missing.',
+      write: 'write me',
       items: {
         oclucrm: "clinic crm: patients, appointments and admin in one screen that doesn't fight back.",
         grip: 'landing for grip®, a buenos aires marketing agency. brands that stick, zero corporate small talk.',
@@ -60,8 +66,8 @@ const DICT = {
       },
     },
     skills: {
-      title: 'arsenal',
-      groups: { js: 'js frameworks', backend: 'backend', design: 'design' },
+      lines: ['never', 'the same', 'thing twice.'],
+      cards: { wave: 'wave', noise: 'noise', flow: 'flow' },
     },
     contact: {
       kicker: 'got something that refuses to be generic?',

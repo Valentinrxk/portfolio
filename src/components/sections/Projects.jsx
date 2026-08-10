@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react';
 import AsciiPlayer from '../ascii/AsciiPlayer';
-import { useLang } from '../../i18n';
+import { useLang, EMAIL } from '../../i18n';
 import './Projects.css';
 
 // Recorridos grabados de cada obra, pre-renderizados a ASCII.
@@ -97,7 +97,9 @@ export default function Projects() {
     offset: ['start start', 'end end'],
   });
 
-  const x = useTransform(scrollYProgress, [0.05, 0.95], [0, -maxShift]);
+  // La banda llega al final en 0.82: el cierre queda clavado ~una pantalla
+  // de scroll antes de que la escena suelte — tiempo real de lectura
+  const x = useTransform(scrollYProgress, [0.05, 0.82], [0, -maxShift]);
 
   // Teclado: el transform no es scrolleable por el navegador, así que al
   // enfocar una pieza llevamos el scroll vertical al punto que la encuadra
@@ -110,7 +112,7 @@ export default function Projects() {
       track.getBoundingClientRect().left +
       e.currentTarget.offsetWidth / 2 -
       window.innerWidth / 2;
-    const progress = 0.05 + (Math.min(Math.max(shift, 0), maxShift) / maxShift) * 0.9;
+    const progress = 0.05 + (Math.min(Math.max(shift, 0), maxShift) / maxShift) * 0.77;
     const top = section.getBoundingClientRect().top + window.scrollY;
     window.scrollTo({ top: top + progress * (section.offsetHeight - window.innerHeight), behavior: 'auto' });
   };
@@ -161,6 +163,15 @@ export default function Projects() {
               </div>
             </article>
           ))}
+
+          <footer className="projects__cta">
+            <span className="section-slash" aria-hidden="true">///</span>
+            <p className="projects__cta-line">{t.projects.missing}</p>
+            <a className="projects__cta-mail" href={`mailto:${EMAIL}`}>
+              {EMAIL}
+              <span aria-hidden="true"> ⟶</span>
+            </a>
+          </footer>
         </motion.div>
       </div>
     </section>

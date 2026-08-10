@@ -3,6 +3,7 @@ import Intro from './components/cinema/Intro'
 import Hud from './components/cinema/Hud'
 import CustomCursor from './components/ui/CustomCursor'
 import ClickBurst from './components/ui/ClickBurst'
+import ScrollToTop from './components/ui/ScrollToTop'
 import Hero from './components/sections/Hero'
 import About from './components/sections/About'
 import Projects from './components/sections/Projects'
@@ -34,6 +35,7 @@ function App() {
         <Skills />
         <Contact />
       </main>
+      <ScrollToTop />
       <div className="film-layer" aria-hidden="true">
         <div className="film-layer__grain" />
         <div className="film-layer__vignette" />

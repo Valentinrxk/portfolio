@@ -1,0 +1,131 @@
+/* Glifo pelado, sin caja: tipografía cruda como el monograma.
+   El blend difference lo hace legible sobre plata y sobre bordó. */
+.totop {
+  position: fixed;
+  right: clamp(1rem, 2.5vw, 2rem);
+  bottom: calc(var(--hud-h) + 14px);
+  z-index: var(--z-hud);
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.12rem;
+  padding: 0.4rem 0.5rem;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--silver-100);
+  mix-blend-mode: difference;
+  opacity: 0;
+  transform: translateY(14px);
+  pointer-events: none;
+  transition:
+    opacity 0.4s var(--ease-smooth),
+    transform 0.5s var(--ease-out-expo);
+}
+
+.totop.is-live {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  /* vivo también en reposo: un tic de glitch cada tanto */
+  animation: totop-idle 6.5s steps(1, end) 3s infinite;
+}
+
+@keyframes totop-idle {
+  0%, 91% { transform: translateY(0); }
+  92% { transform: translate(2px, -2px) skewX(-6deg); }
+  93.5% { transform: translate(-2px, 1px) skewX(4deg); }
+  95%, 100% { transform: translateY(0); }
+}
+
+.totop:hover {
+  mix-blend-mode: normal;
+  color: var(--red);
+  animation: none;
+}
+
+.totop__bracket {
+  opacity: 0.55;
+  font-weight: 400;
+  transition: opacity 0.25s var(--ease-smooth);
+}
+
+.totop:hover .totop__bracket {
+  opacity: 1;
+}
+
+.totop__well {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  line-height: 1;
+}
+
+.totop__arrow {
+  display: inline-block;
+  transition: color 0.2s var(--ease-smooth);
+}
+
+/* Al hover la flecha despega en loop… */
+.totop:hover .totop__arrow {
+  animation: totop-launch 0.7s var(--ease-out-expo) infinite;
+}
+
+@keyframes totop-launch {
+  0% { transform: translateY(0); }
+  48% { transform: translateY(-130%); }
+  49% { transform: translateY(130%); }
+  100% { transform: translateY(0); }
+}
+
+/* …y deja escape de caracteres cayendo */
+.totop__exhaust {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.totop__exhaust i {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  font-style: normal;
+  font-family: var(--font-mono);
+  font-size: 0.6em;
+  color: var(--bordo);
+  opacity: 0;
+  transform: translate(-50%, 0);
+}
+
+.totop:hover .totop__exhaust i {
+  animation: totop-exhaust 0.7s linear infinite;
+}
+
+.totop:hover .totop__exhaust i:nth-child(1) { animation-delay: 0s; }
+.totop:hover .totop__exhaust i:nth-child(2) { animation-delay: 0.18s; color: var(--red); }
+.totop:hover .totop__exhaust i:nth-child(3) { animation-delay: 0.36s; }
+
+@keyframes totop-exhaust {
+  0% { opacity: 0; transform: translate(-50%, -20%); }
+  15% { opacity: 0.9; }
+  100% { opacity: 0; transform: translate(calc(-50% + 3px), 130%); }
+}
+
+/* Al click, el botón entero sale volando */
+.totop.is-launching {
+  animation: totop-blastoff 0.55s var(--ease-out-expo) forwards;
+  pointer-events: none;
+}
+
+@keyframes totop-blastoff {
+  0% { transform: translateY(0) skewX(0); opacity: 1; }
+  30% { transform: translateY(-10px) skewX(-4deg); opacity: 1; }
+  100% { transform: translateY(-64px) skewX(-8deg); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .totop.is-live,
+  .totop:hover .totop__arrow,
+  .totop:hover .totop__exhaust i,
+  .totop.is-launching {
+    animation: none;
+  }
+}

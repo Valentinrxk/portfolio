@@ -36,7 +36,6 @@ const DICT = {
     contact: {
       kicker: '¿tenés algo que no quiere ser genérico?',
       status: 'disponible para proyectos',
-      footer: 'hecho sin plantillas.',
     },
   },
   en: {
@@ -72,7 +71,6 @@ const DICT = {
     contact: {
       kicker: 'got something that refuses to be generic?',
       status: 'available for projects',
-      footer: 'no templates were used.',
     },
   },
 };

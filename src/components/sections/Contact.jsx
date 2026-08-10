@@ -84,7 +84,7 @@ export default function Contact() {
           <span className="contact__mark" aria-hidden="true">
             <MonkeyMark size={30} />
           </span>
-          <span>© {new Date().getFullYear()} valentín romero — {t.contact.footer}</span>
+          <span>© {new Date().getFullYear()} valentín romero</span>
         </footer>
       </div>
     </section>

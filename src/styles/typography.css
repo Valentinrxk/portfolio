@@ -1,28 +1,57 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+/* Una sola familia: Helvetica. La jerarquía sale de peso, caja y tracking.
+   El mono queda reservado para el ASCII (el pilar del sitio).
 
-/* Note: Special Gothic Expanded One might not be available on Google Fonts
-   Using a fallback approach with a similar brutalist font */
-@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
-
-:root {
-  /* Override display font with Anton as fallback */
-  --font-display: 'Anton', 'Impact', sans-serif;
-}
+   Concepto señal/ruido: el ASCII es el ruido de máquina; el texto es la
+   señal humana, y la señal no grita — todo el sitio va en minúscula. */
 
 body {
-  font-family: var(--font-body);
+  font-family: var(--font-sans);
   font-size: 1rem;
+  font-weight: 400;
   color: var(--color-text);
+  font-kerning: normal;
+  text-transform: lowercase;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-display);
-  font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  line-height: 0.9;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  letter-spacing: var(--track-display);
+  line-height: 1;
 }
 
-code, pre, .mono {
-  font-family: var(--font-mono);
+/* Etiquetas: minúscula espaciada, números tabulares */
+.caps {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: var(--track-caps);
+  font-variant-numeric: tabular-nums;
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Titular metálico (acero pulido sobre plata) */
+.chrome-text {
+  background: var(--chrome);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Titular delineado — grafito sobre plata, plata sobre grafito */
+.outline-text {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--graphite);
+}
+
+.outline-text--silver {
+  -webkit-text-stroke-color: var(--silver-400);
+}
+
+@media (max-width: 768px) {
+  .outline-text {
+    -webkit-text-stroke-width: 1px;
+  }
 }

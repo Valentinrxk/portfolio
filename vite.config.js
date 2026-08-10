@@ -8,19 +8,16 @@ export default defineConfig({
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom'],
-          'three-vendor': ['three', '@react-three/fiber'],
+          'motion-vendor': ['motion'],
         },
       },
     },
     cssCodeSplit: true,
     sourcemap: false,
     minify: 'esbuild',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true,
-      },
-    },
+  },
+  esbuild: {
+    drop: ['console', 'debugger'],
   },
   optimizeDeps: {
     include: ['react', 'react-dom'],

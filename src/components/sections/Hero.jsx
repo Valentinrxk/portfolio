@@ -1,142 +1,49 @@
-import { useState, useEffect } from 'react';
-import AsciiCube from '../ascii/AsciiCube';
-import Dither from '../backgrounds/Dither';
-import DecryptedText from '../ui/DecryptedText';
-import MagneticButton from '../ui/MagneticButton';
+import { useRef } from 'react';
+import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react';
+import AsciiGif from '../ascii/AsciiGif';
+import { useLang } from '../../i18n';
 import './Hero.css';
 
-export default function Hero() {
-  const [scrollY, setScrollY] = useState(0);
-  const [theme, setTheme] = useState(
-    document.documentElement.getAttribute('data-theme') || 'light'
-  );
+/**
+ * El hero es la animación ASCII: el gorila saltando en la cama elástica,
+ * gigante, protagonista. La tipografía acompaña desde el margen izquierdo
+ * con la declaración de principios; al scrollear, la señal se desarma.
+ */
+export default function Hero({ play }) {
+  const sectionRef = useRef(null);
+  const reduced = useReducedMotion();
+  const { t } = useLang();
 
-  // Detect theme changes
-  useEffect(() => {
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.attributeName === 'data-theme') {
-          setTheme(document.documentElement.getAttribute('data-theme') || 'light');
-        }
-      });
-    });
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end end'],
+  });
 
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['data-theme']
-    });
+  // El retrato se rompe en bandas durante el primer tramo del scroll
+  const tear = useTransform(scrollYProgress, [0.05, 0.7], [0, 1]);
+  const typeOpacity = useTransform(scrollYProgress, [0.2, 0.55], [1, 0]);
+  const typeY = useTransform(scrollYProgress, [0.2, 0.6], [0, -80]);
 
-    return () => observer.disconnect();
-  }, []);
-
-  // Terracotta color adjusted for theme
-  // Light mode: darker, more saturated terracotta for better visibility
-  // Dark mode: lighter terracotta
-  const ditherColor = theme === 'dark'
-    ? [0.78, 0.36, 0.29]  // #c75d4a - lighter terracotta for dark mode
-    : [0.75, 0.32, 0.24]; // #bf5240 - more saturated terracotta for light mode
-
-  const baseColor = theme === 'dark'
-    ? [0.0, 0.0, 0.0]     // Black base for dark mode
-    : [0.95, 0.94, 0.93]; // #F2F0ED - slightly lighter than bg for subtle contrast
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Calculate parallax values
-  const parallaxText = scrollY * 0.3;
-  const parallaxAscii = scrollY * -0.2;
-  const opacity = Math.max(0, 1 - scrollY / 500);
+  const typeStyle = reduced ? undefined : { opacity: typeOpacity, y: typeY };
 
   return (
-    <section id="hero" className="hero">
-      {/* Dither background */}
-      <div
-        className="hero__dither-bg"
-        style={{ transform: `translateY(${scrollY * 0.5}px)` }}
-      >
-        <Dither
-          waveColor={ditherColor}
-          baseColor={baseColor}
-          waveSpeed={0.012}
-          waveFrequency={1.2}
-          waveAmplitude={0.2}
-          colorNum={3}
-          pixelSize={3}
-          enableMouseInteraction={true}
-          mouseRadius={0.25}
-        />
-      </div>
-      <div className="hero__content">
-        <div
-          className="hero__text"
-          style={{
-            transform: `translateY(${parallaxText}px)`,
-            opacity
-          }}
-        >
-          <span className="hero__label">Valentín Romero</span>
-          <h1 className="hero__title">
-            <span className="hero__title-line">
-              <DecryptedText
-                text="FRONTEND"
-                animateOn="view"
-                speed={60}
-                maxIterations={15}
-                characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ01<>/{}[]"
-                revealDirection="start"
-                sequential={true}
-                className="hero__char--revealed"
-                encryptedClassName="hero__char--encrypted"
-              />
-            </span>
-            <span className="hero__title-line hero__title-line--outline">
-              <DecryptedText
-                text="DEVELOPER"
-                animateOn="view"
-                speed={50}
-                maxIterations={20}
-                characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ01<>/{}[]"
-                revealDirection="end"
-                sequential={true}
-                className="hero__char--revealed"
-                encryptedClassName="hero__char--encrypted"
-              />
-            </span>
-          </h1>
-          <div className="hero__line" />
-          <p className="hero__subtitle">
-            Creando experiencias digitales donde el código se encuentra con el diseño.
-            Fullstack por necesidad, frontend por pasión.
+    <section id="hero" ref={sectionRef} className={`hero ${play ? 'is-playing' : ''}`}>
+      <div className="hero__frame">
+        <div className="hero__portrait">
+          <AsciiGif progressValue={reduced ? null : tear} className="hero__canvas" />
+        </div>
+
+        <motion.div className="hero__type" style={typeStyle}>
+          <p className="hero__kicker caps">
+            <span className="hero__kicker-slash" aria-hidden="true">///</span>
+            {t.hero.kicker}
           </p>
-        </div>
-        <div
-          className="hero__ascii"
-          style={{ transform: `translateY(${parallaxAscii}px)` }}
-        >
-          <AsciiCube width={65} height={40} />
-        </div>
-        <MagneticButton
-          href="#projects"
-          className="hero__cta"
-          strength={0.5}
-        >
-          Ver proyectos
-          <span className="hero__cta-arrow">&#8599;</span>
-        </MagneticButton>
-      </div>
-      <div
-        className="hero__scroll-indicator"
-        style={{ opacity }}
-      >
-        <span>SCROLL</span>
-        <div className="hero__scroll-line" />
+          <h1 className="hero__statement">
+            {t.hero.statement}
+            <span className="hero__caret" aria-hidden="true">_</span>
+          </h1>
+          <p className="hero__sub">{t.hero.sub}</p>
+        </motion.div>
       </div>
     </section>
   );

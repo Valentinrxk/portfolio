@@ -9,58 +9,46 @@
 .ascii-cube-frame {
   position: relative;
   z-index: 2;
-  padding: 1.5rem 2rem;
-  border: 2px solid color-mix(in srgb, var(--color-accent) 40%, transparent);
-  background: color-mix(in srgb, var(--color-bg) 95%, var(--color-text) 5%);
-  box-shadow:
-    0 0 40px color-mix(in srgb, var(--color-accent) 20%, transparent),
-    inset 0 0 60px color-mix(in srgb, var(--color-bg) 90%, transparent);
+  padding: 1.25rem 1.75rem;
+  border: 1px solid var(--color-border);
+  background: rgba(35, 35, 39, 0.03);
 }
 
 .ascii-cube {
   font-family: var(--font-mono);
   font-size: clamp(0.32rem, 0.85vw, 0.6rem);
-  line-height: 1.0;
-  color: var(--color-accent);
+  line-height: 1;
+  color: var(--steel-700);
   white-space: pre;
   user-select: none;
-  text-shadow:
-    0 0 8px color-mix(in srgb, var(--color-accent) 90%, transparent),
-    0 0 15px color-mix(in srgb, var(--color-accent) 60%, transparent),
-    0 0 25px color-mix(in srgb, var(--color-accent) 40%, transparent);
-  filter: contrast(1.1) brightness(1.1);
 }
 
-/* Main layer */
 .ascii-cube--main {
   position: relative;
   z-index: 3;
 }
 
-/* RGB Split - Red channel */
+/* Split de canales en rojo/bordó — glitch industrial, nada de neón */
 .ascii-cube--red {
   position: absolute;
-  top: 0;
-  left: 0;
-  color: #ff0040;
-  text-shadow: none;
-  opacity: 0.8;
+  top: 1.25rem;
+  left: 1.75rem;
+  color: var(--red);
+  opacity: 0.55;
   z-index: 1;
   animation: glitchRed 0.3s steps(2) infinite;
-  mix-blend-mode: screen;
+  mix-blend-mode: multiply;
 }
 
-/* RGB Split - Blue channel */
 .ascii-cube--blue {
   position: absolute;
-  top: 0;
-  left: 0;
-  color: #00ffff;
-  text-shadow: none;
-  opacity: 0.8;
+  top: 1.25rem;
+  left: 1.75rem;
+  color: var(--bordo);
+  opacity: 0.55;
   z-index: 2;
   animation: glitchBlue 0.3s steps(2) infinite;
-  mix-blend-mode: screen;
+  mix-blend-mode: multiply;
 }
 
 @keyframes glitchRed {
@@ -77,7 +65,6 @@
   75% { transform: translate(5px, -1px); }
 }
 
-/* Medium glitch - subtle shake */
 .ascii-cube--glitch-medium {
   animation: glitchMedium 0.1s steps(2) infinite;
 }
@@ -89,63 +76,29 @@
   75% { transform: translate(-1px, -1px); }
 }
 
-/* Intense glitch - heavy distortion */
 .ascii-cube--glitch-intense {
   animation: glitchIntense 0.08s steps(3) infinite;
 }
 
 @keyframes glitchIntense {
-  0% {
-    transform: translate(0) skewX(0deg);
-    clip-path: inset(0 0 0 0);
-  }
-  10% {
-    transform: translate(-8px, 3px) skewX(-5deg);
-    clip-path: inset(10% 0 80% 0);
-  }
-  20% {
-    transform: translate(8px, -3px) skewX(5deg);
-    clip-path: inset(30% 0 50% 0);
-  }
-  30% {
-    transform: translate(-5px, -2px) skewX(-3deg);
-    clip-path: inset(50% 0 30% 0);
-  }
-  40% {
-    transform: translate(5px, 2px) skewX(3deg);
-    clip-path: inset(70% 0 10% 0);
-  }
-  50% {
-    transform: translate(-10px, 0) skewX(-8deg);
-    clip-path: inset(5% 0 5% 0);
-  }
-  60% {
-    transform: translate(10px, 0) skewX(8deg);
-    clip-path: inset(20% 0 60% 0);
-  }
-  70% {
-    transform: translate(-3px, 4px) skewX(-2deg);
-    clip-path: inset(40% 0 40% 0);
-  }
-  80% {
-    transform: translate(3px, -4px) skewX(2deg);
-    clip-path: inset(60% 0 20% 0);
-  }
-  90% {
-    transform: translate(-6px, 1px) skewX(-4deg);
-    clip-path: inset(80% 0 5% 0);
-  }
-  100% {
-    transform: translate(0) skewX(0deg);
-    clip-path: inset(0 0 0 0);
-  }
+  0% { transform: translate(0) skewX(0deg); clip-path: inset(0 0 0 0); }
+  10% { transform: translate(-8px, 3px) skewX(-5deg); clip-path: inset(10% 0 80% 0); }
+  20% { transform: translate(8px, -3px) skewX(5deg); clip-path: inset(30% 0 50% 0); }
+  30% { transform: translate(-5px, -2px) skewX(-3deg); clip-path: inset(50% 0 30% 0); }
+  40% { transform: translate(5px, 2px) skewX(3deg); clip-path: inset(70% 0 10% 0); }
+  50% { transform: translate(-10px, 0) skewX(-8deg); clip-path: inset(5% 0 5% 0); }
+  60% { transform: translate(10px, 0) skewX(8deg); clip-path: inset(20% 0 60% 0); }
+  70% { transform: translate(-3px, 4px) skewX(-2deg); clip-path: inset(40% 0 40% 0); }
+  80% { transform: translate(3px, -4px) skewX(2deg); clip-path: inset(60% 0 20% 0); }
+  90% { transform: translate(-6px, 1px) skewX(-4deg); clip-path: inset(80% 0 5% 0); }
+  100% { transform: translate(0) skewX(0deg); clip-path: inset(0 0 0 0); }
 }
 
-/* White flash on intense glitch */
+/* Fogonazo plateado en el glitch intenso */
 .ascii-cube-flash {
   position: absolute;
   inset: -10%;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(230, 231, 235, 0.35);
   z-index: 10;
   pointer-events: none;
   animation: flash 0.1s ease-out;
@@ -156,28 +109,19 @@
   100% { opacity: 0; }
 }
 
-/* Glow effect */
+/* Aura bordó tenue */
 .ascii-cube-glow {
   position: absolute;
-  inset: -30%;
+  inset: -20%;
   background: radial-gradient(
     ellipse at center,
-    color-mix(in srgb, var(--color-accent) 35%, transparent) 0%,
-    color-mix(in srgb, var(--color-accent) 15%, transparent) 35%,
-    transparent 65%
+    rgba(109, 15, 22, 0.14) 0%,
+    transparent 62%
   );
-  filter: blur(45px);
   z-index: 1;
   pointer-events: none;
-  animation: glowPulse 4s ease-in-out infinite;
 }
 
-@keyframes glowPulse {
-  0%, 100% { opacity: 0.8; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.12); }
-}
-
-/* Scanlines */
 .ascii-cube-scanlines {
   position: absolute;
   inset: 0;
@@ -185,91 +129,38 @@
     0deg,
     transparent,
     transparent 2px,
-    rgba(0, 0, 0, 0.03) 2px,
-    rgba(0, 0, 0, 0.03) 4px
+    rgba(35, 35, 39, 0.04) 2px,
+    rgba(35, 35, 39, 0.04) 4px
   );
   pointer-events: none;
   z-index: 5;
 }
 
-/* Responsive */
-/* Desktop pequeño */
 @media (max-width: 1200px) {
   .ascii-cube {
     font-size: clamp(0.28rem, 0.75vw, 0.5rem);
   }
-
-  .ascii-cube-frame {
-    padding: 1.25rem 1.5rem;
-  }
 }
 
-/* Tablet */
-@media (max-width: 1024px) {
-  .ascii-cube-container {
-    padding: 0.5rem;
-  }
-
-  .ascii-cube {
-    font-size: clamp(0.25rem, 0.65vw, 0.45rem);
-  }
-
-  .ascii-cube-frame {
-    padding: 1rem 1.25rem;
-  }
-
-  .ascii-cube-glow {
-    inset: -20%;
-    filter: blur(30px);
-  }
-}
-
-/* Mobile */
 @media (max-width: 768px) {
   .ascii-cube-container {
     padding: 0.5rem;
   }
 
   .ascii-cube {
-    font-size: clamp(0.35rem, 1.2vw, 0.5rem);
+    font-size: clamp(0.3rem, 1.1vw, 0.45rem);
   }
 
   .ascii-cube-frame {
-    padding: 1rem 1.25rem;
-  }
-
-  .ascii-cube-glow {
-    inset: -15%;
-    filter: blur(25px);
+    padding: 0.9rem 1.1rem;
   }
 }
 
-/* Mobile pequeño */
-@media (max-width: 480px) {
-  .ascii-cube-container {
-    padding: 0.5rem;
-  }
-
-  .ascii-cube {
-    font-size: clamp(0.32rem, 1.5vw, 0.45rem);
-  }
-
-  .ascii-cube-frame {
-    padding: 0.75rem 1rem;
-  }
-
-  .ascii-cube-glow {
-    inset: -10%;
-    filter: blur(20px);
-  }
-
-  .ascii-cube-scanlines {
-    background: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 1px,
-      rgba(0, 0, 0, 0.02) 1px,
-      rgba(0, 0, 0, 0.02) 2px
-    );
+@media (prefers-reduced-motion: reduce) {
+  .ascii-cube--red,
+  .ascii-cube--blue,
+  .ascii-cube--glitch-medium,
+  .ascii-cube--glitch-intense {
+    animation: none;
   }
 }

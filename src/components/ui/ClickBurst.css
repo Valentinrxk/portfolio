@@ -1,0 +1,19 @@
+.click-burst {
+  position: fixed;
+  z-index: calc(var(--z-cursor) - 1);
+  pointer-events: none;
+  width: 0;
+  height: 0;
+}
+
+.click-burst span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  transform: translate(-50%, -50%);
+  will-change: transform, opacity;
+}

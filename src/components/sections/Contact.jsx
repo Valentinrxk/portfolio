@@ -1,103 +1,81 @@
-import { useRef, useState } from 'react';
-import useScrollAnimation from '../../hooks/useScrollAnimation';
-import TechnicalGrid from '../backgrounds/TechnicalGrid';
-import MagneticButton from '../ui/MagneticButton';
-import { SiLinkedin, SiGithub } from 'react-icons/si';
+import { useRef } from 'react';
+import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react';
+import AsciiField from '../ascii/AsciiField';
+import { useLang } from '../../i18n';
 import './Contact.css';
 
+const EMAIL = 'hi@valentinromero.com';
+
+/**
+ * Contacto: la pared de estática se resuelve en señal y del ruido
+ * emerge el único llamado que importa — el mail, gigante.
+ */
 export default function Contact() {
   const sectionRef = useRef(null);
-  const isVisible = useScrollAnimation(sectionRef, { threshold: 0.3 });
-  const [hoveredSocial, setHoveredSocial] = useState(null);
+  const reduced = useReducedMotion();
+  const { t } = useLang();
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end end'],
+  });
+
+  const turbulence = useTransform(scrollYProgress, [0, 0.45], [1, 0.05]);
+  // Rango temprano: llegar por el nav también tiene que mostrar el CTA
+  const opacity = useTransform(scrollYProgress, [0.05, 0.3], [0, 1]);
+  const y = useTransform(scrollYProgress, [0.05, 0.35], [46, 0]);
+
+  const contentStyle = reduced ? undefined : { opacity, y };
 
   return (
-    <section id="contact" className="contact" ref={sectionRef}>
-      {/* Technical Grid Background */}
-      <TechnicalGrid opacity={0.06} gridSize={50} accentLineEvery={4} />
-
-      <div className="contact__bg-pattern" aria-hidden="true" />
-
-      {/* Ambient Gradient */}
-      <div className="contact__ambient-gradient" aria-hidden="true" />
-
-      <div className={`contact__content ${isVisible ? 'is-visible' : ''}`}>
-        {/* Pretitle */}
-        <div className="contact__pretitle">
-          <span className="contact__pretitle-line" />
-          <span className="contact__pretitle-text">Disponible para nuevos proyectos</span>
-          <span className="contact__pretitle-line" />
+    <section id="contact" ref={sectionRef} className="contact">
+      <div className="contact__frame">
+        <div className="contact__field">
+          <AsciiField
+            ink="rgba(207, 208, 214, 0.2)"
+            accent="#e10600"
+            accent2="#a6a7af"
+            cell={13}
+            fontSize={11}
+            fps={24}
+            turbulence={reduced ? 0.05 : undefined}
+            turbulenceValue={reduced ? null : turbulence}
+            interactive
+          />
         </div>
 
-        <h2 className="contact__title">
-          <span className="contact__title-line">TRABAJEMOS</span>
-          <span className="contact__title-line contact__title-line--accent">JUNTOS</span>
-        </h2>
+        <span className="section-slash contact__slash" aria-hidden="true">///</span>
 
-        <p className="contact__description">
-          Diseñemos algo memorable.
-        </p>
+        <motion.div className="contact__content" style={contentStyle}>
+          <p className="contact__kicker">{t.contact.kicker}</p>
 
-        {/* Email CTA */}
-        <div className="contact__cta-wrapper">
-          <MagneticButton
-            href="mailto:hi@valentinromero.com"
-            className="contact__email-cta"
-            strength={0.4}
-          >
-            <span className="contact__email-icon">✉</span>
-            <span className="contact__email-text">hi@valentinromero.com</span>
-          </MagneticButton>
-        </div>
-
-        {/* Social Cards */}
-        <div className="contact__social-cards">
-          <a
-            href="https://www.linkedin.com/in/valentin-romero-61b089139/"
-            className={`contact__social-card ${hoveredSocial === 'linkedin' ? 'is-hovered' : ''}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            onMouseEnter={() => setHoveredSocial('linkedin')}
-            onMouseLeave={() => setHoveredSocial(null)}
-          >
-            <div className="contact__social-card-header">
-              <span className="contact__social-card-number">01</span>
-              <svg className="contact__social-card-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </div>
-            <div className="contact__social-card-body">
-              <span className="contact__social-card-label">Conecta</span>
-              <SiLinkedin className="contact__social-card-icon" />
-            </div>
+          <a className="contact__email" href={`mailto:${EMAIL}`}>
+            {EMAIL.split('@')[0]}
+            <span className="contact__email-at">@</span>
+            {EMAIL.split('@')[1]}
           </a>
 
-          <a
-            href="https://github.com/valentinrxk"
-            className={`contact__social-card ${hoveredSocial === 'github' ? 'is-hovered' : ''}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            onMouseEnter={() => setHoveredSocial('github')}
-            onMouseLeave={() => setHoveredSocial(null)}
-          >
-            <div className="contact__social-card-header">
-              <span className="contact__social-card-number">02</span>
-              <svg className="contact__social-card-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </div>
-            <div className="contact__social-card-body">
-              <span className="contact__social-card-label">Explora</span>
-              <SiGithub className="contact__social-card-icon" />
-            </div>
-          </a>
-        </div>
+          <div className="contact__meta caps">
+            <span className="contact__status">
+              <i aria-hidden="true" />
+              {t.contact.status}
+            </span>
+            <a href="https://www.linkedin.com/in/valentin-romero-61b089139/" target="_blank" rel="noopener noreferrer">
+              linkedin <span aria-hidden="true">↗</span>
+            </a>
+            <a href="https://github.com/valentinrxk" target="_blank" rel="noopener noreferrer">
+              github <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </motion.div>
+
+        <footer className="contact__footer caps">
+          <span className="contact__mark" aria-hidden="true">
+            <span>[</span>v<span className="contact__mark-slash">/</span>r<span>]</span>
+          </span>
+          <span>© {new Date().getFullYear()} valentín romero — {t.contact.footer}</span>
+        </footer>
       </div>
-
-      <footer className="contact__footer">
-        <span className="contact__copyright">
-          &copy; {new Date().getFullYear()} — Diseñado y desarrollado por Valentín Romero
-        </span>
-      </footer>
     </section>
   );
 }

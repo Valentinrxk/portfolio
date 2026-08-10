@@ -1,216 +1,118 @@
-.custom-cursor {
+/* El puntero del sistema desaparece: manda la retícula */
+@media (pointer: fine) {
+  html, body, a, button, [role='button'] {
+    cursor: none;
+  }
+}
+
+.vf-cursor {
   position: fixed;
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--color-accent);
-  background: transparent;
-  pointer-events: none;
-  z-index: 99999;
-  left: 0;
   top: 0;
-  transform: translate(-50%, -50%);
-  transition: width 0.3s var(--ease-out-expo), height 0.3s var(--ease-out-expo), border-width 0.3s ease, border-color 0.3s ease;
-  will-change: transform;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  isolation: isolate;
-}
-
-/* Inverse background - silver color */
-.custom-cursor.is-inverse {
-  border-color: var(--color-cursor-silver);
-}
-
-/* Disable mix-blend-mode to maintain correct colors */
-.custom-cursor {
-  mix-blend-mode: normal;
-}
-
-.custom-cursor::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 4px;
-  height: 4px;
-  background: var(--color-accent);
-  transform: translate(-50%, -50%);
-  transition: transform 0.3s ease, background-color 0.3s ease;
-}
-
-.custom-cursor.is-inverse::before {
-  background: var(--color-cursor-silver);
-}
-
-.custom-cursor::after {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  border: 1px solid var(--color-accent);
-  opacity: 0.3;
-  animation: cursorPulse 2s ease-in-out infinite;
-  transition: border-color 0.3s ease;
-}
-
-.custom-cursor.is-inverse::after {
-  border-color: var(--color-cursor-silver);
-}
-
-/* Disable pulse animation in Chrome for better performance */
-@media screen and (-webkit-min-device-pixel-ratio: 0) {
-  @supports (-webkit-appearance: none) {
-    .custom-cursor::after {
-      animation: none;
-      opacity: 0.2;
-    }
-  }
-}
-
-/* Disable pulse animation in Chrome for better performance */
-@media screen and (-webkit-min-device-pixel-ratio: 0) {
-  @supports (-webkit-appearance: none) {
-    .custom-cursor::after {
-      animation: none;
-      opacity: 0.2;
-    }
-  }
-}
-
-@keyframes cursorPulse {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 0.3;
-  }
-  50% {
-    transform: scale(1.2);
-    opacity: 0.1;
-  }
-}
-
-/* Hover state - expands */
-.custom-cursor.is-hovering {
-  width: 40px;
-  height: 40px;
-  border-width: 3px;
-  background: color-mix(in srgb, var(--color-accent) 10%, transparent);
-}
-
-.custom-cursor.is-hovering.is-inverse {
-  background: color-mix(in srgb, var(--color-cursor-silver) 10%, transparent);
-}
-
-.custom-cursor.is-hovering::before {
-  width: 8px;
-  height: 8px;
-  background: var(--color-accent);
-}
-
-.custom-cursor.is-hovering.is-inverse::before {
-  background: var(--color-cursor-silver);
-}
-
-.custom-cursor.is-hovering::after {
-  opacity: 0.5;
-  animation-duration: 1s;
-}
-
-/* Click state */
-.custom-cursor.is-clicking {
-  width: 16px;
-  height: 16px;
-  border-width: 3px;
-}
-
-.custom-cursor.is-clicking::before {
-  width: 6px;
-  height: 6px;
-}
-
-/* Trailing cursor - follows with delay */
-.custom-cursor-trail {
-  position: fixed;
-  width: 8px;
-  height: 8px;
-  background: var(--color-accent);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 99998;
   left: 0;
-  top: 0;
-  transform: translate(-50%, -50%);
-  opacity: 0.6;
-  transition: opacity 0.15s ease, background-color 0.3s ease;
-  will-change: transform;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  isolation: isolate;
+  z-index: var(--z-cursor);
+  pointer-events: none;
 }
 
-.custom-cursor-trail.is-inverse {
-  background: var(--color-cursor-silver);
+/* Al click el núcleo late una vez; la ráfaga ASCII hace el resto */
+.vf-cursor.is-down .vf-cursor__dot {
+  width: 11px;
+  height: 11px;
 }
 
-/* Disable mix-blend-mode to maintain correct colors */
-.custom-cursor-trail {
-  mix-blend-mode: normal;
-}
-
-.custom-cursor-trail::before {
-  content: '';
+/* Núcleo rojo: visible sobre plata, grafito y bordó */
+.vf-cursor__dot {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  height: 100%;
-  background: var(--color-accent);
-  border-radius: 50%;
+  width: 7px;
+  height: 7px;
+  background: var(--red);
+  box-shadow: 0 0 0 1.5px rgba(230, 231, 235, 0.9);
   transform: translate(-50%, -50%);
-  opacity: 0.3;
-  animation: trailPulse 1.5s ease-in-out infinite;
-  transition: background-color 0.3s ease;
+  transition: width 0.2s var(--ease-out-expo), height 0.2s var(--ease-out-expo);
 }
 
-.custom-cursor-trail.is-inverse::before {
-  background: var(--color-cursor-silver);
+.is-target .vf-cursor__dot {
+  width: 10px;
+  height: 10px;
 }
 
-@keyframes trailPulse {
-  0%, 100% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 0.3;
-  }
-  50% {
-    transform: translate(-50%, -50%) scale(2);
-    opacity: 0;
-  }
+/* Cruz grafito con filo plateado para leerse en fondos oscuros */
+.vf-cursor__line {
+  position: absolute;
+  background: var(--graphite);
+  box-shadow: 0 0 0 1px rgba(230, 231, 235, 0.85);
+  transition: width 0.25s var(--ease-out-expo), height 0.25s var(--ease-out-expo);
 }
 
-/* Hide cursor on mobile/touch devices */
-@media (hover: none) or (pointer: coarse) {
-  .custom-cursor,
-  .custom-cursor-trail {
-    display: none;
-  }
-  
-  body {
-    cursor: auto !important;
-  }
+.vf-cursor__line--h {
+  width: 26px;
+  height: 2px;
+  transform: translate(-50%, -1px);
 }
 
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .custom-cursor,
-  .custom-cursor-trail {
-    transition: none;
-    animation: none;
-  }
-  
-  .custom-cursor::after,
-  .custom-cursor-trail::before {
-    animation: none;
-  }
+.vf-cursor__line--v {
+  width: 2px;
+  height: 26px;
+  transform: translate(-1px, -50%);
 }
 
+.is-target .vf-cursor__line--h {
+  width: 10px;
+}
+
+.is-target .vf-cursor__line--v {
+  height: 10px;
+}
+
+/* Corchetes de encuadre */
+.vf-cursor__corner {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border: 2px solid var(--red);
+  opacity: 0;
+  transition: opacity 0.2s var(--ease-smooth), transform 0.3s var(--ease-out-expo);
+}
+
+.vf-cursor__corner--tl {
+  border-right: 0;
+  border-bottom: 0;
+  transform: translate(-9px, -9px);
+}
+
+.vf-cursor__corner--tr {
+  border-left: 0;
+  border-bottom: 0;
+  transform: translate(0, -9px);
+}
+
+.vf-cursor__corner--bl {
+  border-right: 0;
+  border-top: 0;
+  transform: translate(-9px, 0);
+}
+
+.vf-cursor__corner--br {
+  border-left: 0;
+  border-top: 0;
+  transform: translate(0, 0);
+}
+
+.is-target .vf-cursor__corner {
+  opacity: 1;
+}
+
+.is-target .vf-cursor__corner--tl {
+  transform: translate(-19px, -19px);
+}
+
+.is-target .vf-cursor__corner--tr {
+  transform: translate(10px, -19px);
+}
+
+.is-target .vf-cursor__corner--bl {
+  transform: translate(-19px, 10px);
+}
+
+.is-target .vf-cursor__corner--br {
+  transform: translate(10px, 10px);
+}

@@ -1,33 +1,48 @@
-import Navigation from './components/layout/Navigation'
+import { useState } from 'react'
+import Intro from './components/cinema/Intro'
+import Hud from './components/cinema/Hud'
+import CustomCursor from './components/ui/CustomCursor'
+import ClickBurst from './components/ui/ClickBurst'
 import Hero from './components/sections/Hero'
 import About from './components/sections/About'
 import Projects from './components/sections/Projects'
 import Skills from './components/sections/Skills'
 import Contact from './components/sections/Contact'
-import CustomCursor from './components/ui/CustomCursor'
-import ScrollToTop from './components/ui/ScrollToTop'
-import ScrollProgress from './components/ui/ScrollProgress'
-import PageTransition from './components/ui/PageTransition'
-import useTheme from './hooks/useTheme'
+import useSmoothScroll from './hooks/useSmoothScroll'
+import { LangProvider } from './i18n'
+
+// El splash abre cada carga (es corto y se saltea con un clic);
+// solo se omite con reduced-motion
+const shouldSkipIntro = () =>
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 function App() {
-  useTheme() // Inicializa el tema al cargar la aplicación
+  const [introDone, setIntroDone] = useState(shouldSkipIntro)
+
+  useSmoothScroll()
 
   return (
-    <>
-      <PageTransition />
+    <LangProvider>
+      {!introDone && <Intro onDone={() => setIntroDone(true)} />}
       <CustomCursor />
-      <ScrollProgress />
-      <Navigation />
+      <ClickBurst />
+      <Hud live={introDone} />
       <main>
-        <Hero />
+        <Hero play={introDone} />
         <About />
         <Projects />
         <Skills />
         <Contact />
       </main>
-      <ScrollToTop />
-    </>
+      <div className="film-layer" aria-hidden="true">
+        <div className="film-layer__grain" />
+        <div className="film-layer__vignette" />
+        <span className="film-layer__corner film-layer__corner--tl" />
+        <span className="film-layer__corner film-layer__corner--tr" />
+        <span className="film-layer__corner film-layer__corner--bl" />
+        <span className="film-layer__corner film-layer__corner--br" />
+      </div>
+    </LangProvider>
   )
 }
 

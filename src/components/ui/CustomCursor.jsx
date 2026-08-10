@@ -1,206 +1,80 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './CustomCursor.css';
 
-// Sections with inverse background (dark)
-const INVERSE_SECTIONS = ['projects', 'contact'];
-
-const NAV_ITEMS = [
-  { label: 'Inicio', href: '#hero', num: '00' },
-  { label: 'Sobre mí', href: '#about', num: '01' },
-  { label: 'Proyectos', href: '#projects', num: '02' },
-  { label: 'Skills', href: '#skills', num: '03' },
-  { label: 'Contacto', href: '#contact', num: '04' },
-];
-
+/**
+ * Retícula de puntería: núcleo rojo + cruz grafito con borde plateado
+ * (legible sobre plata, grafito o bordó). Sobre elementos interactivos
+ * despliega corchetes de encuadre. Solo existe con puntero fino.
+ */
 export default function CustomCursor() {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [trailPosition, setTrailPosition] = useState({ x: 0, y: 0 });
-  const [isHovering, setIsHovering] = useState(false);
-  const [isClicking, setIsClicking] = useState(false);
-  const [isInverseBg, setIsInverseBg] = useState(false);
-  const animationFrameRef = useRef(null);
-  const targetPositionRef = useRef({ x: 0, y: 0 });
+  const cursorRef = useRef(null);
+  const [enabled, setEnabled] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(pointer: fine)').matches
+  );
+
+  // Híbridos (tablet + mouse): la media query cambia en vivo y el CSS
+  // que oculta el cursor nativo la sigue — el componente también debe
+  useEffect(() => {
+    const mq = window.matchMedia('(pointer: fine)');
+    const onChange = (e) => setEnabled(e.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
 
   useEffect(() => {
-    const updateCursor = (e) => {
-      setPosition({ x: e.clientX, y: e.clientY });
-      targetPositionRef.current = { x: e.clientX, y: e.clientY };
+    if (!enabled) return undefined;
+    const el = cursorRef.current;
+    let targetX = -100;
+    let targetY = -100;
+    let x = targetX;
+    let y = targetY;
+    let raf = null;
+
+    const loop = () => {
+      x += (targetX - x) * 0.3;
+      y += (targetY - y) * 0.3;
+      el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      raf = requestAnimationFrame(loop);
     };
 
-    // Detect Chrome for performance optimizations
-    const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-    
-    // Only animate trail if not Chrome (disable for better performance)
-    if (!isChrome) {
-      let lastTime = 0;
-      const throttleDelay = 1000 / 60; // 60fps for non-Chrome browsers
-      
-      const animateTrail = (currentTime) => {
-        if (currentTime - lastTime >= throttleDelay) {
-          setTrailPosition(prev => {
-            const dx = targetPositionRef.current.x - prev.x;
-            const dy = targetPositionRef.current.y - prev.y;
-            const lerp = 0.2;
-            return {
-              x: prev.x + dx * lerp,
-              y: prev.y + dy * lerp,
-            };
-          });
-          lastTime = currentTime;
-        }
-        animationFrameRef.current = requestAnimationFrame(animateTrail);
-      };
-      
-      animationFrameRef.current = requestAnimationFrame(animateTrail);
-    }
-
-    const handleMouseDown = () => setIsClicking(true);
-    const handleMouseUp = () => setIsClicking(false);
-
-    // Detect hover on interactive elements
-    const handleMouseOver = (e) => {
-      const target = e.target;
-      const isInteractive = 
-        target.tagName === 'A' ||
-        target.tagName === 'BUTTON' ||
-        target.closest('a') ||
-        target.closest('button') ||
-        target.closest('.nav__link') ||
-        target.closest('.hero__cta') ||
-        target.closest('.project-card') ||
-        target.closest('.contact__link') ||
-        target.closest('.contact__email') ||
-        target.closest('.nav__theme-toggle') ||
-        target.closest('.project-card__link');
-      
-      setIsHovering(isInteractive);
+    const onMove = (e) => {
+      targetX = e.clientX;
+      targetY = e.clientY;
     };
 
-    const handleMouseOut = () => setIsHovering(false);
-
-    // Detect current section background based on cursor position
-    const detectBackground = (x, y) => {
-      const allSections = NAV_ITEMS.map(item => item.href.slice(1));
-      // First, check if cursor is directly over a section
-      for (const section of allSections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          // Check if cursor is within this section
-          if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
-            setIsInverseBg(INVERSE_SECTIONS.includes(section));
-            return;
-          }
-        }
-      }
-      // If cursor is not over any section, check by scroll position
-      let currentSection = 'hero';
-      for (const section of allSections.reverse()) {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          if (rect.top <= 150) {
-            currentSection = section;
-            break;
-          }
-        }
-      }
-      setIsInverseBg(INVERSE_SECTIONS.includes(currentSection));
+    const onOver = (e) => {
+      el.classList.toggle('is-target', Boolean(e.target.closest('a, button')));
     };
 
-    const updateCursorWithDetection = (e) => {
-      setPosition({ x: e.clientX, y: e.clientY });
-      targetPositionRef.current = { x: e.clientX, y: e.clientY };
-      detectBackground(e.clientX, e.clientY);
-    };
+    const onDown = () => el.classList.add('is-down');
+    const onUp = () => el.classList.remove('is-down');
 
-    const handleScroll = () => {
-      if (targetPositionRef.current.x && targetPositionRef.current.y) {
-        detectBackground(targetPositionRef.current.x, targetPositionRef.current.y);
-      } else {
-        // Fallback detection by scroll position
-        const sections = NAV_ITEMS.map(item => item.href.slice(1));
-        let currentSection = 'hero';
-        for (const section of sections.reverse()) {
-          const element = document.getElementById(section);
-          if (element) {
-            const rect = element.getBoundingClientRect();
-            if (rect.top <= 150) {
-              currentSection = section;
-              break;
-            }
-          }
-        }
-        setIsInverseBg(INVERSE_SECTIONS.includes(currentSection));
-      }
-    };
-
-    // Initial check
-    const initialCheck = () => {
-      if (targetPositionRef.current.x && targetPositionRef.current.y) {
-        detectBackground(targetPositionRef.current.x, targetPositionRef.current.y);
-      } else {
-        handleScroll();
-      }
-    };
-    
-    // Wait a bit for initial render
-    setTimeout(initialCheck, 100);
-
-    window.addEventListener('mousemove', updateCursorWithDetection);
-    window.addEventListener('mousedown', handleMouseDown);
-    window.addEventListener('mouseup', handleMouseUp);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    document.addEventListener('mouseover', handleMouseOver, true);
-    document.addEventListener('mouseout', handleMouseOut, true);
+    window.addEventListener('mousemove', onMove, { passive: true });
+    document.addEventListener('mouseover', onOver);
+    window.addEventListener('mousedown', onDown);
+    window.addEventListener('mouseup', onUp);
+    raf = requestAnimationFrame(loop);
 
     return () => {
-      window.removeEventListener('mousemove', updateCursorWithDetection);
-      window.removeEventListener('mousedown', handleMouseDown);
-      window.removeEventListener('mouseup', handleMouseUp);
-      window.removeEventListener('scroll', handleScroll);
-      document.removeEventListener('mouseover', handleMouseOver, true);
-      document.removeEventListener('mouseout', handleMouseOut, true);
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-        animationFrameRef.current = null;
-      }
+      cancelAnimationFrame(raf);
+      window.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseover', onOver);
+      window.removeEventListener('mousedown', onDown);
+      window.removeEventListener('mouseup', onUp);
     };
-  }, []);
+  }, [enabled]);
 
-  // Hide default cursor only on desktop
-  useEffect(() => {
-    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-      document.body.style.cursor = 'none';
-      return () => {
-        document.body.style.cursor = 'auto';
-      };
-    }
-  }, []);
-
-  // Detect Chrome
-  const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+  if (!enabled) return null;
 
   return (
-    <>
-      {/* Main cursor - follows immediately */}
-      <div
-        className={`custom-cursor ${isHovering ? 'is-hovering' : ''} ${isClicking ? 'is-clicking' : ''} ${isChrome ? 'chrome-optimized' : ''} ${isInverseBg ? 'is-inverse' : ''}`}
-        style={{
-          transform: `translate(${position.x}px, ${position.y}px)`,
-        }}
-      />
-      
-      {/* Trailing cursor - disable in Chrome for better performance */}
-      {!isChrome && (
-        <div
-          className={`custom-cursor-trail ${isInverseBg ? 'is-inverse' : ''}`}
-          style={{
-            transform: `translate(${trailPosition.x}px, ${trailPosition.y}px)`,
-          }}
-        />
-      )}
-    </>
+    <div ref={cursorRef} className="vf-cursor" aria-hidden="true">
+      <i className="vf-cursor__line vf-cursor__line--h" />
+      <i className="vf-cursor__line vf-cursor__line--v" />
+      <i className="vf-cursor__dot" />
+      <i className="vf-cursor__corner vf-cursor__corner--tl" />
+      <i className="vf-cursor__corner vf-cursor__corner--tr" />
+      <i className="vf-cursor__corner vf-cursor__corner--bl" />
+      <i className="vf-cursor__corner vf-cursor__corner--br" />
+    </div>
   );
 }
-

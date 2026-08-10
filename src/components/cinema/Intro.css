@@ -6,7 +6,6 @@
   display: grid;
   place-items: center;
   overflow: hidden;
-  cursor: pointer;
 }
 
 .intro__field {

@@ -9,7 +9,7 @@ const DURATION_MS = 2100;
 /**
  * Apertura: estática ASCII pura que "sintoniza" — el ruido decae hasta
  * volverse señal, el monograma [V/R] entra con glitch y el nombre firma
- * abajo. Corte seco al hero. Se saltea con cualquier interacción.
+ * abajo. Corte seco al hero. No se saltea: dura lo que dura.
  */
 export default function Intro({ onDone }) {
   const turbulence = useMotionValue(1);
@@ -31,19 +31,9 @@ export default function Intro({ onDone }) {
     const tuning = animate(turbulence, 0.05, { duration: 1.5, ease: [0.19, 1, 0.22, 1] });
     const timer = setTimeout(finish, DURATION_MS);
 
-    const skip = () => finish();
-    window.addEventListener('pointerdown', skip);
-    window.addEventListener('keydown', skip);
-    window.addEventListener('wheel', skip, { passive: true });
-    window.addEventListener('touchstart', skip, { passive: true });
-
     return () => {
       tuning.stop();
       clearTimeout(timer);
-      window.removeEventListener('pointerdown', skip);
-      window.removeEventListener('keydown', skip);
-      window.removeEventListener('wheel', skip);
-      window.removeEventListener('touchstart', skip);
     };
   }, [onDone, turbulence]);
 

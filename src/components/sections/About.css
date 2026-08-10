@@ -1,6 +1,9 @@
 .about {
   height: 260vh;
   position: relative;
+  /* solapa el final del hero: perfil entra mientras el mono todavía
+     se deshace — nunca hay pantalla vacía */
+  margin-top: -30vh;
 }
 
 .about__frame {
@@ -9,7 +12,8 @@
   height: 100vh;
   height: 100svh;
   overflow: hidden;
-  background: var(--silver-400);
+  /* arranca con el mismo tono que el hero: sin costura en el traspaso */
+  background: linear-gradient(180deg, var(--silver-300) 0%, var(--silver-400) 30%);
 }
 
 .about__slash {

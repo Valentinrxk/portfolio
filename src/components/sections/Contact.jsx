@@ -6,6 +6,16 @@ import './Contact.css';
 
 const EMAIL = 'hi@valentinromero.com';
 
+/* Flecha diagonal en SVG: el carácter ↗ tiene variante emoji y iOS
+   la renderiza como sticker — esto hereda color y es idéntico en todo OS */
+function ArrowOut() {
+  return (
+    <svg className="contact__arrow" viewBox="0 0 12 12" aria-hidden="true">
+      <path d="M2.5 9.5 L9.5 2.5 M4.5 2.5 H9.5 V7.5" fill="none" stroke="currentColor" strokeWidth="1.6" />
+    </svg>
+  );
+}
+
 /**
  * Contacto: la pared de estática se resuelve en señal y del ruido
  * emerge el único llamado que importa — el mail, gigante.
@@ -61,10 +71,10 @@ export default function Contact() {
               {t.contact.status}
             </span>
             <a href="https://www.linkedin.com/in/valentin-romero-61b089139/" target="_blank" rel="noopener noreferrer">
-              linkedin <span aria-hidden="true">↗</span>
+              linkedin <ArrowOut />
             </a>
             <a href="https://github.com/valentinrxk" target="_blank" rel="noopener noreferrer">
-              github <span aria-hidden="true">↗</span>
+              github <ArrowOut />
             </a>
           </div>
         </motion.div>

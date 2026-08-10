@@ -1,5 +1,5 @@
 .hero {
-  height: 220vh;
+  height: 190vh;
   position: relative;
 }
 
@@ -12,7 +12,7 @@
   background: var(--silver-300);
 }
 
-/* ——— El retrato manda ——— */
+/* ——— El retrato manda (el giro 3D vive dentro del canvas) ——— */
 .hero__portrait {
   position: absolute;
   inset: 0;
@@ -167,6 +167,10 @@
   }
 
   .is-playing .hero__statement {
+    animation: none;
+  }
+
+  .hero__canvas {
     animation: none;
   }
 }

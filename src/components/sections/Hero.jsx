@@ -19,10 +19,11 @@ export default function Hero({ play }) {
     offset: ['start start', 'end end'],
   });
 
-  // El retrato se rompe en bandas durante el primer tramo del scroll
-  const tear = useTransform(scrollYProgress, [0.05, 0.7], [0, 1]);
-  const typeOpacity = useTransform(scrollYProgress, [0.2, 0.55], [1, 0]);
-  const typeY = useTransform(scrollYProgress, [0.2, 0.6], [0, -80]);
+  // El desarme acompaña todo el recorrido pero nunca completa: quedan
+  // jirones en pantalla hasta que perfil cubre el encuadre — sin vacío
+  const tear = useTransform(scrollYProgress, [0.08, 0.95], [0, 0.78]);
+  const typeOpacity = useTransform(scrollYProgress, [0.3, 0.7], [1, 0]);
+  const typeY = useTransform(scrollYProgress, [0.3, 0.75], [0, -80]);
 
   const typeStyle = reduced ? undefined : { opacity: typeOpacity, y: typeY };
 

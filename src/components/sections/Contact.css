@@ -121,12 +121,25 @@
 }
 
 .contact__meta a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
   color: var(--silver-500);
   transition: color 0.25s var(--ease-smooth);
 }
 
 .contact__meta a:hover {
   color: var(--red);
+}
+
+.contact__arrow {
+  width: 0.7em;
+  height: 0.7em;
+  transition: transform 0.3s var(--ease-out-expo);
+}
+
+.contact__meta a:hover .contact__arrow {
+  transform: translate(2px, -2px);
 }
 
 /* ——— Pie ——— */

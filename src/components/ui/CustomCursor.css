@@ -1,4 +1,4 @@
-/* El puntero del sistema desaparece: manda la retícula */
+/* El puntero del sistema desaparece: manda el caret */
 @media (pointer: fine) {
   html, body, a, button, [role='button'] {
     cursor: none;
@@ -11,108 +11,65 @@
   left: 0;
   z-index: var(--z-cursor);
   pointer-events: none;
+  font-family: var(--font-mono);
+  font-weight: 700;
 }
 
-/* Al click el núcleo late una vez; la ráfaga ASCII hace el resto */
-.vf-cursor.is-down .vf-cursor__dot {
-  width: 11px;
-  height: 11px;
-}
-
-/* Núcleo rojo: visible sobre plata, grafito y bordó */
-.vf-cursor__dot {
+/* El caret: bloque de terminal rojo, parpadeo seco */
+.vf-cursor__caret {
   position: absolute;
-  width: 7px;
-  height: 7px;
-  background: var(--red);
-  box-shadow: 0 0 0 1.5px var(--cursor-halo);
+  font-size: 15px;
+  line-height: 1;
+  color: var(--red);
   transform: translate(-50%, -50%);
-  transition: width 0.2s var(--ease-out-expo), height 0.2s var(--ease-out-expo);
+  text-shadow: 0 0 5px var(--cursor-halo);
+  animation: caret-pulse 1.2s var(--ease-cut) infinite;
+  transition: transform 0.16s var(--ease-out-expo);
 }
 
-.is-target .vf-cursor__dot {
-  width: 10px;
-  height: 10px;
+@keyframes caret-pulse {
+  0%, 58% { opacity: 1; }
+  59%, 100% { opacity: 0.45; }
 }
 
-/* Cruz grafito con filo plateado para leerse en fondos oscuros */
-.vf-cursor__line {
+/* Click: el bloque se aplasta a guión bajo — tecleaste */
+.is-down .vf-cursor__caret {
+  transform: translate(-50%, -18%) scaleY(0.28);
+}
+
+/* Sobre lo interactivo, la marca: [▮] */
+.vf-cursor__bracket {
   position: absolute;
-  background: var(--graphite);
-  box-shadow: 0 0 0 1px var(--cursor-halo);
-  transition: width 0.25s var(--ease-out-expo), height 0.25s var(--ease-out-expo);
-}
-
-.vf-cursor__line--h {
-  width: 26px;
-  height: 2px;
-  transform: translate(-50%, -1px);
-}
-
-.vf-cursor__line--v {
-  width: 2px;
-  height: 26px;
-  transform: translate(-1px, -50%);
-}
-
-.is-target .vf-cursor__line--h {
-  width: 10px;
-}
-
-.is-target .vf-cursor__line--v {
-  height: 10px;
-}
-
-/* Corchetes de encuadre */
-.vf-cursor__corner {
-  position: absolute;
-  width: 9px;
-  height: 9px;
-  border: 2px solid var(--red);
+  font-size: 19px;
+  line-height: 1;
+  color: var(--red);
+  text-shadow: 0 0 5px var(--cursor-halo);
   opacity: 0;
-  transition: opacity 0.2s var(--ease-smooth), transform 0.3s var(--ease-out-expo);
+  transition: opacity 0.18s var(--ease-smooth), transform 0.3s var(--ease-out-expo);
 }
 
-.vf-cursor__corner--tl {
-  border-right: 0;
-  border-bottom: 0;
-  transform: translate(-9px, -9px);
+.vf-cursor__bracket--l {
+  transform: translate(-50%, -50%);
 }
 
-.vf-cursor__corner--tr {
-  border-left: 0;
-  border-bottom: 0;
-  transform: translate(0, -9px);
+.vf-cursor__bracket--r {
+  transform: translate(-50%, -50%);
 }
 
-.vf-cursor__corner--bl {
-  border-right: 0;
-  border-top: 0;
-  transform: translate(-9px, 0);
-}
-
-.vf-cursor__corner--br {
-  border-left: 0;
-  border-top: 0;
-  transform: translate(0, 0);
-}
-
-.is-target .vf-cursor__corner {
+.is-target .vf-cursor__bracket {
   opacity: 1;
 }
 
-.is-target .vf-cursor__corner--tl {
-  transform: translate(-19px, -19px);
+.is-target .vf-cursor__bracket--l {
+  transform: translate(calc(-50% - 13px), -50%);
 }
 
-.is-target .vf-cursor__corner--tr {
-  transform: translate(10px, -19px);
+.is-target .vf-cursor__bracket--r {
+  transform: translate(calc(-50% + 13px), -50%);
 }
 
-.is-target .vf-cursor__corner--bl {
-  transform: translate(-19px, 10px);
-}
-
-.is-target .vf-cursor__corner--br {
-  transform: translate(10px, 10px);
+@media (prefers-reduced-motion: reduce) {
+  .vf-cursor__caret {
+    animation: none;
+  }
 }

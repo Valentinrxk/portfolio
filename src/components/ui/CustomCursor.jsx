@@ -2,9 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import './CustomCursor.css';
 
 /**
- * Retícula de puntería: núcleo rojo + cruz grafito con borde plateado
- * (legible sobre plata, grafito o bordó). Sobre elementos interactivos
- * despliega corchetes de encuadre. Solo existe con puntero fino.
+ * Cursor ASCII-nativo: un caret de terminal (▮ rojo, parpadeo seco).
+ * Sobre lo interactivo se abre en corchetes — [▮] — la familia del
+ * monograma. Al click, el bloque se aplasta a guión bajo: tecleás.
+ * Solo existe con puntero fino.
  */
 export default function CustomCursor() {
   const cursorRef = useRef(null);
@@ -68,13 +69,9 @@ export default function CustomCursor() {
 
   return (
     <div ref={cursorRef} className="vf-cursor" aria-hidden="true">
-      <i className="vf-cursor__line vf-cursor__line--h" />
-      <i className="vf-cursor__line vf-cursor__line--v" />
-      <i className="vf-cursor__dot" />
-      <i className="vf-cursor__corner vf-cursor__corner--tl" />
-      <i className="vf-cursor__corner vf-cursor__corner--tr" />
-      <i className="vf-cursor__corner vf-cursor__corner--bl" />
-      <i className="vf-cursor__corner vf-cursor__corner--br" />
+      <span className="vf-cursor__bracket vf-cursor__bracket--l">[</span>
+      <span className="vf-cursor__caret">▮</span>
+      <span className="vf-cursor__bracket vf-cursor__bracket--r">]</span>
     </div>
   );
 }

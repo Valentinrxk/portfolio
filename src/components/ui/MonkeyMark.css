@@ -1,0 +1,15 @@
+.monkey-mark {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: pre;
+  color: currentColor;
+  user-select: none;
+  text-transform: none;
+}
+
+.monkey-mark__red {
+  color: var(--red);
+}

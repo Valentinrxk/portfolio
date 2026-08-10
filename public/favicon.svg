@@ -1,17 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <!-- Monograma [V/R] sobre plata industrial -->
-  <rect width="32" height="32" fill="#cfd0d6"/>
-
-  <!-- Corchetes grafito -->
-  <path d="M8 6 H5 V26 H8" fill="none" stroke="#35353c" stroke-width="2"/>
-  <path d="M24 6 H27 V26 H24" fill="none" stroke="#35353c" stroke-width="2"/>
-
-  <!-- V grafito -->
-  <path d="M9 9 L13 21 L17 9" fill="none" stroke="#232327" stroke-width="2.6"/>
-
-  <!-- Slash rojo -->
-  <rect x="17.4" y="8" width="2.4" height="17" fill="#e10600" transform="rotate(14 18.6 16.5)"/>
-
-  <!-- R grafito -->
-  <path d="M21 23 V11 H24.2 A2.6 2.6 0 0 1 24.2 17 H21 M23 17 L26 23" fill="none" stroke="#232327" stroke-width="2.2"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 92 92">
+  <!-- el monito en ASCII real: V nariz y oreja derecha de R, en rojo -->
+  <g font-family="Consolas, 'Courier New', monospace" font-size="10" font-weight="700" fill="#232327" xml:space="preserve">
+    <text x="1" y="18" xml:space="preserve">   .==#%#==.</text>
+    <text x="1" y="28" xml:space="preserve"> =%+.:#%#:.+%=</text>
+    <text x="1" y="38" xml:space="preserve">(@:   ...   :<tspan fill="#e10600">R</tspan>)</text>
+    <text x="1" y="48" xml:space="preserve">(@.  o   o  .<tspan fill="#e10600">R</tspan>)</text>
+    <text x="1" y="58" xml:space="preserve">(@:    <tspan fill="#e10600">V</tspan>    :<tspan fill="#e10600">R</tspan>)</text>
+    <text x="1" y="68" xml:space="preserve"> =%= .===. =%=</text>
+    <text x="1" y="78" xml:space="preserve">  .=#%%%#=.</text>
+  </g>
 </svg>

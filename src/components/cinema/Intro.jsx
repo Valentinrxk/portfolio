@@ -1,10 +1,20 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useMotionValue, animate } from 'motion/react';
 import AsciiField from '../ascii/AsciiField';
+import MonkeyMark from '../ui/MonkeyMark';
 import { useLang } from '../../i18n';
 import './Intro.css';
 
-const DURATION_MS = 2100;
+const DURATION_MS = 2350;
+
+// El monito se despierta mientras la señal sintoniza: dormido →
+// despierto → guiño → sonrisa. Animación ASCII por swap de caracteres.
+const EXPRESSIONS = [
+  { at: 450, eyes: '-   -', mouth: '.---.' },
+  { at: 1000, eyes: 'o   o', mouth: '.===.' },
+  { at: 1500, eyes: 'o   -', mouth: '\\===/' },
+  { at: 1950, eyes: 'o   o', mouth: '\\===/' },
+];
 
 /**
  * Apertura: estática ASCII pura que "sintoniza" — el ruido decae hasta
@@ -15,6 +25,7 @@ export default function Intro({ onDone }) {
   const turbulence = useMotionValue(1);
   const doneRef = useRef(false);
   const { t } = useLang();
+  const [face, setFace] = useState(EXPRESSIONS[0]);
 
   useEffect(() => {
     document.body.classList.add('intro-lock');
@@ -30,10 +41,14 @@ export default function Intro({ onDone }) {
 
     const tuning = animate(turbulence, 0.05, { duration: 1.5, ease: [0.19, 1, 0.22, 1] });
     const timer = setTimeout(finish, DURATION_MS);
+    const faceTimers = EXPRESSIONS.map((expr) =>
+      setTimeout(() => setFace(expr), expr.at)
+    );
 
     return () => {
       tuning.stop();
       clearTimeout(timer);
+      faceTimers.forEach(clearTimeout);
     };
   }, [onDone, turbulence]);
 
@@ -53,9 +68,9 @@ export default function Intro({ onDone }) {
       </div>
 
       <div className="intro__lockup">
-        <p className="intro__logo">
-          <span className="intro__bracket">[</span>V<span className="intro__slash">/</span>R<span className="intro__bracket">]</span>
-        </p>
+        <div className="intro__logo">
+          <MonkeyMark size={168} eyes={face.eyes} mouth={face.mouth} className="intro__monkey" />
+        </div>
         <span className="intro__rule" />
         <p className="intro__name caps">{t.intro.sign}</p>
       </div>

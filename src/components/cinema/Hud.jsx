@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useSpring } from 'motion/react';
 import { smoothScrollTo } from '../../hooks/useSmoothScroll';
 import { useLang, EMAIL } from '../../i18n';
+import MonkeyMark from '../ui/MonkeyMark';
 import './Hud.css';
 
 const SECTION_IDS = ['hero', 'about', 'projects', 'skills', 'contact'];
@@ -128,7 +129,7 @@ export default function Hud({ live }) {
     <>
       <header className={`hud hud--top ${live ? 'is-live' : ''}`}>
         <button type="button" className="hud__brand" onClick={() => smoothScrollTo(0)} aria-label="volver arriba">
-          <span className="hud__brand-bracket">[</span>v<span className="hud__brand-slash">/</span>r<span className="hud__brand-bracket">]</span>
+          <MonkeyMark size={34} className="hud__brand-mark" />
         </button>
 
         <div className="hud__right">

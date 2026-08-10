@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react';
 import AsciiField from '../ascii/AsciiField';
+import MonkeyMark from '../ui/MonkeyMark';
 import { useLang } from '../../i18n';
 import './Contact.css';
 
@@ -81,7 +82,7 @@ export default function Contact() {
 
         <footer className="contact__footer caps">
           <span className="contact__mark" aria-hidden="true">
-            <span>[</span>v<span className="contact__mark-slash">/</span>r<span>]</span>
+            <MonkeyMark size={30} />
           </span>
           <span>© {new Date().getFullYear()} valentín romero — {t.contact.footer}</span>
         </footer>

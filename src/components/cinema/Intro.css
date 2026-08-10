@@ -28,23 +28,20 @@
 }
 
 .intro__logo {
-  font-size: clamp(4.5rem, 16vw, 11rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1;
   color: var(--graphite);
   opacity: 0;
   animation: glitch-in 0.5s steps(5, end) 0.45s forwards;
-  text-shadow: 0 0 26px rgba(207, 208, 214, 0.9);
+  filter: drop-shadow(0 0 22px rgba(207, 208, 214, 0.95));
 }
 
-.intro__bracket {
-  color: var(--steel-600);
-  font-weight: 400;
+.intro__monkey {
+  display: block;
 }
 
-.intro__slash {
-  color: var(--red);
+@media (max-width: 640px) {
+  .intro__monkey {
+    font-size: 16px !important;
+  }
 }
 
 .intro__rule {

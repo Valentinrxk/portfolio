@@ -33,29 +33,21 @@
   transform: translateY(0);
 }
 
-/* ——— Marca ——— */
+/* ——— Marca: el monito ——— */
 .hud__brand {
   flex: 0 0 auto;
-  font-size: 1rem;
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  display: inline-flex;
+  align-items: center;
   color: var(--graphite);
-  padding: 0.3rem 0;
+  padding: 0.2rem 0;
 }
 
-.hud__brand-bracket {
-  color: var(--steel-600);
-  font-weight: 400;
+.hud__brand-mark {
+  transition: transform 0.35s var(--ease-out-expo);
 }
 
-.hud__brand-slash {
-  color: var(--red);
-  display: inline-block;
-  transition: transform 0.3s var(--ease-out-expo);
-}
-
-.hud__brand:hover .hud__brand-slash {
-  transform: skewX(-14deg) translateX(1px);
+.hud__brand:hover .hud__brand-mark {
+  transform: rotate(-8deg) scale(1.08);
 }
 
 /* ——— Lado derecho: idioma + medidor ——— */

@@ -28,6 +28,7 @@ const DICT = {
         oclucrm: 'crm para clínicas: pacientes, turnos y administración en una pantalla que no te pelea.',
         grip: 'landing para grip®, agencia de marketing de buenos aires. marcas que se te pegan, cero chamuyo corporativo.',
         taxes: 'impuestos y declaraciones sin laberinto. números claros para gente que odia los números.',
+        riestra: 'sitio del club deportivo riestra, de la d a primera. la página es la camiseta: escudo, sponsor y el partido en vivo.',
       },
     },
     skills: {
@@ -64,6 +65,7 @@ const DICT = {
         oclucrm: "clinic crm: patients, appointments and admin in one screen that doesn't fight back.",
         grip: 'landing for grip®, a buenos aires marketing agency. brands that stick, zero corporate small talk.',
         taxes: 'taxes and filings without the maze. clear numbers for people who hate numbers.',
+        riestra: 'site for club deportivo riestra, from the fifth division to the top flight. the page is the jersey: crest, sponsor, live match.',
       },
     },
     skills: {

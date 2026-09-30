@@ -11,6 +11,7 @@ const WORK_FRAMES = {
   oclucrm: () => import('../../assets/works/oclucrm-frames.json'),
   grip: () => import('../../assets/works/grip-frames.json'),
   taxes: () => import('../../assets/works/taxes-frames.json'),
+  riestra: () => import('../../assets/works/riestra-frames.json'),
 };
 
 function WorkAscii({ workKey, dark }) {
@@ -61,6 +62,14 @@ const PROJECTS = [
     tech: 'vue · express · postgresql',
     image: '/taxes.png',
     link: 'https://www.taxes.com.ar/',
+  },
+  {
+    key: 'riestra',
+    title: 'deportivo riestra',
+    domain: 'deportivoriestra.com.ar',
+    tech: 'astro · gsap · supabase · cloudflare workers',
+    image: '/deportivoriestra.png',
+    link: 'https://deportivoriestra.com.ar/',
   },
 ];
 

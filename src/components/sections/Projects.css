@@ -87,28 +87,35 @@
 }
 
 .frame__ascii,
-.frame__real {
+.frame__video {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
 }
 
-.frame__real {
+.frame__ascii {
+  transition: opacity 0.5s var(--ease-smooth);
+}
+
+.frame__video {
   object-fit: cover;
   object-position: top center;
   opacity: 0;
-  transform: scale(1.02);
-  transition: opacity 0.45s var(--ease-smooth), transform 0.7s var(--ease-out-expo);
+  transform: scale(1.04);
+  transition: opacity 0.6s var(--ease-smooth), transform 0.9s var(--ease-out-expo);
 }
 
 .frame__screen:hover {
   border-color: var(--red);
 }
 
-/* El hover disuelve el ASCII y revela la captura */
-.frame__screen:hover .frame__real,
-.frame__screen:focus-visible .frame__real {
+/* En escena el reel real corre y los caracteres se disuelven */
+.frame__screen.is-live .frame__ascii {
+  opacity: 0;
+}
+
+.frame__screen.is-live .frame__video {
   opacity: 1;
   transform: scale(1);
 }
@@ -249,7 +256,9 @@
     margin: 0 auto;
   }
 
-  .frame__real {
+  /* Sin reproducción: queda el póster del reel */
+  .frame__video {
     opacity: 1;
+    transform: none;
   }
 }

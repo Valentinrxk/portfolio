@@ -11,8 +11,12 @@ export default function AsciiPlayer({
   ink = 'rgba(230, 231, 235, 0.8)',
   accent = '#e10600',
   className = '',
+  paused = false,
 }) {
   const canvasRef = useRef(null);
+  // Tapado por otra capa (el video real): no dibujar en vano
+  const pausedRef = useRef(paused);
+  pausedRef.current = paused;
 
   useEffect(() => {
     if (!data) return undefined;
@@ -103,7 +107,7 @@ export default function AsciiPlayer({
     const draw = (now) => {
       if (!running) return;
       raf = requestAnimationFrame(draw);
-      if (!visible) return;
+      if (!visible || pausedRef.current) return;
 
       if (now - last >= frameTime) {
         last = now;

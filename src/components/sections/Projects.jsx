@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react';
 import AsciiPlayer from '../ascii/AsciiPlayer';
 import { useLang, EMAIL } from '../../i18n';
@@ -147,12 +147,17 @@ function WorkScreen({ project, dark, view, onFocus }) {
   );
 }
 
+// Ficha técnica por capa, el back primero: lo que no se ve en el reel
 const PROJECTS = [
   {
     key: 'riestra',
     title: 'deportivo riestra',
     domain: 'deportivoriestra.com.ar',
-    tech: 'astro · gsap · supabase · cloudflare workers',
+    stack: [
+      ['back', 'postgresql + rls · supabase · cloudflare workers · astro ssr'],
+      ['front', 'astro · gsap · lenis'],
+      ['infra', 'vercel · cloudflare'],
+    ],
     video: '/works/riestra.mp4',
     poster: '/works/riestra.jpg',
     link: 'https://deportivoriestra.com.ar/',
@@ -161,7 +166,11 @@ const PROJECTS = [
     key: 'oclucrm',
     title: 'oclucrm',
     domain: 'oclucrm.com',
-    tech: 'vue · laravel · tailwindcss · mysql',
+    stack: [
+      ['back', 'php 8 · laravel · mysql · redis · multi-tenant · api rest · afip · openai'],
+      ['front', 'vue 3 · three.js · dicom'],
+      ['infra', 'docker · aws s3 · sentry · bitbucket ci'],
+    ],
     video: '/works/oclucrm.mp4',
     poster: '/works/oclucrm.jpg',
     link: 'https://www.oclucrm.com/',
@@ -170,7 +179,7 @@ const PROJECTS = [
     key: 'grip',
     title: 'grip studio',
     domain: 'gripppp.com',
-    tech: 'vite · javascript · branding',
+    stack: [['front', 'vite · javascript']],
     video: '/works/grip.mp4',
     poster: '/works/grip.jpg',
     link: 'https://gripppp.com/',
@@ -179,7 +188,12 @@ const PROJECTS = [
     key: 'taxes',
     title: 'taxes software',
     domain: 'taxes.com.ar',
-    tech: 'vue · express · postgresql',
+    stack: [
+      ['back', 'php 8 · laravel · mysql · jobs + supervisor · afip ws · openai · mcp (node)'],
+      ['front', 'vue'],
+      ['app', 'react native · expo · typescript'],
+      ['infra', 'docker · sendgrid'],
+    ],
     video: '/works/taxes.mp4',
     poster: '/works/taxes.jpg',
     link: 'https://www.taxes.com.ar/',
@@ -259,7 +273,7 @@ export default function Projects() {
             <article key={project.key} className="frame">
               <div className="frame__head caps">
                 <span className="frame__domain">{project.domain}</span>
-                <span className="frame__meta">{project.tech}</span>
+                <span className="frame__meta">{t.projects.kinds[project.key]}</span>
               </div>
 
               <WorkScreen
@@ -271,7 +285,25 @@ export default function Projects() {
 
               <div className="frame__info">
                 <h3 className="frame__name">{project.title}</h3>
-                <p className="frame__description">{t.projects.items[project.key]}</p>
+                <div className="frame__about">
+                  <p className="frame__description">{t.projects.items[project.key]}</p>
+                  <dl className="frame__stack caps">
+                    {project.stack.map(([layer, tech]) => (
+                      <div key={layer} className={`frame__stack-row frame__stack-row--${layer}`}>
+                        <dt>{layer}</dt>
+                        <dd>
+                          {tech.split(' · ').map((item, i, all) => (
+                            <Fragment key={item}>
+                              <span className="frame__tech">{item}</span>
+                              {/* el punto se queda con la anterior: el corte cae después */}
+                              {i < all.length - 1 ? ' · ' : ''}
+                            </Fragment>
+                          ))}
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
               </div>
             </article>
           ))}

@@ -150,11 +150,50 @@
   white-space: nowrap;
 }
 
-.frame__description {
+.frame__about {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   max-width: 26rem;
+}
+
+.frame__description {
   color: var(--silver-500);
   line-height: 1.6;
   font-size: 0.95rem;
+}
+
+/* Ficha técnica: una fila por capa, el back marcado en rojo */
+.frame__stack {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 0.45rem 1.1rem;
+  margin: 0;
+  padding-top: 0.9rem;
+  border-top: 1px solid color-mix(in srgb, var(--silver-100) 16%, transparent);
+}
+
+.frame__stack-row {
+  display: contents;
+}
+
+.frame__stack dt {
+  color: var(--steel-600);
+}
+
+.frame__stack dd {
+  margin: 0;
+  line-height: 1.55;
+  color: var(--silver-200);
+}
+
+/* Cada tecnología entera en su línea; el corte cae después del separador */
+.frame__tech {
+  white-space: nowrap;
+}
+
+.frame__stack-row--back dt {
+  color: var(--red);
 }
 
 /* ——— Cierre: la próxima obra ——— */

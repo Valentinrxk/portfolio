@@ -15,7 +15,7 @@ const DICT = {
     about: {
       takes: [
         'no soy una fábrica de features: soy la persona que dice que no cuando el brief pide otra plantilla.',
-        'lo técnico es el piso — react, vue, node. el techo es el criterio: saber qué sobra.',
+        'lo técnico es el piso — php, laravel, java, node, vue, react. el techo es el criterio: saber qué sobra.',
         'si algo de acá te hizo ruido, perfecto. lo genérico no hace ruido.',
       ],
     },
@@ -24,6 +24,12 @@ const DICT = {
       view: 'ver ⟶',
       missing: 'falta la tuya.',
       write: 'escribime',
+      kinds: {
+        riestra: 'sitio + panel de prensa',
+        oclucrm: 'saas multi-tenant',
+        grip: 'landing + branding',
+        taxes: 'saas + app móvil',
+      },
       items: {
         oclucrm: 'crm para clínicas: pacientes, turnos y administración en una pantalla que no te pelea.',
         grip: 'landing para grip®, agencia de marketing de buenos aires. marcas que se te pegan, cero chamuyo corporativo.',
@@ -52,7 +58,7 @@ const DICT = {
     about: {
       takes: [
         "i'm not a feature factory: i'm the person who says no when the brief asks for another template.",
-        'the tech is the floor — react, vue, node. taste is the ceiling: knowing what to cut.',
+        'the tech is the floor — php, laravel, java, node, vue, react. taste is the ceiling: knowing what to cut.',
         'if something here made noise in your head — good. generic is silent.',
       ],
     },
@@ -61,6 +67,12 @@ const DICT = {
       view: 'view ⟶',
       missing: 'yours is missing.',
       write: 'write me',
+      kinds: {
+        riestra: 'site + press panel',
+        oclucrm: 'multi-tenant saas',
+        grip: 'landing + branding',
+        taxes: 'saas + mobile app',
+      },
       items: {
         oclucrm: "clinic crm: patients, appointments and admin in one screen that doesn't fight back.",
         grip: 'landing for grip®, a buenos aires marketing agency. brands that stick, zero corporate small talk.',

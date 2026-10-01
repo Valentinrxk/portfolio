@@ -18,7 +18,9 @@
 .projects__track {
   position: relative;
   display: flex;
-  align-items: center;
+  /* Piezas alineadas arriba: la ficha técnica varía de alto según el stack,
+     y centradas se desfasaban; así pantallas y cabezales quedan a nivel */
+  align-items: flex-start;
   gap: clamp(3rem, 7vw, 7rem);
   padding: clamp(2.5rem, 5vh, 4rem) clamp(6vw, 8vw, 10vw);
   will-change: transform;
@@ -27,6 +29,7 @@
 /* ——— Cartón de apertura ——— */
 .projects__opener {
   flex: 0 0 auto;
+  align-self: center;
   width: min(38rem, 72vw);
   display: flex;
   flex-direction: column;
@@ -199,6 +202,7 @@
 /* ——— Cierre: la próxima obra ——— */
 .projects__cta {
   flex: 0 0 auto;
+  align-self: center;
   width: min(44rem, 78vw);
   display: flex;
   flex-direction: column;

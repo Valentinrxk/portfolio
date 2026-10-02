@@ -40,6 +40,7 @@
   display: inline-flex;
   align-items: baseline;
   gap: 0.6rem;
+  font-size: clamp(0.9375rem, 0.9rem + 0.2vw, 1.0625rem);
   color: var(--steel-700);
   opacity: 0;
 }

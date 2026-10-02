@@ -74,7 +74,7 @@ export default function Intro({ onDone }) {
           <MonkeyMark size={168} eyes={face.eyes} mouth={face.mouth} className="intro__monkey" />
         </div>
         <span className="intro__rule" />
-        <p className="intro__name caps">{t.intro.sign}</p>
+        <p className="intro__name label">{t.intro.sign}</p>
       </div>
     </div>
   );

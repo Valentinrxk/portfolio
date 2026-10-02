@@ -202,7 +202,6 @@
   /* área táctil de al menos ~44px sin cambiar la estética */
   .hud__link {
     padding: 0.85rem 0.3rem;
-    letter-spacing: 0.08em;
   }
 
   .hud__lang-opt {

@@ -127,8 +127,8 @@
 .dna__card-seed {
   margin-left: auto;
   font-family: var(--font-mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.1em;
+  font-size: 0.75rem;
+  letter-spacing: 0;
   color: var(--red);
 }
 

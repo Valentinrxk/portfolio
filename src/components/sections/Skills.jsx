@@ -34,7 +34,7 @@ function Card({ progress, drift, rotate, skew, title, mode, reduced, dark }) {
     >
       <header className="dna__card-bar">
         <span className="dna__card-dots" aria-hidden="true"><i /><i /><i /></span>
-        <span className="dna__card-title caps">{title}</span>
+        <span className="dna__card-title label">{title}</span>
         <SeedTag />
       </header>
       <div className="dna__card-canvas">

@@ -136,7 +136,7 @@ export default function Hud({ live }) {
         </button>
 
         <div className="hud__right">
-          <div className="hud__lang caps" role="group" aria-label="idioma / language">
+          <div className="hud__lang label" role="group" aria-label="idioma / language">
             <button
               type="button"
               className={`hud__lang-opt ${lang === 'es' ? 'is-active' : ''}`}
@@ -156,7 +156,7 @@ export default function Hud({ live }) {
             </button>
           </div>
 
-          <div className="hud__lang caps" role="group" aria-label="tema / theme">
+          <div className="hud__lang label" role="group" aria-label="tema / theme">
             <button
               type="button"
               className={`hud__lang-opt ${theme === 'light' ? 'is-active' : ''}`}
@@ -194,7 +194,7 @@ export default function Hud({ live }) {
             <li key={id}>
               <button
                 type="button"
-                className={`hud__link caps ${i === active ? 'is-active' : ''}`}
+                className={`hud__link label ${i === active ? 'is-active' : ''}`}
                 onClick={() => goTo(id)}
                 aria-current={i === active ? 'true' : undefined}
               >

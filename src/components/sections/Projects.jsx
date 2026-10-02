@@ -142,7 +142,7 @@ function WorkScreen({ project, dark, view, onFocus }) {
         aria-hidden="true"
         tabIndex={-1}
       />
-      <span className="frame__play caps" aria-hidden="true">{view}</span>
+      <span className="frame__play label" aria-hidden="true">{view}</span>
     </a>
   );
 }
@@ -271,7 +271,7 @@ export default function Projects() {
 
           {PROJECTS.map((project) => (
             <article key={project.key} className="frame">
-              <div className="frame__head caps">
+              <div className="frame__head label">
                 <span className="frame__domain">{project.domain}</span>
                 <span className="frame__meta">{t.projects.kinds[project.key]}</span>
               </div>
@@ -287,7 +287,7 @@ export default function Projects() {
                 <h3 className="frame__name">{project.title}</h3>
                 <div className="frame__about">
                   <p className="frame__description">{t.projects.items[project.key]}</p>
-                  <dl className="frame__stack caps">
+                  <dl className="frame__stack label">
                     {project.stack.map(([layer, tech]) => (
                       <div key={layer} className={`frame__stack-row frame__stack-row--${layer}`}>
                         <dt>{layer}</dt>

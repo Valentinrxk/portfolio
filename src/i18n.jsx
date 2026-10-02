@@ -6,9 +6,9 @@ const DICT = {
   es: {
     nav: { hero: 'inicio', about: 'perfil', projects: 'obras', skills: 'adn', contact: 'contacto' },
     theme: { light: 'día', dark: 'noche' },
-    intro: { sign: 'valentín romero — portfolio' },
+    intro: { sign: 'valentín romero' },
     hero: {
-      kicker: 'valentín romero — buenos aires',
+      kicker: 'valentín romero, desarrollador en buenos aires',
       statement: 'el criterio no se descarga',
       sub: 'código, estética y la obsesión por no parecerse a nada.',
     },
@@ -49,9 +49,9 @@ const DICT = {
   en: {
     nav: { hero: 'home', about: 'profile', projects: 'works', skills: 'dna', contact: 'contact' },
     theme: { light: 'day', dark: 'night' },
-    intro: { sign: 'valentín romero — portfolio' },
+    intro: { sign: 'valentín romero' },
     hero: {
-      kicker: 'valentín romero — buenos aires',
+      kicker: 'valentín romero, developer in buenos aires',
       statement: "taste can't be downloaded",
       sub: 'code, aesthetics, and an obsession with looking like nothing else.',
     },

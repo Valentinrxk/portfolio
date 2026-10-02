@@ -20,11 +20,13 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1;
 }
 
-/* Etiquetas: minúscula espaciada, números tabulares */
-.caps {
-  font-size: 0.6875rem;
+/* Etiquetas: texto chico pero legible, tracking natural de Helvetica.
+   Nada de minúscula microscópica espaciada: la jerarquía la da el color. */
+.label {
+  font-size: 0.875rem;
   font-weight: 500;
-  letter-spacing: var(--track-caps);
+  line-height: 1.35;
+  letter-spacing: -0.005em;
   font-variant-numeric: tabular-nums;
 }
 
@@ -51,6 +53,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (max-width: 768px) {
+  .label {
+    font-size: 0.8125rem;
+  }
+
   .outline-text {
     -webkit-text-stroke-width: 1px;
   }

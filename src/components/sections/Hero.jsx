@@ -41,7 +41,7 @@ export default function Hero({ play }) {
         </div>
 
         <motion.div className="hero__type" style={typeStyle}>
-          <p className="hero__kicker caps">
+          <p className="hero__kicker label">
             <span className="hero__kicker-slash" aria-hidden="true">///</span>
             {t.hero.kicker}
           </p>

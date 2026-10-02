@@ -66,7 +66,7 @@ export default function Contact() {
             {EMAIL.split('@')[1]}
           </a>
 
-          <div className="contact__meta caps">
+          <div className="contact__meta label">
             <span className="contact__status">
               <i aria-hidden="true" />
               {t.contact.status}
@@ -80,7 +80,7 @@ export default function Contact() {
           </div>
         </motion.div>
 
-        <footer className="contact__footer caps">
+        <footer className="contact__footer label">
           <span className="contact__mark" aria-hidden="true">
             <MonkeyMark size={30} />
           </span>

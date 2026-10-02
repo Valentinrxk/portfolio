@@ -52,10 +52,16 @@
   animation: rule-grow 0.6s var(--ease-out-expo) 1.05s forwards;
 }
 
+/* La firma va sobre el ruido ASCII: tinta plena y una placa del color del
+   fondo para que la estática no le pase por debajo */
 .intro__name {
-  color: var(--steel-700);
+  padding: 0.3rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--graphite);
+  background: var(--silver-300);
+  box-shadow: 0 0 18px 10px var(--silver-300);
   opacity: 0;
   animation: fade-in 0.5s var(--ease-smooth) 1.2s forwards;
-  text-shadow: 0 0 14px var(--intro-glow);
 }
 

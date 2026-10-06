@@ -91,25 +91,6 @@
   background: var(--red);
 }
 
-/* ——— La IA que ya corre en producción ——— */
-.xp__ai {
-  display: grid;
-  grid-template-columns: 10rem minmax(0, 1fr);
-  gap: clamp(1.5rem, 3vw, 3rem);
-  margin-top: clamp(2.5rem, 6vh, 4rem);
-  padding: clamp(1.4rem, 3vh, 2rem) clamp(1.2rem, 2.5vw, 2rem);
-  border: 1px solid var(--red);
-  background: color-mix(in srgb, var(--red) 4%, transparent);
-}
-
-.xp__ai-label {
-  color: var(--red);
-}
-
-.xp__ai .xp__points li {
-  color: var(--graphite);
-}
-
 .xp__langs {
   margin-top: 2rem;
   color: var(--steel-600);
@@ -122,8 +103,4 @@
     gap: 0.9rem;
   }
 
-  .xp__ai {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 1rem;
-  }
 }

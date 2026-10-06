@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from 'motion/react';
 import { useLang } from '../../i18n';
+import AiPanel from './AiPanel';
 import './Experience.css';
 
 // Orden del más reciente al más viejo; los textos viven en i18n
@@ -65,14 +66,7 @@ export default function Experience() {
         })}
       </ol>
 
-      <motion.aside className="xp__ai" {...reveal()}>
-        <span className="xp__ai-label label">{x.ai.label}</span>
-        <ul className="xp__points">
-          {x.ai.items.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
-      </motion.aside>
+      <AiPanel copy={x.ai} />
 
       <p className="xp__langs label">{x.langs}</p>
     </section>

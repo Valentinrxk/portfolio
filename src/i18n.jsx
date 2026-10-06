@@ -13,10 +13,19 @@ const DICT = {
       sub: 'código, estética y la obsesión por no parecerse a nada.',
     },
     about: {
+      kicker: 'perfil',
+      ghost: 'perfil',
       takes: [
-        'no soy una fábrica de features: soy la persona que dice que no cuando el brief pide otra plantilla.',
-        'lo técnico es el piso — php, laravel, java, node, vue, react. el techo es el criterio: saber qué sobra.',
-        'si algo de acá te hizo ruido, perfecto. lo genérico no hace ruido.',
+        { text: 'no soy una fábrica de features: soy la persona que dice que no cuando el brief pide otra plantilla.', em: 'la persona que dice que no' },
+        { text: 'lo técnico es el piso — php, laravel, java, node, vue, react. el techo es el criterio: saber qué sobra.', em: 'el criterio' },
+        { text: 'si algo de acá te hizo ruido, perfecto. lo genérico no hace ruido.', em: 'lo genérico no hace ruido' },
+      ],
+      hud: { rec: 'rec', file: 'retrato_01.ascii', name: 'valentín romero', place: '34°36′s · 58°22′o' },
+      facts: [
+        ['base', 'buenos aires · gmt-3'],
+        ['en producción', 'desde 2023'],
+        ['idiomas', 'español · inglés c1'],
+        ['estado', 'disponible para proyectos'],
       ],
     },
     experience: {
@@ -60,11 +69,18 @@ const DICT = {
       },
       ai: {
         label: 'ia en producción',
-        items: [
-          'tres servidores mcp: claude conectado a los datos de cada clínica con oauth por tenant, un asistente del negocio para el equipo y el asistente operativo de taxes.',
-          'openai whisper dictando presupuestos dentro del producto.',
-          'claude code y apis de llm, todos los días.',
-        ],
+        statement: 'la ia no es un demo acá: ya trabaja en producción.',
+        mcp: {
+          count: '03',
+          title: 'servidores mcp',
+          nodes: [
+            ['clínicas', 'claude con los datos de cada clínica, oauth por tenant'],
+            ['equipo', 'un asistente del negocio para el equipo'],
+            ['taxes', 'el asistente operativo: datos, reportes y logs'],
+          ],
+        },
+        voice: { title: 'openai whisper', text: 'presupuestos dictados por voz, adentro del producto.' },
+        daily: { title: 'claude code', text: 'código con claude code y apis de llm, todos los días.' },
       },
       langs: 'español nativo · inglés c1',
     },
@@ -105,10 +121,19 @@ const DICT = {
       sub: 'code, aesthetics, and an obsession with looking like nothing else.',
     },
     about: {
+      kicker: 'profile',
+      ghost: 'profile',
       takes: [
-        "i'm not a feature factory: i'm the person who says no when the brief asks for another template.",
-        'the tech is the floor — php, laravel, java, node, vue, react. taste is the ceiling: knowing what to cut.',
-        'if something here made noise in your head — good. generic is silent.',
+        { text: "i'm not a feature factory: i'm the person who says no when the brief asks for another template.", em: 'the person who says no' },
+        { text: 'the tech is the floor — php, laravel, java, node, vue, react. taste is the ceiling: knowing what to cut.', em: 'taste' },
+        { text: 'if something here made noise in your head — good. generic is silent.', em: 'generic is silent' },
+      ],
+      hud: { rec: 'rec', file: 'portrait_01.ascii', name: 'valentín romero', place: '34°36′s · 58°22′w' },
+      facts: [
+        ['based in', 'buenos aires · gmt-3'],
+        ['in production', 'since 2023'],
+        ['languages', 'spanish · english c1'],
+        ['status', 'available for projects'],
       ],
     },
     experience: {
@@ -152,11 +177,18 @@ const DICT = {
       },
       ai: {
         label: 'ai in production',
-        items: [
-          "three mcp servers: claude connected to each clinic's data with per-tenant oauth, a business assistant for the team and taxes' operations assistant.",
-          'openai whisper dictating budgets inside the product.',
-          'claude code and llm apis, every day.',
-        ],
+        statement: "ai isn't a demo here: it already works in production.",
+        mcp: {
+          count: '03',
+          title: 'mcp servers',
+          nodes: [
+            ['clinics', "claude on each clinic's data, per-tenant oauth"],
+            ['team', 'a business assistant for the team'],
+            ['taxes', 'the operations assistant: data, reports and logs'],
+          ],
+        },
+        voice: { title: 'openai whisper', text: 'voice-dictated budgets, inside the product.' },
+        daily: { title: 'claude code', text: 'shipping with claude code and llm apis, every day.' },
       },
       langs: 'spanish, native · english, c1',
     },

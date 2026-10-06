@@ -12,8 +12,29 @@
   height: 100vh;
   height: 100svh;
   overflow: hidden;
-  /* arranca con el mismo tono que el hero: sin costura en el traspaso */
-  background: linear-gradient(180deg, var(--silver-300) 0%, var(--silver-400) 30%);
+  /* arranca con el mismo tono que el hero (sin costura en el traspaso)
+     y suma una luz detrás del retrato: el plano de fondo gana profundidad */
+  background:
+    radial-gradient(52% 64% at 27% 52%, color-mix(in srgb, var(--silver-100) 75%, transparent) 0%, transparent 72%),
+    linear-gradient(180deg, var(--silver-300) 0%, var(--silver-400) 30%);
+}
+
+/* ——— Capa 0: la palabra de fondo, en contorno ——— */
+.about__ghost {
+  position: absolute;
+  right: -3vw;
+  /* apoyada sobre la línea de la ficha: nunca cruza el texto */
+  bottom: calc(var(--hud-h) + clamp(1rem, 3vh, 1.8rem) + 6.6rem);
+  z-index: 0;
+  font-size: clamp(7rem, 20vw, 20rem);
+  font-weight: 700;
+  line-height: 0.78;
+  letter-spacing: -0.05em;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 1.5px color-mix(in srgb, var(--graphite) 16%, transparent);
+  pointer-events: none;
+  user-select: none;
 }
 
 .about__slash {
@@ -27,11 +48,12 @@
 .about__grid {
   position: absolute;
   inset: 0;
+  z-index: 1;
   display: grid;
   grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
   align-items: center;
   gap: clamp(2rem, 5vw, 5rem);
-  padding: calc(var(--hud-h) + 3.5rem) var(--frame-x) calc(var(--hud-h) + 2rem);
+  padding: calc(var(--hud-h) + 3.5rem) var(--frame-x) calc(var(--hud-h) + 6.5rem);
 }
 
 .about__shape {
@@ -40,73 +62,212 @@
   min-width: 0;
 }
 
-/* Panel del retrato: proporción de la grilla (100×82 celdas de mono) */
+.about__stage {
+  position: relative;
+  max-width: 100%;
+}
+
+/* ——— Capa 1: el marco rojo, corrido y a otra velocidad ——— */
+.about__offset {
+  position: absolute;
+  inset: 0;
+  transform: translate(18px, 18px);
+  border: 1px solid var(--red);
+  pointer-events: none;
+}
+
+/* ——— Capa 2: el monitor. Proporción de la grilla (100×82 celdas de mono) ——— */
 .about__panel {
   position: relative;
-  height: clamp(320px, 66vh, 680px);
+  display: flex;
+  flex-direction: column;
+  height: clamp(320px, 64vh, 660px);
   aspect-ratio: 0.74;
   max-width: 100%;
-  padding: 0.6rem;
-  border: 1px solid var(--color-border);
-  background: color-mix(in srgb, var(--graphite) 4%, transparent);
-  transition: border-color 0.35s var(--ease-smooth);
+  padding: 0 0.7rem;
+  background: var(--graphite);
+  box-shadow:
+    0 2px 0 color-mix(in srgb, var(--silver-100) 8%, transparent) inset,
+    0 40px 70px -28px rgba(var(--shadow-ink), 0.55),
+    0 16px 30px -18px rgba(var(--shadow-ink), 0.4);
 }
 
-.about__panel:hover {
-  border-color: var(--red);
-}
-
+/* esquinas de registro, siempre a la vista */
 .about__panel::before,
 .about__panel::after {
   content: '';
   position: absolute;
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   border: 2px solid var(--red);
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  z-index: 2;
+  pointer-events: none;
 }
 
 .about__panel::before {
-  top: 8px;
-  left: 8px;
+  top: -6px;
+  left: -6px;
   border-right: none;
   border-bottom: none;
 }
 
 .about__panel::after {
-  bottom: 8px;
-  right: 8px;
+  bottom: -6px;
+  right: -6px;
   border-left: none;
   border-top: none;
 }
 
-.about__panel:hover::before,
-.about__panel:hover::after {
-  opacity: 1;
+.about__portrait {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .about__portrait-canvas {
+  display: block;
   width: 100%;
   height: 100%;
+}
+
+/* barras del monitor: grabación arriba, firma abajo */
+.about__hud {
+  flex: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  height: 2rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.02em;
+  color: var(--silver-500);
+  white-space: nowrap;
+}
+
+.about__hud--top {
+  border-bottom: 1px solid color-mix(in srgb, var(--silver-100) 12%, transparent);
+}
+
+.about__hud--bottom {
+  border-top: 1px solid color-mix(in srgb, var(--silver-100) 12%, transparent);
+}
+
+.about__hud span:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--silver-200);
+}
+
+.about__rec {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: var(--red);
+  animation: about-rec 1.2s steps(1, end) infinite;
+}
+
+@keyframes about-rec {
+  50% { opacity: 0.25; }
+}
+
+/* ——— Declaraciones ——— */
+.about__copy {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.4rem, 3.5vh, 2.4rem);
+  min-width: 0;
+}
+
+.about__meta {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+}
+
+.about__kicker {
+  color: var(--graphite);
+}
+
+.about__count {
+  font-family: var(--font-mono);
+  color: var(--red);
+}
+
+.about__count i {
+  font-style: normal;
+  color: var(--steel-600);
+}
+
+.about__ticks {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.about__tick {
+  position: relative;
+  width: 2.4rem;
+  height: 2px;
+  overflow: hidden;
+  background: var(--color-border-strong);
+}
+
+.about__tick i {
+  position: absolute;
+  inset: 0;
+  background: var(--red);
+  transform-origin: left center;
 }
 
 .about__screen {
   position: relative;
   display: grid;
-  align-items: center;
+  align-items: start;
   min-width: 0;
+  min-height: 11.5em;
 }
 
 .about__take {
   grid-area: 1 / 1;
   max-width: 34rem;
-  font-size: clamp(1.35rem, 2.7vw, 2.5rem);
-  font-weight: 600;
-  line-height: 1.28;
-  letter-spacing: -0.015em;
+  font-size: clamp(1.4rem, 2.8vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.22;
+  letter-spacing: -0.02em;
   color: var(--graphite);
   will-change: transform, opacity;
+}
+
+.about__em {
+  font-style: normal;
+  color: var(--red);
+}
+
+/* ——— Ficha al pie ——— */
+.about__facts {
+  position: absolute;
+  left: var(--frame-x);
+  right: var(--frame-x);
+  bottom: calc(var(--hud-h) + clamp(1rem, 3vh, 1.8rem));
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.5rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--color-border-strong);
+}
+
+.about__fact dt {
+  color: var(--steel-600);
+}
+
+.about__fact dd {
+  margin-top: 0.2rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--graphite);
 }
 
 @media (max-width: 900px) {
@@ -114,13 +275,41 @@
     grid-template-columns: 1fr;
     align-content: center;
     gap: clamp(1.5rem, 4vh, 2.5rem);
+    padding-bottom: calc(var(--hud-h) + 2rem);
+  }
+
+  .about__panel {
+    height: clamp(260px, 40vh, 420px);
+  }
+
+  .about__offset {
+    transform: translate(12px, 12px);
+  }
+
+  .about__copy {
+    align-items: center;
+    text-align: center;
+  }
+
+  .about__screen {
+    min-height: 7.5em;
   }
 
   .about__take {
     max-width: 100%;
     font-size: clamp(1.2rem, 5.2vw, 1.7rem);
-    text-align: center;
     justify-self: center;
+  }
+
+  /* en pantallas chicas la ficha le roba aire al retrato */
+  .about__facts {
+    display: none;
+  }
+
+  .about__ghost {
+    bottom: auto;
+    top: calc(var(--hud-h) + 3vh);
+    font-size: 36vw;
   }
 }
 
@@ -147,9 +336,22 @@
     flex-direction: column;
     gap: 2.5rem;
     padding: 2rem 0;
+    min-height: 0;
   }
 
   .about__take--static {
     opacity: 1;
+  }
+
+  .about__facts {
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    margin: 0 var(--frame-x);
+  }
+
+  .about__rec {
+    animation: none;
   }
 }

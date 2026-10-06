@@ -124,7 +124,7 @@ export default function AsciiPortraitLive({ progressValue = null, dark = false, 
           ctx.fillText(line, x - 3, y);
         }
 
-        ctx.fillStyle = banded ? (dark ? 'rgba(230, 231, 235, 0.92)' : 'rgba(35, 35, 39, 0.9)') : (dark ? 'rgba(206, 207, 213, 0.62)' : 'rgba(53, 53, 60, 0.66)');
+        ctx.fillStyle = banded ? (dark ? 'rgba(230, 231, 235, 0.92)' : 'rgba(35, 35, 39, 0.9)') : (dark ? 'rgba(236, 237, 241, 1)' : 'rgba(35, 35, 39, 0.9)');
         ctx.fillText(line, x, y);
 
         // Lente del puntero: las celdas cercanas se afirman y algunas queman

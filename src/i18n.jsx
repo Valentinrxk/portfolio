@@ -13,7 +13,6 @@ const DICT = {
       sub: 'código, estética y la obsesión por no parecerse a nada.',
     },
     about: {
-      ghost: 'perfil',
       takes: [
         { text: 'no soy una fábrica de features: soy la persona que dice que no cuando el brief pide otra plantilla.', em: 'la persona que dice que no' },
         { text: 'lo técnico es el piso — php, laravel, java, node, vue, react. el techo es el criterio: saber qué sobra.', em: 'el criterio' },
@@ -62,17 +61,12 @@ const DICT = {
       ai: {
         label: 'ia en producción',
         statement: 'la ia no es un demo acá: ya trabaja en producción.',
-        mcp: {
-          count: '03',
-          title: 'servidores mcp',
-          nodes: [
-            ['clínicas', 'claude con los datos de cada clínica, oauth por tenant'],
-            ['equipo', 'un asistente del negocio para el equipo'],
-            ['taxes', 'el asistente operativo: datos, reportes y logs'],
-          ],
-        },
-        voice: { title: 'openai whisper', text: 'presupuestos dictados por voz, adentro del producto.' },
-        daily: { title: 'claude code', text: 'código con claude code y apis de llm, todos los días.' },
+        nodes: ['clínicas', 'equipo', 'taxes'],
+        items: [
+          { key: 'mcp', title: 'tres servidores mcp', text: 'claude conectado a los datos de cada clínica con oauth por tenant, un asistente del negocio para el equipo y el asistente operativo de taxes.' },
+          { key: 'voice', title: 'openai whisper', text: 'presupuestos dictados por voz, adentro del producto.' },
+          { key: 'code', title: 'claude code', text: 'código con claude code y apis de llm, todos los días.' },
+        ],
       },
       langs: 'español nativo · inglés c1',
     },
@@ -113,7 +107,6 @@ const DICT = {
       sub: 'code, aesthetics, and an obsession with looking like nothing else.',
     },
     about: {
-      ghost: 'profile',
       takes: [
         { text: "i'm not a feature factory: i'm the person who says no when the brief asks for another template.", em: 'the person who says no' },
         { text: 'the tech is the floor — php, laravel, java, node, vue, react. taste is the ceiling: knowing what to cut.', em: 'taste' },
@@ -162,17 +155,12 @@ const DICT = {
       ai: {
         label: 'ai in production',
         statement: "ai isn't a demo here: it already works in production.",
-        mcp: {
-          count: '03',
-          title: 'mcp servers',
-          nodes: [
-            ['clinics', "claude on each clinic's data, per-tenant oauth"],
-            ['team', 'a business assistant for the team'],
-            ['taxes', 'the operations assistant: data, reports and logs'],
-          ],
-        },
-        voice: { title: 'openai whisper', text: 'voice-dictated budgets, inside the product.' },
-        daily: { title: 'claude code', text: 'shipping with claude code and llm apis, every day.' },
+        nodes: ['clinics', 'team', 'taxes'],
+        items: [
+          { key: 'mcp', title: 'three mcp servers', text: "claude connected to each clinic's data with per-tenant oauth, a business assistant for the team and taxes' operations assistant." },
+          { key: 'voice', title: 'openai whisper', text: 'voice-dictated budgets, inside the product.' },
+          { key: 'code', title: 'claude code', text: 'shipping with claude code and llm apis, every day.' },
+        ],
       },
       langs: 'spanish, native · english, c1',
     },

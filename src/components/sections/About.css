@@ -19,23 +19,6 @@
     linear-gradient(180deg, var(--silver-300) 0%, var(--silver-400) 30%);
 }
 
-/* ——— Capa 0: la palabra de fondo, en contorno ——— */
-.about__ghost {
-  position: absolute;
-  right: -3vw;
-  bottom: calc(var(--hud-h) + 1.5vh);
-  z-index: 0;
-  font-size: clamp(7rem, 22vw, 22rem);
-  font-weight: 700;
-  line-height: 0.78;
-  letter-spacing: -0.05em;
-  white-space: nowrap;
-  color: transparent;
-  -webkit-text-stroke: 1.5px color-mix(in srgb, var(--graphite) 16%, transparent);
-  pointer-events: none;
-  user-select: none;
-}
-
 .about__slash {
   position: absolute;
   top: calc(var(--hud-h) + clamp(1.25rem, 4vh, 2.75rem));
@@ -227,12 +210,6 @@
     max-width: 100%;
     font-size: clamp(1.2rem, 5.2vw, 1.7rem);
     justify-self: center;
-  }
-
-  .about__ghost {
-    bottom: auto;
-    top: calc(var(--hud-h) + 3vh);
-    font-size: 36vw;
   }
 }
 

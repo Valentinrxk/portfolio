@@ -48,8 +48,8 @@ function Tick({ progress, window: w }) {
 
 /**
  * Perfil: el retrato ASCII sostiene la escena en su monitor, con el marco
- * rojo y la palabra de fondo en otras capas de profundidad, mientras las
- * declaraciones pasan de a una, empujadas por el scroll.
+ * rojo en otra capa de profundidad, mientras las declaraciones pasan de a
+ * una, empujadas por el scroll.
  */
 export default function About() {
   const sectionRef = useRef(null);
@@ -68,22 +68,13 @@ export default function About() {
     setActive(v < WINDOWS[1][0] ? 0 : v < WINDOWS[2][0] ? 1 : 2);
   });
 
-  // Tres velocidades: la palabra de fondo, el marco y el monitor
-  const ghostX = useTransform(scrollYProgress, [0, 1], ['6%', '-16%']);
+  // Dos velocidades: el marco y el monitor
   const offsetY = useTransform(scrollYProgress, [0, 1], [46, -18]);
   const panelY = useTransform(scrollYProgress, [0, 1], [18, -26]);
 
   return (
     <section id="about" ref={sectionRef} className="about">
       <div className="about__frame">
-        <motion.span
-          className="about__ghost"
-          style={reduced ? undefined : { x: ghostX }}
-          aria-hidden="true"
-        >
-          {a.ghost}
-        </motion.span>
-
         <span className="section-slash about__slash" aria-hidden="true">///</span>
 
         <div className="about__grid">

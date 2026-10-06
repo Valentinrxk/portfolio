@@ -6,48 +6,23 @@
   --ai-dim: var(--silver-500);
   --ai-line: color-mix(in srgb, var(--silver-100) 14%, transparent);
 
-  position: relative;
-  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 4rem);
   margin-top: clamp(3rem, 8vh, 5rem);
-  padding: clamp(1.6rem, 3.5vw, 3rem);
+  padding: clamp(1.8rem, 4vw, 3.5rem);
+  overflow: hidden;
   background: var(--graphite);
   color: var(--ai-text);
 }
 
-/* trama de líneas de monitor, muy tenue */
-.ai::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: repeating-linear-gradient(0deg, transparent 0 3px, color-mix(in srgb, var(--silver-100) 3%, transparent) 3px 4px);
-}
-
-/* barrido de escaneo que cruza el panel cada tanto */
-.ai__scan {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(180deg, transparent 0%, color-mix(in srgb, var(--red) 9%, transparent) 50%, transparent 100%);
-  background-size: 100% 38%;
-  background-repeat: no-repeat;
-  animation: ai-scan 6.5s var(--ease-smooth) infinite;
-}
-
-@keyframes ai-scan {
-  0% { background-position: 0 -80%; }
-  60%, 100% { background-position: 0 200%; }
-}
-
-/* ——— Cabecera ——— */
-.ai__head {
-  position: relative;
+/* ——— Texto ——— */
+.ai__copy {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  padding-bottom: 1.1rem;
-  border-bottom: 1px solid var(--ai-line);
+  flex-direction: column;
+  gap: clamp(1.4rem, 3vh, 2.2rem);
+  min-width: 0;
 }
 
 .ai__live {
@@ -57,334 +32,108 @@
   color: var(--ai-ink);
 }
 
-.ai__tag {
-  color: var(--ai-dim);
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-}
-
 .ai__dot {
-  position: relative;
-  display: inline-block;
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 50%;
   background: var(--red);
 }
 
-.ai__dot::after {
-  content: '';
-  position: absolute;
-  inset: -4px;
-  border-radius: 50%;
-  border: 1px solid var(--red);
-  animation: ai-ping 1.8s var(--ease-out-expo) infinite;
-}
-
-@keyframes ai-ping {
-  0% { transform: scale(0.5); opacity: 0.9; }
-  100% { transform: scale(2.2); opacity: 0; }
-}
-
-/* ——— Declaración ——— */
 .ai__statement {
-  position: relative;
-  max-width: 22ch;
-  margin: clamp(1.6rem, 4vh, 2.6rem) 0 clamp(1.8rem, 4.5vh, 3rem);
-  font-size: clamp(2rem, 4.6vw, 4rem);
+  max-width: 16ch;
+  font-size: clamp(1.9rem, 3.6vw, 3.4rem);
   font-weight: 700;
-  line-height: 0.98;
+  line-height: 1;
   letter-spacing: var(--track-display);
   color: var(--ai-ink);
 }
 
-/* ——— Grilla de piezas ——— */
-.ai__grid {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr) minmax(0, 1fr);
+.ai__list {
+  list-style: none;
   border-top: 1px solid var(--ai-line);
-  border-left: 1px solid var(--ai-line);
 }
 
-.ai__cell {
-  display: flex;
-  flex-direction: column;
-  gap: 1.3rem;
-  min-width: 0;
-  padding: clamp(1.2rem, 2.2vw, 1.8rem);
-  border-right: 1px solid var(--ai-line);
+.ai__item {
+  display: grid;
+  grid-template-columns: 2.6rem minmax(0, 1fr);
+  gap: 1rem;
+  padding: 1.1rem 0;
   border-bottom: 1px solid var(--ai-line);
-  transition: background-color 0.35s var(--ease-smooth);
 }
 
-.ai__cell:hover {
-  background: color-mix(in srgb, var(--silver-100) 4%, transparent);
-}
-
-.ai__cell-head {
-  display: flex;
-  align-items: baseline;
-  gap: 0.8rem;
+.ai__num {
+  padding-top: 0.2rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ai-dim);
+  transition: color 0.3s var(--ease-smooth);
 }
 
 .ai__title {
-  font-size: clamp(1.15rem, 1.6vw, 1.45rem);
+  font-size: clamp(1.05rem, 1.4vw, 1.25rem);
   color: var(--ai-ink);
 }
 
 .ai__text {
-  margin-top: auto;
-  font-size: 0.95rem;
-  line-height: 1.55;
-  color: var(--ai-text);
+  margin-top: 0.35rem;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--ai-dim);
+  transition: color 0.3s var(--ease-smooth);
 }
 
-/* ——— MCP: la red ——— */
-.ai__count {
-  font-family: var(--font-mono);
-  font-size: clamp(2.6rem, 4.2vw, 3.6rem);
-  font-weight: 700;
-  line-height: 0.8;
+/* la línea en foco enciende su parte de la escena */
+.ai__item.is-focus .ai__num {
   color: var(--red);
 }
 
-.ai__net {
-  list-style: none;
-  display: grid;
-  gap: 0.9rem;
+.ai__item.is-focus .ai__text {
+  color: var(--ai-text);
 }
 
-.ai__route {
-  display: grid;
-  grid-template-columns: 3.6rem minmax(1.5rem, 3.5rem) minmax(0, 1fr);
-  align-items: center;
-  gap: 0.6rem;
-}
-
-.ai__hub {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: var(--ai-ink);
-}
-
-/* claude es el mismo nodo en las tres rutas: la primera lo nombra, el resto lo repite en eco */
-.ai__route + .ai__route .ai__hub {
-  color: var(--ai-dim);
-}
-
-/* el cable: una línea fina con un pulso de datos que la recorre */
-.ai__wire {
+/* ——— Escena 3D ——— */
+.ai__scene {
   position: relative;
-  height: 1px;
-  background: color-mix(in srgb, var(--silver-100) 28%, transparent);
-}
-
-.ai__wire i {
-  position: absolute;
-  top: -2px;
-  left: 0;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--red);
-  box-shadow: 0 0 10px var(--red);
-  animation: ai-pulse 2.4s linear infinite;
-  animation-delay: calc(var(--i) * 0.8s);
-}
-
-@keyframes ai-pulse {
-  0% { left: 0; opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { left: calc(100% - 5px); opacity: 0; }
-}
-
-.ai__node {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
+  height: clamp(340px, 40vw, 580px);
   min-width: 0;
 }
 
-.ai__node b {
-  font-size: 0.95rem;
-  color: var(--ai-ink);
+.ai-scene {
+  position: absolute;
+  inset: 0;
 }
 
-.ai__node span {
-  font-size: 0.85rem;
-  line-height: 1.4;
-  color: var(--ai-dim);
+.ai-scene__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
-/* ——— Whisper: la onda ——— */
-.ai__rec {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
+/* etiquetas que siguen a cada nodo */
+.ai-scene__label {
+  position: absolute;
+  top: 0;
+  left: 0;
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  color: var(--ai-dim);
-}
-
-.ai__rec .ai__dot::after {
-  display: none;
-}
-
-.ai__rec .ai__dot {
-  animation: ai-blink 1.1s steps(1, end) infinite;
-}
-
-@keyframes ai-blink {
-  50% { opacity: 0.2; }
-}
-
-.ai__wave {
-  flex: 1 1 auto;
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  min-height: 4.2rem;
-  max-height: 7rem;
-}
-
-.ai__wave i {
-  flex: 1 1 0;
-  height: calc(var(--h) * 100%);
-  min-height: 3px;
-  border-radius: 2px;
-  background: var(--ai-ink);
-  opacity: 0.85;
-  transform-origin: center;
-  animation: ai-voice var(--t) ease-in-out infinite alternate;
-  animation-delay: var(--d);
-}
-
-/* el tramo central "habla" en rojo */
-.ai__wave i:nth-child(n + 9):nth-child(-n + 18) {
-  background: var(--red);
-  opacity: 1;
-}
-
-@keyframes ai-voice {
-  0% { transform: scaleY(0.25); }
-  100% { transform: scaleY(1); }
-}
-
-/* ——— Claude Code: la terminal ——— */
-.ai__dots {
-  display: inline-flex;
-  gap: 0.3rem;
-}
-
-.ai__dots i {
-  width: 0.45rem;
-  height: 0.45rem;
-  border-radius: 50%;
-  border: 1px solid var(--ai-dim);
-}
-
-.ai__dots i:first-child {
-  background: var(--red);
-  border-color: var(--red);
-}
-
-.ai__term {
-  display: flex;
-  flex-direction: column;
-  gap: 0.55rem;
-  flex: 1 1 auto;
-  padding: 1rem 1.1rem;
-  min-height: 7.5rem;
-  border: 1px solid var(--ai-line);
-  background: color-mix(in srgb, var(--silver-100) 3%, transparent);
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  line-height: 1.55;
-  text-transform: none;
-}
-
-.ai__prompt {
-  color: var(--ai-ink);
-}
-
-.ai__out {
   color: var(--ai-text);
-}
-
-.ai__sigil {
-  color: var(--red);
-}
-
-.ai__caret {
-  display: inline-block;
-  width: 0.55em;
-  height: 1.05em;
-  margin-left: 2px;
-  vertical-align: text-bottom;
-  background: var(--red);
-  animation: ai-blink 1s steps(1, end) infinite;
-}
-
-/* Fuera de cuadro las animaciones duermen */
-.ai.is-paused *,
-.ai.is-paused *::before,
-.ai.is-paused *::after,
-.ai.is-paused .ai__scan {
-  animation-play-state: paused;
-}
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
   white-space: nowrap;
-  border: 0;
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform;
+}
+
+.ai-scene__label.is-core {
+  color: var(--ai-ink);
 }
 
 /* ——— Responsive ——— */
-@media (max-width: 1024px) {
-  .ai__grid {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  }
-
-  .ai__cell--mcp {
-    grid-column: 1 / -1;
-  }
-}
-
-@media (max-width: 640px) {
-  .ai__grid {
+@media (max-width: 900px) {
+  .ai {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .ai__tag {
-    display: none;
-  }
-
-  .ai__route {
-    grid-template-columns: 3.2rem minmax(1.2rem, 2.2rem) minmax(0, 1fr);
-  }
-}
-
-/* ——— Movimiento reducido: quieto y legible ——— */
-@media (prefers-reduced-motion: reduce) {
-  .ai__scan {
-    display: none;
-  }
-
-  .ai *,
-  .ai *::before,
-  .ai *::after {
-    animation: none !important;
-  }
-
-  .ai__wire i {
-    left: 50%;
+  .ai__scene {
+    height: clamp(300px, 80vw, 420px);
   }
 }

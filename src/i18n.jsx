@@ -4,7 +4,7 @@ export const EMAIL = 'hi@valentinromero.com';
 
 const DICT = {
   es: {
-    nav: { hero: 'inicio', about: 'perfil', projects: 'obras', skills: 'adn', contact: 'contacto' },
+    nav: { hero: 'inicio', about: 'perfil', experience: 'oficio', projects: 'obras', skills: 'adn', contact: 'contacto' },
     theme: { light: 'día', dark: 'noche' },
     intro: { sign: 'valentín romero' },
     hero: {
@@ -18,6 +18,55 @@ const DICT = {
         'lo técnico es el piso — php, laravel, java, node, vue, react. el techo es el criterio: saber qué sobra.',
         'si algo de acá te hizo ruido, perfecto. lo genérico no hace ruido.',
       ],
+    },
+    experience: {
+      title: 'oficio',
+      lead: 'desde 2023 haciendo software que se usa todos los días: clínicas, estudios contables, una agencia de diseño y un club de primera.',
+      roles: {
+        oclu: {
+          when: 'may 2025 — hoy',
+          role: 'full stack developer',
+          kind: 'crm multi-tenant para clínicas dentales',
+          points: [
+            'agenda, historias clínicas, presupuestos, tesorería y laboratorio, en vue 3, laravel, mysql y redis.',
+            'presupuestos dictados por voz con openai whisper y campañas masivas por whatsapp y mail.',
+            'el pipeline que migra clínicas desde su software anterior: pacientes, historia clínica y deudas desde excel, csv y vcf.',
+          ],
+        },
+        grip: {
+          when: '2025 — hoy',
+          role: 'frontend developer',
+          kind: 'agencia de marketing y diseño',
+          points: [
+            'los sitios y landings de la agencia, de punta a punta: del diseño al deploy, con animaciones guiadas por scroll y foco en performance.',
+          ],
+        },
+        taxes: {
+          when: '2023 — hoy',
+          role: 'full stack developer',
+          kind: 'saas contable para estudios y pymes',
+          points: [
+            'plataforma en laravel 12 y vue con facturación electrónica afip y sueldos.',
+            'dos apps en react native: watax, el inbox de whatsapp del soporte (google play y testflight), y taxes app para facturar desde el celular.',
+            'soporte de primera línea: escucho el problema antes de que sea un ticket.',
+          ],
+        },
+        uade: {
+          when: '2024 — hoy',
+          role: 'tecnicatura en desarrollo de software',
+          kind: 'formación',
+          points: [],
+        },
+      },
+      ai: {
+        label: 'ia en producción',
+        items: [
+          'tres servidores mcp: claude conectado a los datos de cada clínica con oauth por tenant, un asistente del negocio para el equipo y el asistente operativo de taxes.',
+          'openai whisper dictando presupuestos dentro del producto.',
+          'claude code y apis de llm, todos los días.',
+        ],
+      },
+      langs: 'español nativo · inglés c1',
     },
     projects: {
       title: 'obras',
@@ -47,7 +96,7 @@ const DICT = {
     },
   },
   en: {
-    nav: { hero: 'home', about: 'profile', projects: 'works', skills: 'dna', contact: 'contact' },
+    nav: { hero: 'home', about: 'profile', experience: 'career', projects: 'works', skills: 'dna', contact: 'contact' },
     theme: { light: 'day', dark: 'night' },
     intro: { sign: 'valentín romero' },
     hero: {
@@ -61,6 +110,55 @@ const DICT = {
         'the tech is the floor — php, laravel, java, node, vue, react. taste is the ceiling: knowing what to cut.',
         'if something here made noise in your head — good. generic is silent.',
       ],
+    },
+    experience: {
+      title: 'career',
+      lead: 'shipping software people use every day since 2023: clinics, accounting firms, a design agency and a top-flight football club.',
+      roles: {
+        oclu: {
+          when: 'may 2025 — now',
+          role: 'full stack developer',
+          kind: 'multi-tenant crm for dental clinics',
+          points: [
+            'scheduling, patient records, budgets, treasury and lab orders, in vue 3, laravel, mysql and redis.',
+            'voice-dictated budgets with openai whisper and bulk whatsapp and email campaigns.',
+            'the pipeline that migrates clinics from their old software: patients, clinical history and debts from excel, csv and vcf.',
+          ],
+        },
+        grip: {
+          when: '2025 — now',
+          role: 'frontend developer',
+          kind: 'marketing and design agency',
+          points: [
+            "the agency's websites and landing pages, end to end: from design to deploy, with scroll-driven animation and a focus on performance.",
+          ],
+        },
+        taxes: {
+          when: '2023 — now',
+          role: 'full stack developer',
+          kind: 'accounting saas for firms and smes',
+          points: [
+            'laravel 12 and vue platform with afip e-invoicing and payroll.',
+            "two react native apps: watax, the support team's whatsapp inbox (google play and testflight), and taxes app for invoicing from your phone.",
+            'first-line support: i hear the problem before it becomes a ticket.',
+          ],
+        },
+        uade: {
+          when: '2024 — now',
+          role: 'associate degree in software development',
+          kind: 'education',
+          points: [],
+        },
+      },
+      ai: {
+        label: 'ai in production',
+        items: [
+          "three mcp servers: claude connected to each clinic's data with per-tenant oauth, a business assistant for the team and taxes' operations assistant.",
+          'openai whisper dictating budgets inside the product.',
+          'claude code and llm apis, every day.',
+        ],
+      },
+      langs: 'spanish, native · english, c1',
     },
     projects: {
       title: 'works',

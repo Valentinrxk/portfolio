@@ -1,0 +1,129 @@
+.xp {
+  position: relative;
+  /* sigue el tono con el que cierra perfil: sin costura en el traspaso */
+  background: var(--silver-400);
+  padding: calc(var(--hud-h) + clamp(4rem, 10vh, 7rem)) var(--frame-x) calc(var(--hud-h) + clamp(4rem, 10vh, 7rem));
+}
+
+/* ——— Cabecera ——— */
+.xp__head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.2rem;
+  margin-bottom: clamp(2.5rem, 6vh, 4.5rem);
+}
+
+.xp__title {
+  font-size: clamp(3.5rem, 10vw, 9rem);
+  line-height: 0.9;
+  color: var(--graphite);
+}
+
+.xp__lead {
+  max-width: 36rem;
+  font-size: clamp(1.05rem, 1.7vw, 1.35rem);
+  line-height: 1.5;
+  color: var(--steel-700);
+}
+
+/* ——— Registro: cuándo · dónde · qué quedó andando ——— */
+.xp__list {
+  list-style: none;
+  border-bottom: 1px solid var(--color-border-strong);
+}
+
+.xp__row {
+  display: grid;
+  grid-template-columns: 10rem minmax(0, 1fr) minmax(0, 1.3fr);
+  gap: clamp(1.5rem, 3vw, 3rem);
+  align-items: baseline;
+  padding: clamp(1.6rem, 3.5vh, 2.4rem) 0;
+  border-top: 1px solid var(--color-border-strong);
+}
+
+.xp__when {
+  color: var(--steel-600);
+}
+
+.xp__org {
+  font-size: clamp(1.7rem, 3.2vw, 2.6rem);
+  color: var(--graphite);
+  transition: color 0.3s var(--ease-smooth);
+}
+
+.xp__row:hover .xp__org {
+  color: var(--red);
+}
+
+.xp__role {
+  margin-top: 0.6rem;
+  color: var(--graphite);
+}
+
+.xp__kind {
+  color: var(--steel-600);
+}
+
+.xp__points {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.xp__points li {
+  position: relative;
+  padding-left: 1.4rem;
+  font-size: 0.98rem;
+  line-height: 1.55;
+  color: var(--steel-700);
+}
+
+/* guion rojo: el mismo acento que la barra de las obras */
+.xp__points li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.78em;
+  width: 0.7rem;
+  height: 1px;
+  background: var(--red);
+}
+
+/* ——— La IA que ya corre en producción ——— */
+.xp__ai {
+  display: grid;
+  grid-template-columns: 10rem minmax(0, 1fr);
+  gap: clamp(1.5rem, 3vw, 3rem);
+  margin-top: clamp(2.5rem, 6vh, 4rem);
+  padding: clamp(1.4rem, 3vh, 2rem) clamp(1.2rem, 2.5vw, 2rem);
+  border: 1px solid var(--red);
+  background: color-mix(in srgb, var(--red) 4%, transparent);
+}
+
+.xp__ai-label {
+  color: var(--red);
+}
+
+.xp__ai .xp__points li {
+  color: var(--graphite);
+}
+
+.xp__langs {
+  margin-top: 2rem;
+  color: var(--steel-600);
+}
+
+/* ——— Responsive ——— */
+@media (max-width: 900px) {
+  .xp__row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.9rem;
+  }
+
+  .xp__ai {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+  }
+}

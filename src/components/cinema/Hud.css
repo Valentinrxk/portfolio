@@ -195,13 +195,14 @@
     white-space: nowrap;
   }
 
+  /* seis secciones: entran justas en 390px sin perder el área táctil */
   .hud__nav {
-    gap: 0.8rem;
+    gap: 0.5rem;
   }
 
   /* área táctil de al menos ~44px sin cambiar la estética */
   .hud__link {
-    padding: 0.85rem 0.3rem;
+    padding: 0.85rem 0.2rem;
   }
 
   .hud__lang-opt {
@@ -210,5 +211,13 @@
 
   .hud__timeline {
     flex: 0 0 44px;
+  }
+}
+
+/* Teléfonos chicos (360px): la línea de progreso cede lo justo para que
+   las seis secciones sigan entrando sin scroll */
+@media (max-width: 380px) {
+  .hud__timeline {
+    flex-basis: 30px;
   }
 }

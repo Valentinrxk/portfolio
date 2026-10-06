@@ -6,7 +6,7 @@ import { useTheme } from '../../theme';
 import MonkeyMark from '../ui/MonkeyMark';
 import './Hud.css';
 
-const SECTION_IDS = ['hero', 'about', 'projects', 'skills', 'contact'];
+const SECTION_IDS = ['hero', 'about', 'experience', 'projects', 'skills', 'contact'];
 
 // Secciones cuyo contenido emerge con el scrub: aterrizar en el inicio
 // exacto las muestra vacías o en ruido, así que el nav apunta más adentro

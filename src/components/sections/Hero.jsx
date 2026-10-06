@@ -35,7 +35,7 @@ export default function Hero({ play }) {
         <div className="hero__portrait">
           <AsciiGif
             progressValue={reduced ? null : tear}
-            ink={theme === 'dark' ? 'rgba(226, 227, 231, 0.8)' : 'rgba(35, 35, 39, 0.78)'}
+            ink={theme === 'dark' ? 'rgba(231, 231, 236, 0.8)' : 'rgba(35, 35, 39, 0.78)'}
             className="hero__canvas"
           />
         </div>

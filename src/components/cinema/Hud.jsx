@@ -20,7 +20,7 @@ function SignalMeter({ dark }) {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const barInk = dark ? 'rgba(226, 227, 231, 0.5)' : 'rgba(35, 35, 39, 0.5)';
+    const barInk = dark ? 'rgba(231, 231, 236, 0.5)' : 'rgba(35, 35, 39, 0.5)';
     const W = 96;
     const H = 16;
     const BARS = 20;

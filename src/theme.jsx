@@ -17,14 +17,14 @@ export function ThemeProvider({ children }) {
     const root = document.documentElement;
     if (theme === 'dark') {
       root.dataset.theme = 'dark';
-      root.style.background = '#232328';
+      root.style.background = '#343439';
     } else {
       delete root.dataset.theme;
       root.style.background = '#cfd0d6';
     }
     document.querySelector('meta[name="theme-color"]')?.setAttribute(
       'content',
-      theme === 'dark' ? '#232328' : '#cfd0d6'
+      theme === 'dark' ? '#343439' : '#cfd0d6'
     );
     try {
       localStorage.setItem('vr.theme', theme);

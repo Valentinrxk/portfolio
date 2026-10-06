@@ -13,19 +13,11 @@ const DICT = {
       sub: 'código, estética y la obsesión por no parecerse a nada.',
     },
     about: {
-      kicker: 'perfil',
       ghost: 'perfil',
       takes: [
         { text: 'no soy una fábrica de features: soy la persona que dice que no cuando el brief pide otra plantilla.', em: 'la persona que dice que no' },
         { text: 'lo técnico es el piso — php, laravel, java, node, vue, react. el techo es el criterio: saber qué sobra.', em: 'el criterio' },
         { text: 'si algo de acá te hizo ruido, perfecto. lo genérico no hace ruido.', em: 'lo genérico no hace ruido' },
-      ],
-      hud: { rec: 'rec', file: 'retrato_01.ascii', name: 'valentín romero', place: '34°36′s · 58°22′o' },
-      facts: [
-        ['base', 'buenos aires · gmt-3'],
-        ['en producción', 'desde 2023'],
-        ['idiomas', 'español · inglés c1'],
-        ['estado', 'disponible para proyectos'],
       ],
     },
     experience: {
@@ -121,19 +113,11 @@ const DICT = {
       sub: 'code, aesthetics, and an obsession with looking like nothing else.',
     },
     about: {
-      kicker: 'profile',
       ghost: 'profile',
       takes: [
         { text: "i'm not a feature factory: i'm the person who says no when the brief asks for another template.", em: 'the person who says no' },
         { text: 'the tech is the floor — php, laravel, java, node, vue, react. taste is the ceiling: knowing what to cut.', em: 'taste' },
         { text: 'if something here made noise in your head — good. generic is silent.', em: 'generic is silent' },
-      ],
-      hud: { rec: 'rec', file: 'portrait_01.ascii', name: 'valentín romero', place: '34°36′s · 58°22′w' },
-      facts: [
-        ['based in', 'buenos aires · gmt-3'],
-        ['in production', 'since 2023'],
-        ['languages', 'spanish · english c1'],
-        ['status', 'available for projects'],
       ],
     },
     experience: {

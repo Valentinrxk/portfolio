@@ -95,10 +95,6 @@ export default function About() {
                 aria-hidden="true"
               />
               <motion.div className="about__panel" style={reduced ? undefined : { y: panelY }}>
-                <div className="about__hud about__hud--top" aria-hidden="true">
-                  <span><i className="about__rec" />{a.hud.rec}</span>
-                  <span>{a.hud.file}</span>
-                </div>
                 {/* contenedor propio: el retrato se mide contra su padre */}
                 <div className="about__portrait">
                   <AsciiPortraitLive
@@ -108,30 +104,23 @@ export default function About() {
                     className="about__portrait-canvas"
                   />
                 </div>
-                <div className="about__hud about__hud--bottom" aria-hidden="true">
-                  <span>{a.hud.name}</span>
-                  <span>{a.hud.place}</span>
-                </div>
               </motion.div>
             </div>
           </div>
 
           <div className="about__copy">
-            <div className="about__meta" aria-hidden={reduced ? undefined : 'true'}>
-              <span className="about__kicker label">{a.kicker}</span>
-              {!reduced && (
-                <>
-                  <span className="about__count label tnum">
-                    0{active + 1} <i>/ 0{a.takes.length}</i>
-                  </span>
-                  <span className="about__ticks">
-                    {WINDOWS.map((w, i) => (
-                      <Tick key={i} progress={scrollYProgress} window={w} />
-                    ))}
-                  </span>
-                </>
-              )}
-            </div>
+            {!reduced && (
+              <div className="about__meta" aria-hidden="true">
+                <span className="about__count label tnum">
+                  0{active + 1} <i>/ 0{a.takes.length}</i>
+                </span>
+                <span className="about__ticks">
+                  {WINDOWS.map((w, i) => (
+                    <Tick key={i} progress={scrollYProgress} window={w} />
+                  ))}
+                </span>
+              </div>
+            )}
 
             <div className="about__screen">
               {reduced
@@ -146,15 +135,6 @@ export default function About() {
             </div>
           </div>
         </div>
-
-        <dl className="about__facts">
-          {a.facts.map(([label, value]) => (
-            <div key={label} className="about__fact">
-              <dt className="label">{label}</dt>
-              <dd>{value}</dd>
-            </div>
-          ))}
-        </dl>
       </div>
     </section>
   );

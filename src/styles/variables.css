@@ -64,37 +64,40 @@
   --z-grain: 90;
 }
 
-/* ——— Modo noche: la escala intercambia roles — el grafito es superficie,
-   la plata es tinta. Nunca negro puro. Obras se invierte (token --graphite
-   pasa a claro), contacto sigue bordó, el rojo no se toca. ——— */
+/* ——— Modo noche: el negativo exacto del plateado. Cada tono es el espejo
+   de su par claro en luminosidad perceptual (OKLab), con el mismo tono frío:
+   el grafito de la tinta pasa a ser superficie y la plata pasa a ser tinta.
+   Los contrastes quedan iguales que de día. Obras se invierte (token
+   --graphite pasa a claro), contacto sigue bordó, el rojo no se toca. ——— */
 [data-theme='dark'] {
-  --silver-100: #17171b;
-  --silver-200: #1d1d22;
-  --silver-300: #232328;
-  --silver-400: #2a2a30;
-  --silver-500: #4e4f57;
-  --steel-600: #8b8c94;
-  --steel-700: #b7b8bf;
-  --steel-800: #cfd0d6;
-  --graphite: #e2e3e7;
+  --silver-100: #232326;   /* espejo de #e6e7eb */
+  --silver-200: #2b2c30;   /* espejo de #dadbe0 */
+  --silver-300: #343439;   /* espejo de #cfd0d6 — superficie */
+  --silver-400: #404147;   /* espejo de #bfc0c7 */
+  --silver-500: #55565d;   /* espejo de #a6a7af */
+  --steel-600: #84858e;    /* espejo de #75767f */
+  --steel-700: #b0b2bb;    /* espejo de #4c4d55 */
+  --steel-800: #ceced7;    /* espejo de #35353c */
+  --graphite: #e7e7ec;     /* espejo de #232327 — tinta */
 
-  --color-border: rgba(226, 227, 231, 0.15);
-  --color-border-strong: rgba(226, 227, 231, 0.32);
+  --color-border: rgba(231, 231, 236, 0.18);
+  --color-border-strong: rgba(231, 231, 236, 0.38);
 
+  /* el cromado, espejado parada por parada */
   --chrome: linear-gradient(
     178deg,
-    #f4f5f7 0%,
-    #cfd1d7 38%,
-    #85878f 50%,
-    #b4b6bd 62%,
-    #e6e7eb 100%
+    #a6a7b0 0%,
+    #dadae1 34%,
+    #767780 50%,
+    #d5d5dd 62%,
+    #b0b2bb 100%
   );
 
-  --hud-bg: rgba(20, 20, 24, 0.92);
-  --cursor-halo: rgba(23, 23, 27, 0.85);
+  --hud-bg: rgba(35, 35, 38, 0.92);
+  --cursor-halo: rgba(35, 35, 38, 0.85);
   --shadow-ink: 0, 0, 0;
   --intro-glow: rgba(0, 0, 0, 0.45);
-  --vignette-ink: rgba(0, 0, 0, 0.55);
+  --vignette-ink: rgba(0, 0, 0, 0.35);
 }
 
 @media (max-width: 768px) {

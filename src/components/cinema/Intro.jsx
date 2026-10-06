@@ -58,7 +58,7 @@ export default function Intro({ onDone }) {
     <div className="intro" role="presentation" aria-hidden="true">
       <div className="intro__field">
         <AsciiField
-          ink={theme === 'dark' ? 'rgba(226, 227, 231, 0.5)' : 'rgba(35, 35, 39, 0.5)'}
+          ink={theme === 'dark' ? 'rgba(231, 231, 236, 0.5)' : 'rgba(35, 35, 39, 0.5)'}
           accent="#e10600"
           accent2="#6d0f16"
           cell={13}

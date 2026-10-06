@@ -23,10 +23,9 @@
 .about__ghost {
   position: absolute;
   right: -3vw;
-  /* apoyada sobre la línea de la ficha: nunca cruza el texto */
-  bottom: calc(var(--hud-h) + clamp(1rem, 3vh, 1.8rem) + 6.6rem);
+  bottom: calc(var(--hud-h) + 1.5vh);
   z-index: 0;
-  font-size: clamp(7rem, 20vw, 20rem);
+  font-size: clamp(7rem, 22vw, 22rem);
   font-weight: 700;
   line-height: 0.78;
   letter-spacing: -0.05em;
@@ -53,7 +52,7 @@
   grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
   align-items: center;
   gap: clamp(2rem, 5vw, 5rem);
-  padding: calc(var(--hud-h) + 3.5rem) var(--frame-x) calc(var(--hud-h) + 6.5rem);
+  padding: calc(var(--hud-h) + 3.5rem) var(--frame-x) calc(var(--hud-h) + 2.5rem);
 }
 
 .about__shape {
@@ -80,11 +79,10 @@
 .about__panel {
   position: relative;
   display: flex;
-  flex-direction: column;
   height: clamp(320px, 64vh, 660px);
   aspect-ratio: 0.74;
   max-width: 100%;
-  padding: 0 0.7rem;
+  padding: 0.7rem;
   background: var(--graphite);
   box-shadow:
     0 2px 0 color-mix(in srgb, var(--silver-100) 8%, transparent) inset,
@@ -121,6 +119,7 @@
 .about__portrait {
   position: relative;
   flex: 1 1 auto;
+  min-width: 0;
   min-height: 0;
   overflow: hidden;
 }
@@ -129,48 +128,6 @@
   display: block;
   width: 100%;
   height: 100%;
-}
-
-/* barras del monitor: grabación arriba, firma abajo */
-.about__hud {
-  flex: none;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  height: 2rem;
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.02em;
-  color: var(--silver-500);
-  white-space: nowrap;
-}
-
-.about__hud--top {
-  border-bottom: 1px solid color-mix(in srgb, var(--silver-100) 12%, transparent);
-}
-
-.about__hud--bottom {
-  border-top: 1px solid color-mix(in srgb, var(--silver-100) 12%, transparent);
-}
-
-.about__hud span:first-child {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  color: var(--silver-200);
-}
-
-.about__rec {
-  width: 0.45rem;
-  height: 0.45rem;
-  border-radius: 50%;
-  background: var(--red);
-  animation: about-rec 1.2s steps(1, end) infinite;
-}
-
-@keyframes about-rec {
-  50% { opacity: 0.25; }
 }
 
 /* ——— Declaraciones ——— */
@@ -185,10 +142,6 @@
   display: flex;
   align-items: center;
   gap: 1.1rem;
-}
-
-.about__kicker {
-  color: var(--graphite);
 }
 
 .about__count {
@@ -245,31 +198,6 @@
   color: var(--red);
 }
 
-/* ——— Ficha al pie ——— */
-.about__facts {
-  position: absolute;
-  left: var(--frame-x);
-  right: var(--frame-x);
-  bottom: calc(var(--hud-h) + clamp(1rem, 3vh, 1.8rem));
-  z-index: 1;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1.5rem;
-  padding-top: 0.9rem;
-  border-top: 1px solid var(--color-border-strong);
-}
-
-.about__fact dt {
-  color: var(--steel-600);
-}
-
-.about__fact dd {
-  margin-top: 0.2rem;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--graphite);
-}
-
 @media (max-width: 900px) {
   .about__grid {
     grid-template-columns: 1fr;
@@ -299,11 +227,6 @@
     max-width: 100%;
     font-size: clamp(1.2rem, 5.2vw, 1.7rem);
     justify-self: center;
-  }
-
-  /* en pantallas chicas la ficha le roba aire al retrato */
-  .about__facts {
-    display: none;
   }
 
   .about__ghost {
@@ -341,17 +264,5 @@
 
   .about__take--static {
     opacity: 1;
-  }
-
-  .about__facts {
-    position: relative;
-    left: auto;
-    right: auto;
-    bottom: auto;
-    margin: 0 var(--frame-x);
-  }
-
-  .about__rec {
-    animation: none;
   }
 }

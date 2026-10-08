@@ -2,15 +2,87 @@
 <html lang="es" style="background: #cfd0d6">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#cfd0d6" />
-    <title>Valentín Romero — Frontend Developer</title>
-    <meta name="description" content="el criterio no se descarga. nunca lo mismo dos veces. valentín romero, código y estética desde buenos aires." />
+
+    <!-- Lo esencial para buscadores (el idioma visible lo actualiza la app) -->
+    <title>Valentín Romero — Desarrollador frontend en Buenos Aires</title>
+    <meta name="description" content="Valentín Romero, desarrollador frontend y full stack en Buenos Aires. Sitios con animación, React, Vue, Laravel y SaaS en producción desde 2023." />
     <meta name="author" content="Valentín Romero" />
-    <meta property="og:title" content="Valentín Romero — Frontend Developer" />
-    <meta property="og:description" content="el criterio no se descarga. nunca lo mismo dos veces." />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://valentinromero.com/" />
+    <link rel="alternate" hreflang="es" href="https://valentinromero.com/?lang=es" />
+    <link rel="alternate" hreflang="en" href="https://valentinromero.com/?lang=en" />
+    <link rel="alternate" hreflang="x-default" href="https://valentinromero.com/" />
+
+    <!-- Íconos -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Open Graph: la tarjeta que muestran WhatsApp, LinkedIn y compañía -->
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Valentín Romero" />
+    <meta property="og:url" content="https://valentinromero.com/" />
+    <meta property="og:title" content="Valentín Romero — Desarrollador frontend en Buenos Aires" />
+    <meta property="og:description" content="Valentín Romero, desarrollador frontend y full stack en Buenos Aires. Sitios con animación, React, Vue, Laravel y SaaS en producción desde 2023." />
+    <meta property="og:image" content="https://valentinromero.com/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Valentín Romero — desarrollador frontend en Buenos Aires" />
+    <meta property="og:locale" content="es_AR" />
+    <meta property="og:locale:alternate" content="en_US" />
+
+    <!-- X / Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Valentín Romero — Desarrollador frontend en Buenos Aires" />
+    <meta name="twitter:description" content="Valentín Romero, desarrollador frontend y full stack en Buenos Aires. Sitios con animación, React, Vue, Laravel y SaaS en producción desde 2023." />
+    <meta name="twitter:image" content="https://valentinromero.com/og.png" />
+
+    <!-- Datos estructurados: quién es y dónde más encontrarlo -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://valentinromero.com/#person",
+            "name": "Valentín Romero",
+            "url": "https://valentinromero.com/",
+            "image": "https://valentinromero.com/og.png",
+            "email": "mailto:hi@valentinromero.com",
+            "jobTitle": "Frontend Developer",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Buenos Aires",
+              "addressCountry": "AR"
+            },
+            "sameAs": [
+              "https://www.linkedin.com/in/valentin-romero-61b089139/",
+              "https://github.com/valentinrxk"
+            ],
+            "worksFor": [
+              { "@type": "Organization", "name": "OCLÜ", "url": "https://www.oclucrm.com/" },
+              { "@type": "Organization", "name": "Taxes Software", "url": "https://www.taxes.com.ar/" },
+              { "@type": "Organization", "name": "grip studio", "url": "https://gripppp.com/" }
+            ],
+            "knowsAbout": [
+              "JavaScript", "TypeScript", "React", "Vue.js", "React Native", "Astro", "Three.js",
+              "PHP", "Laravel", "Node.js", "Java", "MySQL", "PostgreSQL", "Redis"
+            ],
+            "knowsLanguage": ["es", "en"]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://valentinromero.com/#website",
+            "url": "https://valentinromero.com/",
+            "name": "Valentín Romero",
+            "inLanguage": ["es", "en"],
+            "author": { "@id": "https://valentinromero.com/#person" }
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <script>
@@ -24,6 +96,28 @@
       } catch (e) { /* modo privado */ }
     </script>
     <div id="root"></div>
+
+    <!-- Sin JavaScript: lo mínimo para entender quién es y cómo contactarlo -->
+    <noscript>
+      <main style="max-width: 40rem; margin: 0 auto; padding: 4rem 1.5rem; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #232327;">
+        <h1>Valentín Romero</h1>
+        <p>Desarrollador frontend y full stack en Buenos Aires. Sitios con animación, React, Vue, Laravel y SaaS en producción desde 2023.</p>
+        <h2>Obras</h2>
+        <ul>
+          <li><a href="https://deportivoriestra.com.ar/">Club Deportivo Riestra</a> — sitio del club y panel de prensa</li>
+          <li><a href="https://www.oclucrm.com/">OCLÜ</a> — CRM multi-tenant para clínicas dentales</li>
+          <li><a href="https://gripppp.com/">grip studio</a> — landing de la agencia</li>
+          <li><a href="https://www.taxes.com.ar/">Taxes Software</a> — SaaS contable y app móvil</li>
+        </ul>
+        <h2>Contacto</h2>
+        <p>
+          <a href="mailto:hi@valentinromero.com">hi@valentinromero.com</a> ·
+          <a href="https://www.linkedin.com/in/valentin-romero-61b089139/">LinkedIn</a> ·
+          <a href="https://github.com/valentinrxk">GitHub</a>
+        </p>
+      </main>
+    </noscript>
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

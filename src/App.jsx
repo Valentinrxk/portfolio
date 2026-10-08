@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 import Intro from './components/cinema/Intro'
 import Hud from './components/cinema/Hud'
 import CustomCursor from './components/ui/CustomCursor'
@@ -40,6 +42,9 @@ function App() {
         <Contact />
       </main>
       <ScrollToTop />
+      {/* visitas y Core Web Vitals; se activan en el panel de Vercel */}
+      <Analytics />
+      <SpeedInsights />
       <div className="film-layer" aria-hidden="true">
         <div className="film-layer__grain" />
         <div className="film-layer__vignette" />

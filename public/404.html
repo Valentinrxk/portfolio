@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>404 — Valentín Romero</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <style>
+    :root { --bg: #cfd0d6; --ink: #232327; --dim: #75767f; --red: #e10600; }
+    @media (prefers-color-scheme: dark) { :root { --bg: #343439; --ink: #e7e7ec; --dim: #84858e; } }
+    * { margin: 0; box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      display: grid; place-items: center; padding: 1.5rem;
+      background: var(--bg); color: var(--ink);
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-transform: lowercase;
+    }
+    main { max-width: 34rem; }
+    .slash { color: var(--red); font-weight: 700; letter-spacing: -0.12em; }
+    h1 { margin: 1rem 0 0.8rem; font-size: clamp(4rem, 18vw, 9rem); line-height: 0.9; letter-spacing: -0.04em; }
+    h1 span { color: var(--red); }
+    p { color: var(--dim); font-size: 1.1rem; line-height: 1.5; }
+    a { display: inline-block; margin-top: 1.8rem; color: var(--ink); font-weight: 700; text-decoration: none; border-bottom: 2px solid var(--red); }
+  </style>
+</head>
+<body>
+  <main>
+    <span class="slash">///</span>
+    <h1>404<span>.</span></h1>
+    <p>esta página no existe. pero el resto del sitio sí.</p>
+    <a href="/">volver al inicio ⟶</a>
+  </main>
+</body>
+</html>

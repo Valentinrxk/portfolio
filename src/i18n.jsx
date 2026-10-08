@@ -2,9 +2,29 @@ import { createContext, useContext, useEffect, useState } from 'react';
 
 export const EMAIL = 'hi@valentinromero.com';
 
+// Dominio de producción: canonical y og:url apuntan siempre acá, aunque el
+// sitio se esté viendo en un preview de Vercel
+const SITE = 'https://valentinromero.com';
+
+// Metadatos por idioma: lo que muestran Google y las previews al compartir
+const META = {
+  es: {
+    title: 'Valentín Romero — Desarrollador frontend en Buenos Aires',
+    description:
+      'Valentín Romero, desarrollador frontend y full stack en Buenos Aires. Sitios con animación, React, Vue, Laravel y SaaS en producción desde 2023.',
+    locale: 'es_AR',
+  },
+  en: {
+    title: 'Valentín Romero — Frontend Developer in Buenos Aires',
+    description:
+      'Valentín Romero, frontend and full stack developer in Buenos Aires. Animated websites, React, Vue, Laravel and production SaaS since 2023.',
+    locale: 'en_US',
+  },
+};
+
 const DICT = {
   es: {
-    nav: { hero: 'inicio', about: 'perfil', experience: 'oficio', projects: 'obras', skills: 'adn', contact: 'contacto' },
+    nav:{ hero: 'inicio', about: 'perfil', experience: 'oficio', projects: 'obras', skills: 'adn', contact: 'contacto' },
     theme: { light: 'día', dark: 'noche' },
     intro: { sign: 'valentín romero' },
     hero: {
@@ -195,17 +215,55 @@ const DICT = {
 
 const LangContext = createContext({ lang: 'es', setLang: () => {}, t: DICT.es });
 
+const isLang = (v) => v === 'es' || v === 'en';
+const langFromUrl = () => new URLSearchParams(window.location.search).get('lang');
+
+const setMeta = (selector, attr, value) => {
+  document.head.querySelector(selector)?.setAttribute(attr, value);
+};
+
+/** Título, descripción, canonical y Open Graph en el idioma visible. */
+function syncHead(lang) {
+  const m = META[lang];
+  // con ?lang= la URL es la versión de ese idioma; sin él, la raíz (x-default)
+  const url = isLang(langFromUrl()) ? `${SITE}/?lang=${lang}` : `${SITE}/`;
+  document.documentElement.lang = lang;
+  document.title = m.title;
+  setMeta('meta[name="description"]', 'content', m.description);
+  setMeta('link[rel="canonical"]', 'href', url);
+  setMeta('meta[property="og:url"]', 'content', url);
+  setMeta('meta[property="og:title"]', 'content', m.title);
+  setMeta('meta[property="og:description"]', 'content', m.description);
+  setMeta('meta[property="og:locale"]', 'content', m.locale);
+  setMeta('meta[property="og:locale:alternate"]', 'content', META[lang === 'es' ? 'en' : 'es'].locale);
+  setMeta('meta[name="twitter:title"]', 'content', m.title);
+  setMeta('meta[name="twitter:description"]', 'content', m.description);
+}
+
 export function LangProvider({ children }) {
-  const [lang, setLang] = useState(() => {
+  // Orden: la URL manda (así Google indexa cada idioma en su dirección),
+  // después la elección guardada, después el idioma del navegador
+  const [lang, setLangState] = useState(() => {
+    const fromUrl = langFromUrl();
+    if (isLang(fromUrl)) return fromUrl;
     try {
       const saved = localStorage.getItem('vr.lang');
-      if (saved === 'es' || saved === 'en') return saved;
+      if (isLang(saved)) return saved;
     } catch { /* modo privado */ }
     return navigator.language?.toLowerCase().startsWith('es') ? 'es' : 'en';
   });
 
+  // Elegir idioma a mano lo deja en la URL: el link compartido abre igual
+  const setLang = (next) => {
+    if (!isLang(next)) return;
+    const url = new URL(window.location.href);
+    url.searchParams.set('lang', next);
+    window.history.replaceState(window.history.state, '', url);
+    setLangState(next);
+  };
+
   useEffect(() => {
-    document.documentElement.lang = lang;
+    syncHead(lang);
     try {
       localStorage.setItem('vr.lang', lang);
     } catch { /* modo privado */ }

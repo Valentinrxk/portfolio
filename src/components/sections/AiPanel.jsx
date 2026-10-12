@@ -59,7 +59,15 @@ export default function AiPanel({ copy }) {
         animate={reduced || !entered ? undefined : { opacity: 1 }}
         transition={{ duration: 1.2, ease: EASE, delay: 0.2 }}
       >
-        <AiScene focus={focus} nodes={copy.nodes} theme={theme} reduced={reduced} active={entered} />
+        <AiScene
+          focus={focus}
+          nodes={copy.nodes}
+          yours={copy.yours}
+          core={copy.core}
+          theme={theme}
+          reduced={reduced}
+          active={entered}
+        />
       </motion.div>
     </aside>
   );

@@ -127,6 +127,11 @@
   color: var(--ai-ink);
 }
 
+.ai-scene__label.is-yours {
+  color: var(--red);
+  font-weight: 700;
+}
+
 /* ——— Responsive ——— */
 @media (max-width: 900px) {
   .ai {

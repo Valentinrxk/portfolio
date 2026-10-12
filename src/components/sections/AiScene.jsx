@@ -1,10 +1,12 @@
 import { useEffect, useRef } from 'react';
 
-// Órbitas de los tres servidores MCP: radio, inclinación, velocidad y fase
+// Órbitas: los tres servidores MCP que ya corren, y una cuarta — "tu
+// sistema" — que aparece y se enchufa cuando el visitante pasa por la oferta
 const ORBITS = [
   { r: 1.85, tilt: [1.12, 0.1, 0.38], speed: 0.21, phase: 0.6 },
   { r: 2.3, tilt: [1.38, -0.2, -0.52], speed: -0.15, phase: 2.4 },
   { r: 2.75, tilt: [0.96, 0.15, 0.92], speed: 0.11, phase: 4.3 },
+  { r: 2.5, tilt: [1.62, 0.35, 0.12], speed: 0.13, phase: 5.4, yours: true },
 ];
 const CORE_R = 0.85;
 const BARS = 96;
@@ -15,11 +17,12 @@ const smooth = (x) => x * x * (3 - 2 * x);
 const lerp = (a, b, k) => a + (b - a) * k;
 
 /**
- * Escena 3D de "ia en producción": claude como núcleo de cromo, los tres
- * servidores MCP en órbita con pulsos de datos hacia el centro, y Whisper
- * como un anillo ecualizador alrededor. Three.js se carga recién acá.
+ * Escena 3D de "ia en producción": la ia como núcleo de cromo, los tres
+ * servidores MCP en órbita con pulsos de datos hacia el centro, Whisper
+ * como un anillo ecualizador alrededor, y "tu sistema" que se suma en rojo.
+ * Three.js se carga recién acá.
  */
-export default function AiScene({ focus, nodes, theme, reduced, active }) {
+export default function AiScene({ focus, nodes, yours, core, theme, reduced, active }) {
   const hostRef = useRef(null);
   const state = useRef({ focus, active, setInk: null, start: null });
   state.current.focus = focus;
@@ -109,15 +112,20 @@ export default function AiScene({ focus, nodes, theme, reduced, active }) {
       const satGeo = keep(new THREE.SphereGeometry(0.15, 48, 48));
       const pulseGeo = keep(new THREE.SphereGeometry(0.04, 16, 16));
       const pulseMat = keep(new THREE.MeshBasicMaterial({ color: RED, transparent: true }));
+      // "tu sistema": el mismo satélite, pero rojo y con su órbita propia
+      const yoursMat = keep(new THREE.MeshPhysicalMaterial({
+        color: RED, metalness: 0.5, roughness: 0.28, clearcoat: 1, emissive: RED, emissiveIntensity: 0.3,
+      }));
+      const yoursRingMat = keep(new THREE.MeshBasicMaterial({ color: RED, transparent: true, opacity: 0 }));
       const sats = ORBITS.map((o) => {
         const pivot = new THREE.Group();
         pivot.rotation.set(...o.tilt);
         root.add(pivot);
-        pivot.add(new THREE.Mesh(keep(new THREE.TorusGeometry(o.r, 0.004, 6, 360)), ringMat));
-        const sat = new THREE.Mesh(satGeo, chrome);
+        pivot.add(new THREE.Mesh(keep(new THREE.TorusGeometry(o.r, o.yours ? 0.006 : 0.004, 6, 360)), o.yours ? yoursRingMat : ringMat));
+        const sat = new THREE.Mesh(satGeo, o.yours ? yoursMat : chrome);
         pivot.add(sat);
         const linkGeo = keep(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3()]));
-        const linkMat = keep(new THREE.LineBasicMaterial({ color: ink, transparent: true, opacity: 0.22 }));
+        const linkMat = keep(new THREE.LineBasicMaterial({ color: o.yours ? RED : ink, transparent: true, opacity: 0.22 }));
         root.add(new THREE.Line(linkGeo, linkMat));
         const pulse = new THREE.Mesh(pulseGeo, pulseMat.clone());
         disposables.push(pulse.material);
@@ -136,7 +144,7 @@ export default function AiScene({ focus, nodes, theme, reduced, active }) {
       state.current.setInk = () => {
         ink = readInk();
         ringMat.color.copy(ink);
-        sats.forEach((s) => s.linkMat.color.copy(ink));
+        sats.forEach((s) => !s.o.yours && s.linkMat.color.copy(ink));
         paintBars();
       };
 
@@ -176,11 +184,13 @@ export default function AiScene({ focus, nodes, theme, reduced, active }) {
       host.addEventListener('pointerleave', onLeave);
 
       // ——— Cuadro ———
-      const mix = { mcp: 0, voice: 0, code: 0 };
+      const mix = { mcp: 0, voice: 0, yours: 0 };
       const v = new THREE.Vector3();
       const coreDir = new THREE.Vector3();
       const ndc = new THREE.Vector3();
       const camPos = new THREE.Vector3();
+      const c0 = new THREE.Vector3();
+      const c1 = new THREE.Vector3();
 
       const frame = (now) => {
         const t = reduced ? 2.2 : now * 0.001;
@@ -190,15 +200,15 @@ export default function AiScene({ focus, nodes, theme, reduced, active }) {
         const k = reduced ? 1 : 0.08;
         mix.mcp = lerp(mix.mcp, s.focus === 'mcp' ? 1 : 0, k);
         mix.voice = lerp(mix.voice, s.focus === 'voice' ? 1 : 0, k);
-        mix.code = lerp(mix.code, s.focus === 'code' ? 1 : 0, k);
+        mix.yours = lerp(mix.yours, s.focus === 'yours' ? 1 : 0, k);
 
         tilt.x = lerp(tilt.x, tilt.tx, 0.05);
         tilt.y = lerp(tilt.y, tilt.ty, 0.05);
         root.rotation.set(0.18 + tilt.x, t * 0.08 + tilt.y, 0);
         root.scale.setScalar(0.72 + 0.28 * intro);
 
-        // núcleo: con "claude code" en foco, respira en rojo
-        coreMat.emissiveIntensity = mix.code * (0.18 + 0.1 * Math.sin(t * 2.4));
+        // núcleo: cuando "tu sistema" se enchufa, respira en rojo
+        coreMat.emissiveIntensity = mix.yours * (0.16 + 0.09 * Math.sin(t * 2.4));
 
         // anillo de voz: suave, nunca aleatorio
         const amp = 0.07 + 0.38 * mix.voice;
@@ -216,11 +226,20 @@ export default function AiScene({ focus, nodes, theme, reduced, active }) {
 
         camera.getWorldPosition(camPos);
         const coreDist = camPos.length();
+        // el núcleo en pantalla: centro y radio, para saber qué tapa de verdad
+        c0.set(0, 0, 0).project(camera);
+        c1.set(CORE_R * root.scale.x, 0, 0).project(camera);
+        const coreX = ((c0.x + 1) / 2) * W;
+        const coreY = ((1 - c0.y) / 2) * H;
+        const coreRpx = Math.abs(((c1.x + 1) / 2) * W - coreX);
 
         sats.forEach(({ o, sat, linkGeo, linkMat, pulse }, i) => {
+          // "tu sistema" solo existe mientras el visitante mira la oferta
+          const presence = o.yours ? mix.yours : 1;
           const ang = o.phase + t * o.speed;
           sat.position.set(Math.cos(ang) * o.r, Math.sin(ang) * o.r, 0);
-          sat.scale.setScalar(1 + 0.35 * mix.mcp);
+          sat.visible = presence > 0.01;
+          sat.scale.setScalar(Math.max(0.001, presence * (o.yours ? 1.25 : 1 + 0.35 * mix.mcp)));
 
           // enlace satélite → superficie del núcleo, en coordenadas de root
           sat.getWorldPosition(v);
@@ -230,30 +249,36 @@ export default function AiScene({ focus, nodes, theme, reduced, active }) {
           pos.setXYZ(0, v.x, v.y, v.z);
           pos.setXYZ(1, coreDir.x, coreDir.y, coreDir.z);
           pos.needsUpdate = true;
-          linkMat.opacity = (0.16 + 0.5 * mix.mcp) * intro;
+          linkMat.opacity = (o.yours ? 0.8 * presence : 0.16 + 0.5 * mix.mcp) * intro;
 
-          // pulso de datos que viaja hacia claude
-          const p = (t * (0.32 + 0.45 * mix.mcp) + i / 3) % 1;
+          // pulso de datos que viaja hacia el núcleo
+          const speed = o.yours ? 0.62 : 0.32 + 0.45 * mix.mcp;
+          const p = (t * speed + i / sats.length) % 1;
           pulse.position.lerpVectors(v, coreDir, smooth(p));
-          pulse.material.opacity = Math.sin(p * Math.PI) * intro;
-          pulse.scale.setScalar(1 + mix.mcp * 0.6);
+          pulse.material.opacity = Math.sin(p * Math.PI) * intro * presence;
+          pulse.scale.setScalar(o.yours ? 1.4 : 1 + mix.mcp * 0.6);
 
           // etiqueta HTML sobre el satélite; atenuada si pasa detrás del núcleo
           const label = labels[i];
           if (label) {
             sat.getWorldPosition(ndc);
-            const behind = ndc.distanceTo(camPos) > coreDist + 0.4;
+            const behind = ndc.distanceTo(camPos) > coreDist;
             ndc.project(camera);
             // a la derecha del satélite; si no entra, salta al otro lado
             const lx = ((ndc.x + 1) / 2) * W;
+            const ly = ((1 - ndc.y) / 2) * H;
+            // tapado = detrás del núcleo Y dentro de su disco en pantalla
+            const hidden = behind && Math.hypot(lx - coreX, ly - coreY) < coreRpx * 1.1;
             const lw = (label.dataset.w ||= String(label.offsetWidth)) * 1;
             const x = lx + 30 + lw > W - 6 ? lx - 30 - lw : lx + 30;
-            label.style.transform = `translate(${x}px, ${((1 - ndc.y) / 2) * H - 8}px)`;
-            label.style.opacity = String((behind ? 0.35 : 1) * intro);
+            label.style.transform = `translate(${x}px, ${ly - 8}px)`;
+            // con "tu sistema" en foco, el resto de las etiquetas da un paso atrás
+            const quiet = o.yours ? 1 : 1 - 0.6 * mix.yours;
+            label.style.opacity = String((hidden ? 0.3 : 1) * intro * presence * quiet);
           }
         });
 
-        const coreLabel = labels[3];
+        const coreLabel = labels[labels.length - 1];
         if (coreLabel) {
           ndc.set(0, -(CORE_R + 0.35) * root.scale.x, 0).project(camera);
           coreLabel.style.transform = `translate(calc(${((ndc.x + 1) / 2) * W}px - 50%), ${((1 - ndc.y) / 2) * H}px)`;
@@ -261,6 +286,7 @@ export default function AiScene({ focus, nodes, theme, reduced, active }) {
         }
 
         ringMat.opacity = 0.2 * intro;
+        yoursRingMat.opacity = 0.45 * intro * mix.yours;
         renderer.render(scene, camera);
       };
 
@@ -312,8 +338,12 @@ export default function AiScene({ focus, nodes, theme, reduced, active }) {
   return (
     <div ref={hostRef} className="ai-scene" aria-hidden="true">
       <canvas className="ai-scene__canvas" />
-      {[...nodes, 'claude'].map((name, i) => (
-        <span key={name} data-node={i} className={`ai-scene__label${i === nodes.length ? ' is-core' : ''}`}>
+      {[...nodes, yours, core].map((name, i) => (
+        <span
+          key={name}
+          data-node={i}
+          className={`ai-scene__label${i === nodes.length ? ' is-yours' : ''}${i === nodes.length + 1 ? ' is-core' : ''}`}
+        >
           {name}
         </span>
       ))}

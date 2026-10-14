@@ -1,13 +1,13 @@
 /* 深夜: el televisor cierra adn, sobre el mismo fondo (sin banda).
-   Sigue el tema: de día, un aparato plateado con vidrio claro y tinta;
-   de noche, su negativo. El tubo es todo; afuera, una pista y las perillas.
-   --tube y --glass repiten outer y glass de tv/palette.js. */
+   El tubo es todo; afuera, una pista y las perillas. La pantalla es siempre
+   de noche; el aparato sigue el tema.
+   --tube, --glass e --ink repiten outer, glass y PALE de tv/renderer.js y tv/cells.js. */
 .tv {
-  --ink: var(--graphite);
+  --tube: #020202;
+  --glass: #101112;
+  --ink: #e6e7eb;
   --dim: var(--steel-700);
   --mute: var(--steel-600);
-  --tube: #a9abb2;
-  --glass: #dcdde1;
   --bezel: var(--silver-100);
   --lip: rgba(35, 35, 39, 0.22);
   --drop: rgba(35, 35, 39, 0.16);
@@ -27,8 +27,6 @@
 }
 
 [data-theme='dark'] .tv {
-  --tube: #020202;
-  --glass: #101112;
   --lip: rgba(0, 0, 0, 0.55);
   --drop: rgba(0, 0, 0, 0.45);
 }
@@ -75,7 +73,7 @@
   display: none;
 }
 
-/* Sin WebGL2: un cuadro de CH1, quieto */
+/* Sin WebGL2: un cuadro de CH1, quieto (de noche, como el tubo) */
 .tv__pre {
   position: absolute;
   inset: 0;
@@ -93,8 +91,7 @@
 }
 
 .tv__pre .is-dim {
-  color: var(--mute);
-  opacity: 0.4;
+  color: rgba(132, 133, 142, 0.4);
 }
 
 .tv__pre .is-red {

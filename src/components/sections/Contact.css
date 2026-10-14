@@ -157,8 +157,7 @@
 .contact__footer {
   position: absolute;
   left: var(--frame-x);
-  /* deja el carril del [↑] libre a la derecha */
-  right: calc(var(--frame-x) + 3.4rem);
+  right: var(--frame-x);
   bottom: calc(var(--hud-h) + 1.25rem);
   z-index: 2;
   display: flex;
@@ -166,11 +165,6 @@
   justify-content: space-between;
   gap: 1rem;
   color: #a6a7af;
-}
-
-.contact__mark {
-  display: inline-flex;
-  color: #dadbe0;
 }
 
 @media (max-width: 640px) {

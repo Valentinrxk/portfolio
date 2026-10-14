@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react';
 import { anime, loadAnime } from '../../lib/anime';
 import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react';
 import AsciiField from '../ascii/AsciiField';
-import MonkeyMark from '../ui/MonkeyMark';
 import Scramble from '../ui/Scramble';
 import { useLang, EMAIL } from '../../i18n';
 import './Contact.css';
@@ -175,9 +174,6 @@ export default function Contact() {
         </motion.div>
 
         <footer className="contact__footer label">
-          <span className="contact__mark" aria-hidden="true">
-            <MonkeyMark size={30} />
-          </span>
           <span>© {new Date().getFullYear()} valentín romero</span>
         </footer>
       </div>

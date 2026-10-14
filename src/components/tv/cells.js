@@ -24,8 +24,20 @@ for (const ch of new Set(WIDE_TEXT)) {
 export const isWide = (ch) => GLYPHS[G[ch]]?.half === 1;
 export const textWidth = (s) => [...s].reduce((w, ch) => w + (isWide(ch) ? 2 : 1), 0);
 
-// tonos: índice a la paleta del renderer (hasta 16); los colores, por tema, en palette.js
+// tonos: índice a la paleta del renderer (hasta 16)
 export const TONE = { PALE: 0, RED: 1, WALL: 2, STATIC: 3, GHOST: 4, AMBER: 5, GREEN: 6, HAZE: 7, WATER: 8 };
+// su color en el tubo, que es siempre de noche: fósforo pálido sobre vidrio oscuro
+export const PALETTE = {
+  PALE: '#e6e7eb',
+  RED: '#e10600',
+  WALL: '#a7acb2',
+  STATIC: '#dfe3e8',
+  GHOST: '#c9ced6',
+  AMBER: '#d8c49c',
+  GREEN: '#8fc27a',
+  HAZE: '#6f8c68',
+  WATER: '#aab4b8',
+};
 
 // brillo: 0..2 en un byte (1 = 127.5)
 export const BRIGHT_MAX = 2;

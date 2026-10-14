@@ -442,6 +442,7 @@ function create(grid, rng) {
 
 export default {
   id: 'cure',
-  meta: { number: 2, key: 'cure' },
+  // la llama emite luz: la escena es de noche aunque el sitio esté de día
+  meta: { number: 2, key: 'cure', scene: 'dark' },
   create,
 };

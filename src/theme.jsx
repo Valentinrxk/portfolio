@@ -1,17 +1,26 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
-// La identidad es plateado-primero: el default es claro siempre,
-// la preferencia guardada gana.
-const ThemeContext = createContext({ theme: 'light', setTheme: () => {} });
+// El default es oscuro. Solo se guarda lo que la persona elige con [◐]:
+// así el default puede cambiar sin pisar una elección real.
+// (index.html lee la misma clave antes del primer paint)
+const KEY = 'vr.theme-choice';
+const ThemeContext = createContext({ theme: 'dark', setTheme: () => {} });
 
 export function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState(() => {
+  const [theme, setThemeState] = useState(() => {
     try {
-      const saved = localStorage.getItem('vr.theme');
+      const saved = localStorage.getItem(KEY);
       if (saved === 'dark' || saved === 'light') return saved;
     } catch { /* modo privado */ }
-    return 'light';
+    return 'dark';
   });
+
+  const setTheme = (next) => {
+    setThemeState(next);
+    try {
+      localStorage.setItem(KEY, next);
+    } catch { /* modo privado */ }
+  };
 
   useEffect(() => {
     const root = document.documentElement;
@@ -26,9 +35,6 @@ export function ThemeProvider({ children }) {
       'content',
       theme === 'dark' ? '#343439' : '#cfd0d6'
     );
-    try {
-      localStorage.setItem('vr.theme', theme);
-    } catch { /* modo privado */ }
   }, [theme]);
 
   return (

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useReducedMotion } from 'motion/react';
 import { useLang } from '../../i18n';
-import Scramble from '../ui/Scramble';
+import { useTheme } from '../../theme';
 import './Trasnoche.css';
 
 const FLICK_MS = 250;
@@ -15,8 +15,9 @@ const desktopLike = () =>
 /**
  * 深夜テレビ, trasnoche: un televisor viejo que pasa ASCII; cierra adn. Un
  * deslizón rápido (o ◁ ▷, o las flechas) cambia de canal: estática, el cuadro
- * rueda, un destello blanco y el canal nuevo.
- * Arrastrar despacio es tocar el canal.
+ * rueda, un destello y el canal nuevo.
+ * Arrastrar despacio es tocar el canal. Sigue el tema del sitio: de noche,
+ * fósforo; de día, su negativo en tinta.
  */
 export default function Trasnoche() {
   const sectionRef = useRef(null);
@@ -26,6 +27,9 @@ export default function Trasnoche() {
   const reduced = useReducedMotion();
   const reducedRef = useRef(reduced);
   reducedRef.current = reduced;
+  const { theme } = useTheme();
+  const themeRef = useRef(theme);
+  themeRef.current = theme;
   const { t } = useLang();
   const copy = t.tv;
 
@@ -41,18 +45,20 @@ export default function Trasnoche() {
     let stop = () => {};
 
     const start = async () => {
-      const [R, S, C, O, list] = await Promise.all([
+      const [R, S, C, O, list, P] = await Promise.all([
         import('../tv/renderer.js'),
         import('../tv/shell.js'),
         import('../tv/cells.js'),
         import('../tv/osd.js'),
         import('../tv/channels/index.js'),
+        import('../tv/palette.js'),
       ]);
       if (disposed) return;
       const channels = list.default;
+      let palette = P.paletteFor(themeRef.current);
       let renderer = null;
       try {
-        renderer = R.createRenderer(canvas);
+        renderer = R.createRenderer(canvas, palette);
       } catch (err) {
         console.warn('tv: webgl2 unavailable', err);
       }
@@ -216,7 +222,8 @@ export default function Trasnoche() {
         taps = [];
         if (f.osd.number !== osdFor) {
           osdFor = f.osd.number;
-          renderer.osd(O.drawOsd(osdFor, grid));
+          applyPalette(osdFor);
+          renderer.osd(O.drawOsd(osdFor, grid, palette.osd));
         }
         renderer.draw({
           data: shell.buffer.data,
@@ -269,7 +276,26 @@ export default function Trasnoche() {
         window.addEventListener('deviceorientation', onTilt);
       }
 
-      engineRef.current = { change };
+      // la paleta sigue al tema, salvo los canales con escena propia (cure es de noche).
+      // Se cambia junto con el número, debajo de la estática del cambio de canal
+      let paletteName = themeRef.current;
+      const applyPalette = (number) => {
+        const scene = channels.find((c) => c.meta.number === number)?.meta.scene;
+        const name = scene ?? themeRef.current;
+        if (name === paletteName) return;
+        paletteName = name;
+        palette = P.paletteFor(name);
+        renderer?.theme(palette);
+      };
+
+      // el tema cambia en vivo: se recalcula la paleta y el número se redibuja
+      const retheme = () => {
+        paletteName = null;
+        osdFor = 0;
+        wake();
+      };
+
+      engineRef.current = { change, retheme };
 
       if (import.meta.env.DEV) {
         // gancho para las pruebas de desarrollo: nada de esto llega a producción
@@ -316,17 +342,19 @@ export default function Trasnoche() {
     };
   }, []);
 
+  useEffect(() => {
+    engineRef.current?.retheme(theme);
+  }, [theme]);
+
   // la película del canal: solo para lectores de pantalla
   const film = copy.channels[channel];
   const filmLabel = `${film.name}, ${film.director}, ${film.year}`;
   const live = !fallback;
+  // el nombre del grupo: la primera frase de la descripción
+  const name = copy.alt.slice(0, copy.alt.indexOf('.'));
 
   return (
-    <div ref={sectionRef} className="tv" role="group" aria-labelledby="tv-title">
-      <header className="tv__head">
-        <Scramble as="h3" id="tv-title" className="tv__title" text={copy.title} />
-      </header>
-
+    <div ref={sectionRef} className="tv" role="group" aria-label={name}>
       <div className="tv__frame">
         <div ref={screenRef} className="tv__screen" role="img" aria-label={filmLabel}>
           <canvas ref={canvasRef} className={`tv__canvas ${fallback ? 'is-off' : ''}`} aria-hidden="true" />

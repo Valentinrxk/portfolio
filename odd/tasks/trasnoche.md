@@ -119,5 +119,33 @@ User (2026-10-14): wants the piece more tied to his film references (Pulse, Cure
   - i18n `tv.film` and `channels[].url`.
   - Evidence: build ok; Playwright checked the href for each channel; 0 errors; the footer screenshot was reviewed and the `↗` sized up to 1.1rem.
 
+- 2026-10-14: user: remove the TV title, and adapt the TV and its channels to light and dark mode. T11 delegated:
+  - remove the header/h3 and `tv.title`;
+  - the TV follows the site theme instead of a forced `#0a0b0b` band;
+  - in light mode the screen is the mirrored negative: light glass, dark ink, ink-style glow, dark scanlines, darker amber and green, stains darker than the wall;
+  - live theme switching without reload.
+
+- 2026-10-14: T11 done (delegated writer).
+  - New `tv/palette.js` (dark/light keyed by TONE). The renderer swaps the palette live: ink over glass in light, subtractive ink bleed, graphite flash.
+  - The OSD takes colours; the TV header is removed; the TV uses theme tokens (no black band); Skills gets a negative margin so the TV overlaps the statement padding.
+  - Evidence: invariants 17/17 (palette RED → PASS); kairo PASS; build ok; live toggle without reload; console clean.
+  - Parent: reviewed the light CH1 stains, light CH3 and the light transition; re-ran the tests and the build.
+- 2026-10-14: RDD.
+  - The earlier doc-only candidate was approved low risk and acknowledged (burned).
+  - For the T11 candidate (base = the user's commit 0a941e4 "fix"), STATUS asks for an `intended_untracked_selection` (schema `gentle-ai.review-intended-untracked-selection/v1`) for `src/components/tv/palette.js`.
+  - The schema is undocumented locally. Three guessed JSON shapes were refused with `invalid_request`.
+  - Review BLOCKED; no PASS invented. Surfaced to the user. It unblocks once palette.js is tracked (the user's commit) or the schema is known.
+
+- 2026-10-14: user: the CH2 fire was too dark to be correct in light mode, since a flame emits light.
+  - Fix (inline): `cure.js` meta `scene: 'dark'`.
+  - Trasnoche's `applyPalette(number)` picks the channel's scene palette over the site theme. The swap happens when the OSD number changes, under the channel-change static. `retheme()` resets it.
+  - The casing still follows the theme.
+  - Evidence: build ok; invariants PASS; mobile screenshots: CH2 is a dark scene with a bright flame inside the silver set in light mode, CH3 goes back to light; theme toggle while on CH2 stays dark; 0 errors.
+
+- 2026-10-14: user: make the other two channels dark scenes too ("queda raro sino").
+  - Inline: kairo and lily get `scene: 'dark'`. All screens are now dark in both themes; only the casing follows the theme.
+  - Evidence: build ok; invariants PASS; light-mode mobile screenshot of CH3 dark; 0 errors.
+  - T13 delegated: remove the now-dead light-screen palette and renderer branches (no visual change; before/after screenshots).
+
 ## Next step
-The real phone test needs an https preview (user decision). Commits only when the user asks.
+Review T13. The user commits when he wants. The real phone test needs an https preview (user decision).

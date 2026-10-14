@@ -338,6 +338,6 @@ function create(grid, rng) {
 
 export default {
   id: 'lily',
-  meta: { number: 3, key: 'lily' },
+  meta: { number: 3, key: 'lily', scene: 'dark' },
   create,
 };

@@ -15,6 +15,12 @@
   justify-content: center;
 }
 
+/* El televisor llega como un tiempo más de la declaración: se monta sobre
+   su respiro de abajo. La caja que mide el scroll no cambia. */
+.dna__statement + .tv {
+  margin-top: calc(-1 * clamp(7rem, 16vh, 11rem));
+}
+
 .dna__slash {
   position: absolute;
   top: calc(var(--hud-h) + clamp(1.25rem, 4vh, 2.75rem));

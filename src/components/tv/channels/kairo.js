@@ -679,6 +679,6 @@ function create(grid, rng) {
 
 export default {
   id: 'kairo',
-  meta: { number: 1, key: 'kairo' },
+  meta: { number: 1, key: 'kairo', scene: 'dark' },
   create,
 };

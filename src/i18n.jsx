@@ -51,7 +51,6 @@ const DICT = {
       },
     },
     tv: {
-      title: 'cosas que forjaron mi criterio',
       hint: 'deslizá para cambiar de canal',
       hintDesktop: '← → cambiar de canal',
       prev: 'canal anterior',
@@ -118,7 +117,6 @@ const DICT = {
       },
     },
     tv: {
-      title: 'things that forged my taste',
       hint: 'swipe to change channel',
       hintDesktop: '← → change channel',
       prev: 'previous channel',

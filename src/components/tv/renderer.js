@@ -1,20 +1,16 @@
 // Renderer del televisor (WebGL2), portado del de 砂:
 //   1 · escena: cada píxel busca su celda y su letra en el atlas (texelFetch)
-//   2 · fósforo: lo brillante, a un cuarto, desenfocado
+//   2 · fósforo: lo brillante (o, de día, la tinta), a un cuarto, desenfocado
 //   3 · tubo: curvatura, barrido, máscara, aberración, viñeta, parpadeo, rollo
-import { GLYPHS, PALETTE } from './cells.js';
+// El tema (palette.js) cambia colores y uniformes, nunca la grilla.
+import { GLYPHS, TONE } from './cells.js';
+import { paletteFor } from './palette.js';
 
 const FONT = "ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace";
 const CJK = "'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic', 'Noto Sans CJK JP', 'Noto Sans JP', sans-serif";
 const ATLAS_COLS = 16;
 const XH = 0.46; // altura de la x, en celdas
 const STROKES = '|/\\';
-const BG = [0.062, 0.068, 0.07]; // el vidrio encendido nunca es negro
-const BLOOM = 0.95;
-
-const rgb = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16) / 255);
-const PAL = new Float32Array(48);
-PALETTE.forEach((h, i) => PAL.set(rgb(h), i * 3));
 
 const QUAD_VS = `#version 300 es
 void main() {
@@ -31,28 +27,37 @@ uniform ivec2 uGrid;
 uniform ivec2 uCell;
 uniform ivec2 uOrigin;
 uniform float uHeight;
-uniform vec3 uBg;
+uniform vec3 uBg;          // el vidrio
+uniform vec3 uShadow;      // el fondo de celda en 0
+uniform vec3 uKnock;       // de día: la tinta sobre un fondo oscuro se aclara
+uniform float uInk;        // 0: la luz suma (noche) · 1: la tinta resta (día)
+uniform float uShadeK;     // 1: el fondo tal cual; más: las penumbras se aclaran, lo hondo queda
+uniform float uInkGamma;
+uniform int uRed;
 uniform vec3 uPalette[16];
 out vec4 outColor;
 void main() {
   ivec2 p = ivec2(int(gl_FragCoord.x), int(uHeight - gl_FragCoord.y));
   ivec2 q = p - uOrigin;
-  vec3 c = uBg;
+  float inked = 0.0;
   ivec2 size = uGrid * uCell;
+  // el fondo de las celdas, interpolado: las manchas son suaves, no bloques;
+  // el margen fuera de la grilla toma el de la celda del borde
+  vec2 fc = (vec2(q) + 0.5) / vec2(uCell) - 0.5;
+  ivec2 i0 = ivec2(floor(fc));
+  vec2 fr = clamp(fc - vec2(i0), 0.0, 1.0);
+  ivec2 hi = uGrid - 1;
+  float s00 = texelFetch(uData, clamp(i0, ivec2(0), hi), 0).a;
+  float s10 = texelFetch(uData, clamp(i0 + ivec2(1, 0), ivec2(0), hi), 0).a;
+  float s01 = texelFetch(uData, clamp(i0 + ivec2(0, 1), ivec2(0), hi), 0).a;
+  float s11 = texelFetch(uData, clamp(i0 + ivec2(1, 1), ivec2(0), hi), 0).a;
+  // de día el contraste es alto: interpolación lineal, sin mesetas por celda
+  fr = mix(fr * fr * (3.0 - 2.0 * fr), fr, uInk);
+  float s = mix(mix(s00, s10, fr.x), mix(s01, s11, fr.x), fr.y);
+  vec3 c = mix(uShadow, uBg, 1.0 - pow(1.0 - s, uShadeK));
   if (q.x >= 0 && q.y >= 0 && q.x < size.x && q.y < size.y) {
     ivec2 cell = q / uCell;
     vec4 d = texelFetch(uData, cell, 0);
-    // el fondo de las celdas, interpolado: las manchas son suaves, no bloques
-    vec2 fc = (vec2(q) + 0.5) / vec2(uCell) - 0.5;
-    ivec2 i0 = ivec2(floor(fc));
-    vec2 fr = fc - vec2(i0);
-    ivec2 hi = uGrid - 1;
-    float s00 = texelFetch(uData, clamp(i0, ivec2(0), hi), 0).a;
-    float s10 = texelFetch(uData, clamp(i0 + ivec2(1, 0), ivec2(0), hi), 0).a;
-    float s01 = texelFetch(uData, clamp(i0 + ivec2(0, 1), ivec2(0), hi), 0).a;
-    float s11 = texelFetch(uData, clamp(i0 + ivec2(1, 1), ivec2(0), hi), 0).a;
-    fr = fr * fr * (3.0 - 2.0 * fr);
-    c = uBg * mix(mix(s00, s10, fr.x), mix(s01, s11, fr.x), fr.y);
     // letra de 12 bits: 8 en r y 4 arriba del tono, en b
     int tb = int(d.b * 255.0 + 0.5);
     int g = int(d.r * 255.0 + 0.5) | ((tb >> 4) << 8);
@@ -60,13 +65,24 @@ void main() {
       ivec2 local = q - cell * uCell;
       float a = texelFetch(uAtlas, ivec2(g % ${ATLAS_COLS}, g / ${ATLAS_COLS}) * uCell + local, 0).a;
       float b = d.g * 2.0;
-      vec3 lit = uPalette[tb & 15] * b;
-      // más allá de 1, el fósforo se satura hacia el blanco
-      lit += vec3(max(b - 1.0, 0.0) * 0.4);
-      c += lit * a;
+      int tone = tb & 15;
+      if (uInk < 0.5) {
+        vec3 lit = uPalette[tone] * b;
+        // más allá de 1, el fósforo se satura hacia el blanco
+        lit += vec3(max(b - 1.0, 0.0) * 0.4);
+        c += lit * a;
+      } else {
+        // de día la tinta tapa el vidrio; sobre un fondo oscuro se aclara
+        // (el rojo, nunca); más allá de 1, se ahonda
+        float k = tone == uRed ? 0.0 : smoothstep(0.3, 0.12, dot(c, vec3(0.2126, 0.7152, 0.0722)));
+        float cov = pow(clamp(b, 0.0, 1.0), uInkGamma) * a;
+        c = mix(c, mix(uPalette[tone], uKnock, k), cov);
+        c *= 1.0 - max(b - 1.0, 0.0) * 0.4 * a * (1.0 - k);
+        inked = cov * (1.0 - k);
+      }
     }
   }
-  outColor = vec4(c, 1.0);
+  outColor = vec4(c, inked);
 }`;
 
 const BRIGHT_FS = `#version 300 es
@@ -74,14 +90,21 @@ precision highp float;
 uniform sampler2D uSrc;
 uniform vec2 uOut;
 uniform vec2 uTexel;
+uniform float uInk;
+uniform vec3 uBg;
 out vec4 outColor;
+// de noche, la luz; de día, lo que la tinta le quita al vidrio
+vec3 tap(vec2 uv) {
+  vec4 t = texture(uSrc, uv);
+  return uInk < 0.5 ? t.rgb : max(uBg - t.rgb, 0.0) * t.a;
+}
 void main() {
   vec2 uv = gl_FragCoord.xy / uOut;
-  vec3 c = texture(uSrc, uv + uTexel * vec2(-1.0, -1.0)).rgb + texture(uSrc, uv + uTexel * vec2(1.0, -1.0)).rgb
-         + texture(uSrc, uv + uTexel * vec2(-1.0, 1.0)).rgb + texture(uSrc, uv + uTexel * vec2(1.0, 1.0)).rgb;
+  vec3 c = tap(uv + uTexel * vec2(-1.0, -1.0)) + tap(uv + uTexel * vec2(1.0, -1.0))
+         + tap(uv + uTexel * vec2(-1.0, 1.0)) + tap(uv + uTexel * vec2(1.0, 1.0));
   c *= 0.25;
   float l = max(c.r, max(c.g, c.b));
-  outColor = vec4(c * smoothstep(0.22, 0.8, l), 1.0);
+  outColor = vec4(c * (uInk < 0.5 ? smoothstep(0.22, 0.8, l) : smoothstep(0.1, 0.45, l)), 1.0);
 }`;
 
 const BLUR_FS = `#version 300 es
@@ -116,6 +139,17 @@ uniform float uBand;
 uniform float uK;
 uniform float uScan;
 uniform float uRadius;
+// el tema: noche o día
+uniform float uInk;
+uniform float uGlow;
+uniform float uScanDepth;
+uniform float uScanLift;
+uniform float uMask;
+uniform float uVignette;
+uniform float uBandK;
+uniform float uSheen;
+uniform vec3 uFlashC;
+uniform vec3 uOuter;
 out vec4 outColor;
 float hash(vec2 p) {
   vec3 q = fract(vec3(p.xyx) * 0.1031);
@@ -160,29 +194,30 @@ void main() {
   c.r = texture(uScene, s + vec2(off, 0.0)).r;
   c.g = texture(uScene, s).g;
   c.b = texture(uScene, s - vec2(off, 0.0)).b;
+  // de noche el fósforo florece; de día la tinta se corre apenas
   vec3 glow = texture(uBloom, s).rgb;
-  c += glow * ${BLOOM};
+  c = max(c + glow * uGlow * (1.0 - 2.0 * uInk), 0.0);
   if (uRoll != 0.0) c *= mix(0.04, 1.0, smoothstep(0.0, 0.04, seam) * smoothstep(1.0, 0.985, seam));
   // el número de canal
   if (uOsdAlpha > 0.0) c = osd(c, uOsd, uOsdRect, uOsdAlpha, vec2(suv.x, y) * uRes);
   // barrido: las líneas siguen la curva; lo brillante las ensancha
   float sl = 0.5 + 0.5 * cos(y * uRes.y / uScan * 6.2831853);
   float l = max(c.r, max(c.g, c.b));
-  c *= 1.0 - 0.3 * sl * (1.0 - 0.45 * clamp(l, 0.0, 1.0));
+  c *= 1.0 - uScanDepth * sl * (1.0 - uScanLift * clamp(l, 0.0, 1.0));
   // máscara de apertura, apenas
   float m = mod(gl_FragCoord.x, 3.0);
-  c *= vec3(m < 1.0 ? 1.0 : 0.94, (m >= 1.0 && m < 2.0) ? 1.0 : 0.94, m >= 2.0 ? 1.0 : 0.94) * 1.04;
+  c *= vec3(m < 1.0 ? 1.0 : uMask, (m >= 1.0 && m < 2.0) ? 1.0 : uMask, m >= 2.0 ? 1.0 : uMask) * (3.0 / (1.0 + 2.0 * uMask));
   // viñeta
-  c *= 1.0 - 0.45 * pow(clamp(length(dc * vec2(0.9, 1.0)) / 1.35, 0.0, 1.0), 2.4);
-  // parpadeo (≤ 2 %) y una banda clara que baja despacio
+  c *= 1.0 - uVignette * pow(clamp(length(dc * vec2(0.9, 1.0)) / 1.35, 0.0, 1.0), 2.4);
+  // parpadeo (≤ 2 %) y una banda que baja despacio (clara de noche, gris de día)
   float fl = 1.0 + uFlicker * (0.011 * sin(uTime * 59.0) + 0.008 * (hash(vec2(floor(uTime * 24.0), 7.0)) - 0.5));
   float d = fract(y - uTime * 0.045 + 0.5) - 0.5;
-  c *= fl * (1.0 + uBand * 0.05 * exp(-d * d / 0.005));
-  // un cuadro blanco
-  c = mix(c, vec3(1.0, 0.985, 0.97) * (0.9 + 0.1 * (1.0 - sl)), uFlash);
+  c *= fl * (1.0 + uBand * uBandK * exp(-d * d / 0.005));
+  // un cuadro: blanco de noche, grafito de día
+  c = mix(c, uFlashC * (0.9 + 0.1 * (1.0 - sl)), uFlash);
   // el vidrio: un reflejo apenas, arriba a la izquierda
-  c += vec3(0.016) * smoothstep(1.0, 0.0, length((dc - vec2(-0.55, 0.62)) * vec2(0.8, 1.2)));
-  c = mix(vec3(0.006), c, inside);
+  c += vec3(uSheen) * smoothstep(1.0, 0.0, length((dc - vec2(-0.55, 0.62)) * vec2(0.8, 1.2)));
+  c = mix(uOuter, c, inside);
   outColor = vec4(c, 1.0);
 }`;
 
@@ -266,10 +301,10 @@ function atlas({ cw, ch }) {
 }
 
 /**
- * createRenderer(canvas) → null sin WebGL2; si no:
- * layout(grid) · osd({ canvas, x, y, w, h } | null) · draw(frame) · dispose().
+ * createRenderer(canvas, palette?) → null sin WebGL2; si no:
+ * layout(grid) · osd({ canvas, x, y, w, h } | null) · theme(palette) · draw(frame) · dispose().
  */
-export function createRenderer(canvas) {
+export function createRenderer(canvas, initial = paletteFor('light')) {
   const gl = canvas.getContext('webgl2', { antialias: false, alpha: false, depth: false, stencil: false, premultipliedAlpha: false, preserveDrawingBuffer: false });
   if (!gl) return null;
 
@@ -277,6 +312,7 @@ export function createRenderer(canvas) {
   let lost = false;
   let grid = null;
   let osd = null; // el número de canal
+  let pal = initial; // el tema: se aplica en cada cuadro
 
   const texture = (filter) => {
     const t = gl.createTexture();
@@ -299,15 +335,17 @@ export function createRenderer(canvas) {
   };
 
   const init = () => {
-    const scene = program(gl, QUAD_VS, SCENE_FS, ['uData', 'uAtlas', 'uGrid', 'uCell', 'uOrigin', 'uHeight', 'uBg', 'uPalette']);
-    const bright = program(gl, QUAD_VS, BRIGHT_FS, ['uSrc', 'uOut', 'uTexel']);
+    const scene = program(gl, QUAD_VS, SCENE_FS, ['uData', 'uAtlas', 'uGrid', 'uCell', 'uOrigin', 'uHeight', 'uBg', 'uShadow', 'uKnock', 'uInk', 'uShadeK', 'uInkGamma', 'uRed', 'uPalette']);
+    const bright = program(gl, QUAD_VS, BRIGHT_FS, ['uSrc', 'uOut', 'uTexel', 'uInk', 'uBg']);
     const blur = program(gl, QUAD_VS, BLUR_FS, ['uSrc', 'uOut', 'uDir']);
-    const post = program(gl, QUAD_VS, POST_FS, ['uScene', 'uBloom', 'uOsd', 'uOsdRect', 'uOsdAlpha', 'uRes', 'uDpr', 'uTime', 'uRoll', 'uJitter', 'uFlash', 'uFlicker', 'uBand', 'uK', 'uScan', 'uRadius']);
+    const post = program(gl, QUAD_VS, POST_FS, [
+      'uScene', 'uBloom', 'uOsd', 'uOsdRect', 'uOsdAlpha', 'uRes', 'uDpr', 'uTime', 'uRoll', 'uJitter', 'uFlash', 'uFlicker', 'uBand', 'uK', 'uScan', 'uRadius',
+      'uInk', 'uGlow', 'uScanDepth', 'uScanLift', 'uMask', 'uVignette', 'uBandK', 'uSheen', 'uFlashC', 'uOuter',
+    ]);
     gl.useProgram(scene.p);
     gl.uniform1i(scene.u.uData, 0);
     gl.uniform1i(scene.u.uAtlas, 1);
-    gl.uniform3fv(scene.u.uPalette, PAL);
-    gl.uniform3fv(scene.u.uBg, BG);
+    gl.uniform1i(scene.u.uRed, TONE.RED);
     gl.useProgram(post.p);
     gl.uniform1i(post.u.uScene, 0);
     gl.uniform1i(post.u.uBloom, 1);
@@ -397,9 +435,16 @@ export function createRenderer(canvas) {
       if (!lost && res) uploadOsd();
     },
 
+    /** La paleta de palette.js; vale desde el próximo cuadro. */
+    theme(next) {
+      pal = next;
+    },
+
     draw({ data, time = 0, roll = 0, jitter = 0, flash = 0, flicker = 1, band = 1, osdAlpha = 0, barrel = 0.08 }) {
       if (lost || !grid) return;
       const { cols, rows, width: W, height: H } = grid;
+      const ink = pal.glow === 'bleed' ? 1 : 0;
+      const look = pal.look;
       gl.bindVertexArray(res.vao);
 
       gl.activeTexture(gl.TEXTURE0);
@@ -416,15 +461,24 @@ export function createRenderer(canvas) {
       gl.uniform2i(u.uCell, grid.cw, grid.ch);
       gl.uniform2i(u.uOrigin, grid.ox, grid.oy);
       gl.uniform1f(u.uHeight, H);
+      gl.uniform3fv(u.uPalette, pal.tones);
+      gl.uniform3fv(u.uBg, pal.glass);
+      gl.uniform3fv(u.uShadow, pal.shadow);
+      gl.uniform3fv(u.uKnock, pal.knock);
+      gl.uniform1f(u.uInk, ink);
+      gl.uniform1f(u.uShadeK, look.shade);
+      gl.uniform1f(u.uInkGamma, look.inkGamma);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
 
-      // 2 · fósforo: lo brillante, a un cuarto, desenfocado
+      // 2 · fósforo: lo brillante (o la tinta), a un cuarto, desenfocado
       gl.activeTexture(gl.TEXTURE0);
       gl.bindTexture(gl.TEXTURE_2D, res.sceneT.tex);
       u = pass(res.bloomA, res.bright);
       gl.uniform1i(u.uSrc, 0);
       gl.uniform2f(u.uOut, res.bloomA.w, res.bloomA.h);
       gl.uniform2f(u.uTexel, 1 / W, 1 / H);
+      gl.uniform1f(u.uInk, ink);
+      gl.uniform3fv(u.uBg, pal.glass);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
       const spread = 1.5;
       for (const [src, dst, dx, dy] of [[res.bloomA, res.bloomB, spread, 0], [res.bloomB, res.bloomA, 0, spread]]) {
@@ -453,6 +507,16 @@ export function createRenderer(canvas) {
       gl.uniform1f(u.uK, barrel);
       gl.uniform1f(u.uScan, grid.ch / 5);
       gl.uniform1f(u.uRadius, grid.mobile ? 0.085 : 0.075);
+      gl.uniform1f(u.uInk, ink);
+      gl.uniform1f(u.uGlow, look.glow);
+      gl.uniform1f(u.uScanDepth, look.scan);
+      gl.uniform1f(u.uScanLift, look.scanLift);
+      gl.uniform1f(u.uMask, look.mask);
+      gl.uniform1f(u.uVignette, look.vignette);
+      gl.uniform1f(u.uBandK, look.band);
+      gl.uniform1f(u.uSheen, look.sheen);
+      gl.uniform3fv(u.uFlashC, pal.flash);
+      gl.uniform3fv(u.uOuter, pal.outer);
       const o = osd && osdAlpha > 0 ? osd : null;
       gl.uniform4f(u.uOsdRect, o ? o.x : 0, o ? o.y : 0, o ? o.w : 1, o ? o.h : 1);
       gl.uniform1f(u.uOsdAlpha, o ? osdAlpha : 0);

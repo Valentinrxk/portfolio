@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#cfd0d6" />
+    <meta name="theme-color" content="#343439" />
 
     <!-- Lo esencial para buscadores (el idioma visible lo actualiza la app) -->
     <title>Valentín Romero — Desarrollador frontend en Buenos Aires</title>
@@ -86,14 +86,16 @@
   </head>
   <body>
     <script>
-      // aplicar el tema guardado antes del primer paint (sin flash)
+      // el tema antes del primer paint (sin flash): oscuro, salvo que la persona haya elegido claro
+      var light = false;
       try {
-        if (localStorage.getItem('vr.theme') === 'dark') {
-          document.documentElement.dataset.theme = 'dark';
-          document.documentElement.style.background = '#343439';
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#343439');
-        }
+        light = localStorage.getItem('vr.theme-choice') === 'light';
       } catch (e) { /* modo privado */ }
+      if (!light) {
+        document.documentElement.dataset.theme = 'dark';
+        document.documentElement.style.background = '#343439';
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', '#343439');
+      }
     </script>
     <div id="root"></div>
 

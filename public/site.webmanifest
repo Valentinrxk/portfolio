@@ -4,8 +4,8 @@
   "description": "Desarrollador frontend y full stack en Buenos Aires.",
   "start_url": "/",
   "display": "browser",
-  "background_color": "#cfd0d6",
-  "theme_color": "#cfd0d6",
+  "background_color": "#343439",
+  "theme_color": "#343439",
   "icons": [
     {
       "src": "/favicon.svg",

@@ -1,5 +1,5 @@
 // El número de canal en pantalla, como un OSD de los 90: bloques gruesos,
-// borde negro y sombra dura. Se dibuja en un canvas y va al tubo.
+// borde contrario y sombra dura. Se dibuja en un canvas y va al tubo.
 const FONT = {
   0: ['01110', '10001', '10011', '10101', '11001', '10001', '01110'],
   1: ['00100', '01100', '00100', '00100', '00100', '00100', '01110'],
@@ -15,8 +15,8 @@ const FONT = {
   H: ['10001', '10001', '10001', '11111', '10001', '10001', '10001'],
 };
 
-const INK = '#eef0f3';
-const EDGE = '#000';
+// de noche: tinta clara, borde negro; de día, al revés (palette.js)
+const NIGHT = { ink: '#eef0f3', edge: '#000000', drop: 'rgba(0,0,0,0.55)' };
 
 function blocks(g, text, x, y, p, gap, fill, grow = 0, dx = 0, dy = 0) {
   g.fillStyle = fill;
@@ -33,7 +33,7 @@ function blocks(g, text, x, y, p, gap, fill, grow = 0, dx = 0, dy = 0) {
 }
 
 /** → { canvas, x, y, w, h } en px de dispositivo, arriba a la derecha. */
-export function drawOsd(number, grid) {
+export function drawOsd(number, grid, colors = NIGHT) {
   const P = Math.max(4, Math.round(grid.ch * 0.4));
   const p = Math.max(2, Math.round(P * 0.26));
   const edge = Math.max(2, Math.round(P * 0.2));
@@ -51,8 +51,8 @@ export function drawOsd(number, grid) {
   const ly = pad + 7 * P - 7 * p;
   const bx = pad + labelW + Math.round(P * 0.9);
   const by = pad;
-  // sombra dura, borde negro, y la tinta
-  for (const [grow, dx, dy, fill] of [[edge, edge, edge, 'rgba(0,0,0,0.55)'], [edge, 0, 0, EDGE], [0, 0, 0, INK]]) {
+  // sombra dura, borde, y la tinta
+  for (const [grow, dx, dy, fill] of [[edge, edge, edge, colors.drop], [edge, 0, 0, colors.edge], [0, 0, 0, colors.ink]]) {
     blocks(g, 'CH', lx, ly, p, 1, fill, Math.min(grow, Math.ceil(p * 0.5)), dx, dy);
     blocks(g, digits, bx, by, P, 1, fill, grow, dx, dy);
   }

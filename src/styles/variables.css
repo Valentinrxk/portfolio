@@ -19,16 +19,6 @@
   --color-border: rgba(35, 35, 39, 0.18);
   --color-border-strong: rgba(35, 35, 39, 0.38);
 
-  /* Cromado para titulares: plata pulida con sombra de acero */
-  --chrome: linear-gradient(
-    178deg,
-    #55565e 0%,
-    #2c2c31 34%,
-    #83848d 50%,
-    #303036 62%,
-    #4c4d55 100%
-  );
-
   /* Typography — Helvetica en todo */
   --font-sans: 'Helvetica Neue', Helvetica, Arial, 'Liberation Sans', sans-serif;
   --font-mono: ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace;
@@ -82,16 +72,6 @@
 
   --color-border: rgba(231, 231, 236, 0.18);
   --color-border-strong: rgba(231, 231, 236, 0.38);
-
-  /* el cromado, espejado parada por parada */
-  --chrome: linear-gradient(
-    178deg,
-    #a6a7b0 0%,
-    #dadae1 34%,
-    #767780 50%,
-    #d5d5dd 62%,
-    #b0b2bb 100%
-  );
 
   --hud-bg: rgba(35, 35, 38, 0.92);
   --cursor-halo: rgba(35, 35, 38, 0.85);

@@ -81,18 +81,6 @@
   margin-left: 0.06em;
 }
 
-.hero__sub {
-  max-width: 30rem;
-  font-size: clamp(0.9rem, 1.35vw, 1.05rem);
-  line-height: 1.55;
-  color: var(--steel-700);
-  opacity: 0;
-}
-
-.is-playing .hero__sub {
-  animation: fade-in 0.8s var(--ease-smooth) 0.85s forwards;
-}
-
 /* ——— CTA: el mail crudo, sin verbo ni chamuyo ——— */
 .hero__cta {
   position: relative;
@@ -108,7 +96,7 @@
 }
 
 .is-playing .hero__cta {
-  animation: fade-in 0.8s var(--ease-smooth) 1.05s forwards;
+  animation: fade-in 0.8s var(--ease-smooth) 0.85s forwards;
 }
 
 .hero__cta::after {
@@ -162,8 +150,7 @@
     clip-path: none;
   }
 
-  .hero__kicker,
-  .hero__sub {
+  .hero__kicker {
     opacity: 1;
   }
 

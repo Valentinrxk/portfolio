@@ -26,12 +26,6 @@
   100% { opacity: 1; transform: translate(0, 0); clip-path: inset(0 0 0 0); }
 }
 
-/* Entrada de línea enmascarada */
-@keyframes rise-in {
-  from { transform: translateY(110%); }
-  to   { transform: translateY(0); }
-}
-
 /* Regla roja que se extiende */
 @keyframes rule-grow {
   from { transform: scaleX(0); }
@@ -41,12 +35,6 @@
 @keyframes fade-in {
   from { opacity: 0; }
   to   { opacity: 1; }
-}
-
-/* Marquesina ASCII: desfile continuo de caracteres */
-@keyframes ascii-marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
 }
 
 /* Tic de glitch periódico: quieto casi todo el loop, un espasmo breve

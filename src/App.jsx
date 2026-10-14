@@ -3,11 +3,9 @@ import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/react'
 import Intro from './components/cinema/Intro'
 import Hud from './components/cinema/Hud'
+import AsciiCut from './components/cinema/AsciiCut'
 import CustomCursor from './components/ui/CustomCursor'
-import ClickBurst from './components/ui/ClickBurst'
-import ScrollToTop from './components/ui/ScrollToTop'
 import Hero from './components/sections/Hero'
-import About from './components/sections/About'
 import Experience from './components/sections/Experience'
 import Projects from './components/sections/Projects'
 import Skills from './components/sections/Skills'
@@ -31,17 +29,15 @@ function App() {
     <LangProvider>
       {!introDone && <Intro onDone={() => setIntroDone(true)} />}
       <CustomCursor />
-      <ClickBurst />
       <Hud live={introDone} />
+      <AsciiCut />
       <main>
         <Hero play={introDone} />
-        <About />
         <Experience />
         <Projects />
         <Skills />
         <Contact />
       </main>
-      <ScrollToTop />
       {/* visitas y Core Web Vitals; se activan en el panel de Vercel */}
       <Analytics />
       <SpeedInsights />

@@ -81,6 +81,17 @@
   color: var(--red);
 }
 
+/* cada letra es su propia caja: la onda las mueve de a una */
+.contact__char {
+  display: inline-block;
+  will-change: transform;
+  transition: color 0.25s var(--ease-smooth);
+}
+
+.contact__char:hover {
+  color: var(--red);
+}
+
 .contact__email::after {
   content: '';
   position: absolute;

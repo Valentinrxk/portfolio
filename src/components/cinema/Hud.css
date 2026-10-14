@@ -50,7 +50,7 @@
   transform: rotate(-8deg) scale(1.08);
 }
 
-/* ——— Lado derecho: idioma + medidor ——— */
+/* ——— Lado derecho: idioma, tema y mail ——— */
 .hud__right {
   display: flex;
   align-items: center;
@@ -83,6 +83,40 @@
   font-weight: 700;
 }
 
+/* [◐] — día y noche en un solo gesto: la mitad llena gira al otro lado */
+.hud__theme {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.18em;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--graphite);
+  padding: 0.3rem 0;
+}
+
+.hud__theme-bracket {
+  color: var(--steel-600);
+  font-weight: 400;
+  transition: color 0.25s var(--ease-smooth);
+}
+
+.hud__theme-dot {
+  width: 0.62em;
+  height: 0.62em;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+  background: linear-gradient(90deg, currentColor 50%, transparent 50%);
+  transition: transform 0.6s var(--ease-out-expo);
+}
+
+.hud__theme[aria-pressed='true'] .hud__theme-dot {
+  transform: rotate(180deg);
+}
+
+.hud__theme:hover .hud__theme-bracket {
+  color: var(--graphite);
+}
+
 /* [@] — el mail siempre a un click, familia del monograma */
 .hud__mail {
   font-size: 1rem;
@@ -110,12 +144,6 @@
 
 .hud__mail:hover .hud__mail-bracket {
   color: var(--graphite);
-}
-
-.hud__meter {
-  flex: 0 0 auto;
-  width: 96px;
-  height: 16px;
 }
 
 /* ——— Navegación ——— */
@@ -205,7 +233,8 @@
     padding: 0.85rem 0.2rem;
   }
 
-  .hud__lang-opt {
+  .hud__lang-opt,
+  .hud__theme {
     padding: 0.85rem 0.25rem;
   }
 

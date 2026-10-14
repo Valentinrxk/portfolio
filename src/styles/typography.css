@@ -34,30 +34,8 @@ h1, h2, h3, h4, h5, h6 {
   font-variant-numeric: tabular-nums;
 }
 
-/* Titular metálico (acero pulido sobre plata) */
-.chrome-text {
-  background: var(--chrome);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-/* Titular delineado — grafito sobre plata, plata sobre grafito */
-.outline-text {
-  color: transparent;
-  -webkit-text-stroke: 1.5px var(--graphite);
-}
-
-.outline-text--silver {
-  -webkit-text-stroke-color: var(--silver-400);
-}
-
 @media (max-width: 768px) {
   .label {
     font-size: 0.8125rem;
-  }
-
-  .outline-text {
-    -webkit-text-stroke-width: 1px;
   }
 }

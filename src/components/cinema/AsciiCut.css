@@ -1,0 +1,38 @@
+/* El corte: una grilla de celdas ASCII que tapa la pantalla durante el
+   salto entre secciones. Debajo del HUD (la navegación sigue a la vista)
+   y encima de todo el contenido. */
+.cut {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-hud) - 2);
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 1), 1fr);
+  grid-template-rows: repeat(var(--rows, 1), 1fr);
+  pointer-events: none;
+  visibility: hidden;
+}
+
+/* mientras corre bloquea clics: nadie toca el contenido que salta debajo */
+.cut.is-on {
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.cut i {
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-size: clamp(0.9rem, 1.6vw, 1.25rem);
+  font-style: normal;
+  font-weight: 700;
+  color: var(--silver-500);
+  background: var(--graphite);
+  opacity: 0;
+  transform: scale(0);
+  will-change: transform, opacity;
+}
+
+/* el punto de origen quema en rojo */
+.cut i.is-hot {
+  color: var(--red);
+}

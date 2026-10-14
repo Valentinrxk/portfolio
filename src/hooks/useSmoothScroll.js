@@ -13,6 +13,15 @@ export function getScrollVelocity() {
   return velocity;
 }
 
+/** Salto seco, sin recorrido: lo usa el corte ASCII mientras tapa la pantalla. */
+export function jumpTo(y) {
+  if (lenis) {
+    lenis.scrollTo(y, { immediate: true, force: true });
+  } else {
+    window.scrollTo({ top: y, behavior: 'auto' });
+  }
+}
+
 /** Scroll programático por el mismo carril suave. */
 export function smoothScrollTo(y) {
   if (lenis) {

@@ -1,7 +1,7 @@
 .xp {
   position: relative;
-  /* sigue el tono con el que cierra perfil: sin costura en el traspaso */
-  background: var(--silver-400);
+  /* arranca con el tono con el que cierra el hero: sin costura en el traspaso */
+  background: linear-gradient(180deg, var(--silver-300) 0%, var(--silver-400) 30vh);
   padding: calc(var(--hud-h) + clamp(4rem, 10vh, 7rem)) var(--frame-x) calc(var(--hud-h) + clamp(4rem, 10vh, 7rem));
 }
 
@@ -27,7 +27,7 @@
   color: var(--steel-700);
 }
 
-/* ——— Registro: cuándo · dónde · qué quedó andando ——— */
+/* ——— Registro: cuándo · dónde · qué ——— */
 .xp__list {
   list-style: none;
   border-bottom: 1px solid var(--color-border-strong);
@@ -57,50 +57,20 @@
 }
 
 .xp__role {
-  margin-top: 0.6rem;
   color: var(--graphite);
 }
 
-.xp__kind {
-  color: var(--steel-600);
-}
-
-.xp__points {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
-
-.xp__points li {
-  position: relative;
-  padding-left: 1.4rem;
+.xp__note {
+  margin-top: 0.6rem;
   font-size: 0.98rem;
   line-height: 1.55;
   color: var(--steel-700);
-}
-
-/* guion rojo: el mismo acento que la barra de las obras */
-.xp__points li::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0.78em;
-  width: 0.7rem;
-  height: 1px;
-  background: var(--red);
-}
-
-.xp__langs {
-  margin-top: 2rem;
-  color: var(--steel-600);
 }
 
 /* ——— Responsive ——— */
 @media (max-width: 900px) {
   .xp__row {
     grid-template-columns: minmax(0, 1fr);
-    gap: 0.9rem;
+    gap: 0.6rem;
   }
-
 }

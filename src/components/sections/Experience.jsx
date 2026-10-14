@@ -1,6 +1,6 @@
 import { motion, useReducedMotion } from 'motion/react';
 import { useLang } from '../../i18n';
-import AiPanel from './AiPanel';
+import Scramble from '../ui/Scramble';
 import './Experience.css';
 
 // Orden del más reciente al más viejo; los textos viven en i18n
@@ -8,14 +8,13 @@ const ROLES = [
   { key: 'oclu', org: 'oclü' },
   { key: 'grip', org: 'grip studio®' },
   { key: 'taxes', org: 'taxes software' },
-  { key: 'uade', org: 'uade' },
 ];
 
 const EASE = [0.19, 1, 0.22, 1];
 
 /**
- * Oficio: la trayectoria como un libro de registro — cuándo, dónde y
- * qué quedó andando — y aparte, la IA que ya corre en producción.
+ * Oficio: la trayectoria como un libro de registro, una línea por rol:
+ * cuándo, dónde y qué. El detalle vive en las obras.
  */
 export default function Experience() {
   const reduced = useReducedMotion();
@@ -37,7 +36,7 @@ export default function Experience() {
     <section id="experience" className="xp">
       <motion.header className="xp__head" {...reveal()}>
         <span className="section-slash" aria-hidden="true">///</span>
-        <h2 className="xp__title">{x.title}</h2>
+        <Scramble as="h2" className="xp__title" text={x.title} />
         <p className="xp__lead">{x.lead}</p>
       </motion.header>
 
@@ -47,28 +46,15 @@ export default function Experience() {
           return (
             <motion.li key={role.key} className="xp__row" {...reveal(i)}>
               <span className="xp__when label tnum">{r.when}</span>
-              <div className="xp__who">
-                <h3 className="xp__org">{role.org}</h3>
-                <p className="xp__role label">
-                  {r.role}
-                  <span className="xp__kind"> · {r.kind}</span>
-                </p>
+              <h3 className="xp__org">{role.org}</h3>
+              <div className="xp__what">
+                <p className="xp__role label">{r.role}</p>
+                {r.note && <p className="xp__note">{r.note}</p>}
               </div>
-              {r.points.length > 0 && (
-                <ul className="xp__points">
-                  {r.points.map((point) => (
-                    <li key={point}>{point}</li>
-                  ))}
-                </ul>
-              )}
             </motion.li>
           );
         })}
       </ol>
-
-      <AiPanel copy={x.ai} />
-
-      <p className="xp__langs label">{x.langs}</p>
     </section>
   );
 }

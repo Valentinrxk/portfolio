@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react';
 import AsciiGif from '../ascii/AsciiGif';
+import Scramble from '../ui/Scramble';
 import { useLang, EMAIL } from '../../i18n';
 import { useTheme } from '../../theme';
 import './Hero.css';
@@ -22,7 +23,7 @@ export default function Hero({ play }) {
   });
 
   // El desarme acompaña todo el recorrido pero nunca completa: quedan
-  // jirones en pantalla hasta que perfil cubre el encuadre — sin vacío
+  // jirones en pantalla hasta que oficio entra en cuadro — sin vacío
   const tear = useTransform(scrollYProgress, [0.08, 0.95], [0, 0.78]);
   const typeOpacity = useTransform(scrollYProgress, [0.3, 0.7], [1, 0]);
   const typeY = useTransform(scrollYProgress, [0.3, 0.75], [0, -80]);
@@ -45,11 +46,11 @@ export default function Hero({ play }) {
             <span className="hero__kicker-slash" aria-hidden="true">///</span>
             {t.hero.kicker}
           </p>
-          <h1 className="hero__statement">
-            {t.hero.statement}
+          {/* la declaración sale del ruido junto con el recorte de entrada */}
+          <h1 className="hero__statement" aria-label={t.hero.statement}>
+            <Scramble text={t.hero.statement} trigger="play" play={play} delay={0.3} labelled={false} />
             <span className="hero__caret" aria-hidden="true">_</span>
           </h1>
-          <p className="hero__sub">{t.hero.sub}</p>
           <a className="hero__cta" href={`mailto:${EMAIL}`}>
             {EMAIL}
             <span className="hero__cta-arrow" aria-hidden="true">⟶</span>

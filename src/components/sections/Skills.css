@@ -1,8 +1,14 @@
 .dna {
   position: relative;
+  background: var(--silver-300);
+}
+
+/* La declaración: su caja es la que mide el scroll (ver Skills.jsx).
+   Abajo, el televisor cierra adn a todo el ancho. */
+.dna__statement {
+  position: relative;
   min-height: 120vh;
   padding: calc(var(--hud-h) + clamp(5rem, 12vh, 8rem)) var(--frame-x) clamp(7rem, 16vh, 11rem);
-  background: var(--silver-300);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -21,21 +27,17 @@
   gap: clamp(1.5rem, 5vh, 3.5rem);
 }
 
-/* ——— Zigzag: palabra y pieza generativa se intercalan ——— */
+/* ——— Zigzag: izquierda, derecha, centro ——— */
 .dna__row {
   display: flex;
-  align-items: center;
-  gap: clamp(2rem, 6vw, 6rem);
 }
 
 .dna__row--1 {
-  justify-content: flex-start;
   padding-left: clamp(0rem, 6vw, 6rem);
 }
 
 .dna__row--2 {
-  flex-direction: row-reverse;
-  justify-content: flex-start;
+  justify-content: flex-end;
   padding-right: clamp(0rem, 4vw, 4rem);
 }
 
@@ -82,71 +84,10 @@
   color: var(--graphite);
 }
 
-/* ——— Piezas generativas ——— */
-.dna__card {
-  flex: 0 0 auto;
-  width: clamp(190px, 18vw, 260px);
-  border: 1px solid var(--color-border-strong);
-  background: var(--silver-200);
-  box-shadow: 0 18px 40px rgba(var(--shadow-ink), 0.32);
-  will-change: transform;
-  transition: border-color 0.3s var(--ease-smooth), box-shadow 0.3s var(--ease-smooth);
-}
-
-.dna__card:hover {
-  border-color: var(--red);
-  box-shadow: 0 24px 50px rgba(var(--shadow-ink), 0.42);
-}
-
-.dna__card-bar {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.45rem 0.6rem;
-  border-bottom: 1px solid var(--color-border);
-}
-
-.dna__card-dots {
-  display: inline-flex;
-  gap: 0.28rem;
-}
-
-.dna__card-dots i {
-  width: 6px;
-  height: 6px;
-}
-
-.dna__card-dots i:nth-child(1) { background: var(--red); }
-.dna__card-dots i:nth-child(2) { background: var(--steel-600); }
-.dna__card-dots i:nth-child(3) { background: var(--silver-500); }
-
-.dna__card-title {
-  color: var(--steel-700);
-}
-
-.dna__card-seed {
-  margin-left: auto;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0;
-  color: var(--red);
-}
-
-.dna__card-canvas {
-  position: relative;
-  height: clamp(110px, 12vw, 150px);
-  overflow: hidden;
-}
-
-.dna__card-field {
-  width: 100%;
-  height: 100%;
-}
-
-/* ——— Responsive: se apila pero mantiene el zigzag ——— */
+/* ——— Responsive: el zigzag se mantiene y ocupa el cuadro ——— */
 @media (max-width: 900px) {
-  .dna__row {
-    gap: 1.5rem;
+  .dna__grid {
+    gap: clamp(3rem, 12vh, 6rem);
   }
 
   .dna__row--1,
@@ -156,28 +97,8 @@
   }
 
   .dna__word {
-    font-size: clamp(2.6rem, 11.5vw, 4.5rem);
+    font-size: clamp(3rem, 16vw, 6rem);
     white-space: normal;
-  }
-
-  .dna__card {
-    width: clamp(150px, 40vw, 210px);
-  }
-}
-
-@media (max-width: 560px) {
-  .dna__row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-
-  .dna__row--2 {
-    align-items: flex-end;
-  }
-
-  .dna__row--3 {
-    align-items: center;
   }
 }
 

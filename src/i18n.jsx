@@ -24,20 +24,12 @@ const META = {
 
 const DICT = {
   es: {
-    nav:{ hero: 'inicio', about: 'perfil', experience: 'oficio', projects: 'obras', skills: 'adn', contact: 'contacto' },
-    theme: { light: 'día', dark: 'noche' },
+    nav:{ hero: 'inicio', experience: 'oficio', projects: 'obras', skills: 'adn', contact: 'contacto' },
+    theme: { dark: 'noche' },
     intro: { sign: 'valentín romero' },
     hero: {
       kicker: 'valentín romero, desarrollador en buenos aires',
       statement: 'el criterio no se descarga',
-      sub: 'código, estética y la obsesión por no parecerse a nada.',
-    },
-    about: {
-      takes: [
-        { text: 'no soy una fábrica de features: soy la persona que dice que no cuando el brief pide otra plantilla.', em: 'la persona que dice que no' },
-        { text: 'lo técnico es el piso — php, laravel, java, node, vue, react. el techo es el criterio: saber qué sobra.', em: 'el criterio' },
-        { text: 'si algo de acá te hizo ruido, perfecto. lo genérico no hace ruido.', em: 'lo genérico no hace ruido' },
-      ],
     },
     experience: {
       title: 'oficio',
@@ -46,51 +38,31 @@ const DICT = {
         oclu: {
           when: 'may 2025 — hoy',
           role: 'full stack developer',
-          kind: 'crm multi-tenant para clínicas dentales',
-          points: [
-            'agenda, historias clínicas, presupuestos, tesorería y laboratorio, en vue 3, laravel, mysql y redis.',
-            'presupuestos dictados por voz con openai whisper y campañas masivas por whatsapp y mail.',
-            'el pipeline que migra clínicas desde su software anterior: pacientes, historia clínica y deudas desde excel, csv y vcf.',
-          ],
+          note: 'ia en producción: servidores mcp y presupuestos dictados por voz.',
         },
         grip: {
           when: '2025 — hoy',
           role: 'frontend developer',
-          kind: 'agencia de marketing y diseño',
-          points: [
-            'los sitios y landings de la agencia, de punta a punta: del diseño al deploy, con animaciones guiadas por scroll y foco en performance.',
-          ],
         },
         taxes: {
           when: '2023 — hoy',
           role: 'full stack developer',
-          kind: 'saas contable para estudios y pymes',
-          points: [
-            'plataforma en laravel 12 y vue con facturación electrónica afip y sueldos.',
-            'dos apps en react native: watax, el inbox de whatsapp del soporte (google play y testflight), y taxes app para facturar desde el celular.',
-            'soporte de primera línea: escucho el problema antes de que sea un ticket.',
-          ],
-        },
-        uade: {
-          when: '2024 — hoy',
-          role: 'tecnicatura en desarrollo de software',
-          kind: 'formación',
-          points: [],
         },
       },
-      ai: {
-        label: 'ia en producción',
-        statement: 'la ia no es un demo acá: ya trabaja en producción.',
-        nodes: ['clínicas', 'equipo', 'taxes'],
-        yours: 'tu sistema',
-        core: 'ia',
-        items: [
-          { key: 'mcp', title: 'tres servidores mcp', text: 'un asistente de ia conectado a los datos de cada clínica con oauth por tenant, otro para el negocio del equipo y el asistente operativo de taxes.' },
-          { key: 'voice', title: 'openai whisper', text: 'presupuestos dictados por voz, adentro del producto.' },
-          { key: 'yours', title: 'tu sistema, el próximo', text: 'lo mismo, en tu producto: asistentes que consultan tus datos con los permisos justos, voz que se vuelve formulario y el trabajo manual que deja de existir.' },
-        ],
-      },
-      langs: 'español nativo · inglés c1',
+    },
+    tv: {
+      title: 'cosas que forjaron mi criterio',
+      hint: 'deslizá para cambiar de canal',
+      hintDesktop: '← → cambiar de canal',
+      prev: 'canal anterior',
+      next: 'canal siguiente',
+      film: 'ver en letterboxd',
+      alt: 'un televisor viejo que pasa ascii, de noche. canal 1, 回路 (kairo, de kiyoshi kurosawa): puntos que se buscan cuando están solos y mueren cuando se tocan; el dedo es un punto que no muere. canal 2, キュア (cure, de kiyoshi kurosawa): la llama de un encendedor sobre agua derramada; el dedo lo sostiene y, quieto, entra en trance; a veces, una x roja dura un solo cuadro. canal 3, リリイ・シュシュのすべて (all about lily chou-chou, de shunji iwai): un arrozal verde que el viento peina, una figura lejana con auriculares y un foro que se escribe solo; inclinar el teléfono o arrastrar de costado hace soplar el viento.',
+      channels: [
+        { name: 'pulse', director: 'kiyoshi kurosawa', year: '2001', url: 'https://letterboxd.com/film/pulse-2001/' },
+        { name: 'cure', director: 'kiyoshi kurosawa', year: '1997', url: 'https://letterboxd.com/film/cure/' },
+        { name: 'all about lily chou-chou', director: 'shunji iwai', year: '2001', url: 'https://letterboxd.com/film/all-about-lily-chou-chou/' },
+      ],
     },
     projects: {
       title: 'obras',
@@ -104,36 +76,27 @@ const DICT = {
         taxes: 'saas + app móvil',
       },
       items: {
-        oclucrm: 'crm para clínicas: pacientes, turnos y administración en una pantalla que no te pelea.',
-        grip: 'landing para grip®, agencia de marketing de buenos aires. marcas que se te pegan, cero chamuyo corporativo.',
-        taxes: 'impuestos y declaraciones sin laberinto. números claros para gente que odia los números.',
+        oclucrm: 'crm para clínicas: pacientes, turnos y administración en una sola pantalla.',
+        grip: 'landing para grip®, agencia de marketing de buenos aires.',
+        taxes: 'facturación electrónica, sueldos e impuestos para estudios y pymes, con app móvil.',
         riestra: 'sitio del club deportivo riestra, de la d a primera. la página es la camiseta: escudo, sponsor y el partido en vivo.',
       },
     },
     skills: {
       lines: ['nunca', 'lo mismo', 'dos veces.'],
-      cards: { wave: 'onda', noise: 'ruido', flow: 'flujo' },
     },
     contact: {
-      kicker: '¿tenés algo que no quiere ser genérico?',
+      kicker: '¿tenés un proyecto?',
       status: 'disponible para proyectos',
     },
   },
   en: {
-    nav: { hero: 'home', about: 'profile', experience: 'career', projects: 'works', skills: 'dna', contact: 'contact' },
-    theme: { light: 'day', dark: 'night' },
+    nav: { hero: 'home', experience: 'career', projects: 'works', skills: 'dna', contact: 'contact' },
+    theme: { dark: 'night' },
     intro: { sign: 'valentín romero' },
     hero: {
       kicker: 'valentín romero, developer in buenos aires',
       statement: "taste can't be downloaded",
-      sub: 'code, aesthetics, and an obsession with looking like nothing else.',
-    },
-    about: {
-      takes: [
-        { text: "i'm not a feature factory: i'm the person who says no when the brief asks for another template.", em: 'the person who says no' },
-        { text: 'the tech is the floor — php, laravel, java, node, vue, react. taste is the ceiling: knowing what to cut.', em: 'taste' },
-        { text: 'if something here made noise in your head — good. generic is silent.', em: 'generic is silent' },
-      ],
     },
     experience: {
       title: 'career',
@@ -142,51 +105,31 @@ const DICT = {
         oclu: {
           when: 'may 2025 — now',
           role: 'full stack developer',
-          kind: 'multi-tenant crm for dental clinics',
-          points: [
-            'scheduling, patient records, budgets, treasury and lab orders, in vue 3, laravel, mysql and redis.',
-            'voice-dictated budgets with openai whisper and bulk whatsapp and email campaigns.',
-            'the pipeline that migrates clinics from their old software: patients, clinical history and debts from excel, csv and vcf.',
-          ],
+          note: 'ai in production: mcp servers and voice-dictated quotes.',
         },
         grip: {
           when: '2025 — now',
           role: 'frontend developer',
-          kind: 'marketing and design agency',
-          points: [
-            "the agency's websites and landing pages, end to end: from design to deploy, with scroll-driven animation and a focus on performance.",
-          ],
         },
         taxes: {
           when: '2023 — now',
           role: 'full stack developer',
-          kind: 'accounting saas for firms and smes',
-          points: [
-            'laravel 12 and vue platform with afip e-invoicing and payroll.',
-            "two react native apps: watax, the support team's whatsapp inbox (google play and testflight), and taxes app for invoicing from your phone.",
-            'first-line support: i hear the problem before it becomes a ticket.',
-          ],
-        },
-        uade: {
-          when: '2024 — now',
-          role: 'associate degree in software development',
-          kind: 'education',
-          points: [],
         },
       },
-      ai: {
-        label: 'ai in production',
-        statement: "ai isn't a demo here: it already works in production.",
-        nodes: ['clinics', 'team', 'taxes'],
-        yours: 'your system',
-        core: 'ai',
-        items: [
-          { key: 'mcp', title: 'three mcp servers', text: "an ai assistant connected to each clinic's data with per-tenant oauth, another for the team's business and taxes' operations assistant." },
-          { key: 'voice', title: 'openai whisper', text: 'voice-dictated budgets, inside the product.' },
-          { key: 'yours', title: 'your system, next', text: 'the same, in your product: assistants that query your data with the right permissions, voice that becomes forms, and manual work that stops existing.' },
-        ],
-      },
-      langs: 'spanish, native · english, c1',
+    },
+    tv: {
+      title: 'things that forged my taste',
+      hint: 'swipe to change channel',
+      hintDesktop: '← → change channel',
+      prev: 'previous channel',
+      next: 'next channel',
+      film: 'see on letterboxd',
+      alt: 'an old television showing ascii, late at night. channel 1, 回路 (kairo, by kiyoshi kurosawa): dots that seek each other when alone and die when they touch; your finger is a dot that never dies. channel 2, キュア (cure, by kiyoshi kurosawa): a lighter flame over spilled water; your finger holds it and, held still, falls into a trance; now and then a red x lasts a single frame. channel 3, リリイ・シュシュのすべて (all about lily chou-chou, by shunji iwai): a green rice field combed by the wind, a distant figure with headphones and a forum that writes itself; tilting the phone or dragging sideways makes the wind blow.',
+      channels: [
+        { name: 'pulse', director: 'kiyoshi kurosawa', year: '2001', url: 'https://letterboxd.com/film/pulse-2001/' },
+        { name: 'cure', director: 'kiyoshi kurosawa', year: '1997', url: 'https://letterboxd.com/film/cure/' },
+        { name: 'all about lily chou-chou', director: 'shunji iwai', year: '2001', url: 'https://letterboxd.com/film/all-about-lily-chou-chou/' },
+      ],
     },
     projects: {
       title: 'works',
@@ -200,18 +143,17 @@ const DICT = {
         taxes: 'saas + mobile app',
       },
       items: {
-        oclucrm: "clinic crm: patients, appointments and admin in one screen that doesn't fight back.",
-        grip: 'landing for grip®, a buenos aires marketing agency. brands that stick, zero corporate small talk.',
-        taxes: 'taxes and filings without the maze. clear numbers for people who hate numbers.',
+        oclucrm: 'clinic crm: patients, appointments and admin on a single screen.',
+        grip: 'landing for grip®, a buenos aires marketing agency.',
+        taxes: 'e-invoicing, payroll and taxes for accounting firms and smes, with a mobile app.',
         riestra: 'site for club deportivo riestra, from the fifth division to the top flight. the page is the jersey: crest, sponsor, live match.',
       },
     },
     skills: {
       lines: ['never', 'the same', 'thing twice.'],
-      cards: { wave: 'wave', noise: 'noise', flow: 'flow' },
     },
     contact: {
-      kicker: 'got something that refuses to be generic?',
+      kicker: 'got a project?',
       status: 'available for projects',
     },
   },

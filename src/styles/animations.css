@@ -66,3 +66,17 @@
     filter: none;
   }
 }
+
+/* Cambio de tema: fundido corto entre el día y la noche (View Transitions) */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.45s;
+  animation-timing-function: var(--ease-smooth);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}

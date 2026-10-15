@@ -43,7 +43,6 @@ function App() {
       <SpeedInsights />
       <div className="film-layer" aria-hidden="true">
         <div className="film-layer__grain" />
-        <div className="film-layer__vignette" />
         <span className="film-layer__corner film-layer__corner--tl" />
         <span className="film-layer__corner film-layer__corner--tr" />
         <span className="film-layer__corner film-layer__corner--bl" />

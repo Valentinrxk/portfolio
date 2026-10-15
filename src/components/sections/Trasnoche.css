@@ -8,7 +8,7 @@
   --ink: #e6e7eb;
   --dim: var(--steel-700);
   --mute: var(--steel-600);
-  --bezel: var(--silver-100);
+  --bezel: var(--depth-3);
   --lip: rgba(35, 35, 39, 0.22);
   --drop: rgba(35, 35, 39, 0.16);
   --press: var(--color-border);
@@ -44,7 +44,9 @@
   width: var(--screen-w);
 }
 
-/* ——— El tubo: vidrio hundido en un bisel fino del color del aparato ——— */
+/* ——— El tubo: vidrio hundido en un bisel fino del color del aparato.
+   El bisel es una placa elevada: el anillo corrido 1px arriba asoma como
+   filo de luz, y la sombra lo despega del fondo ——— */
 .tv__screen {
   position: relative;
   height: var(--screen-h);
@@ -54,7 +56,8 @@
   box-shadow:
     0 0 0 1px var(--lip),
     0 0 0 6px var(--bezel),
-    0 0 0 7px var(--color-border),
+    0 -1px 0 6px var(--plane-edge),
+    0 -1px 0 6px var(--bezel),
     0 24px 70px var(--drop);
   touch-action: pan-y;
   user-select: none;

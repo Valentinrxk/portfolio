@@ -13,7 +13,19 @@
   --bordo: #6d0f16;
   --bordo-deep: #43090e;
 
-  --color-bg: var(--silver-300);
+  /* Planos: la profundidad sale del tono, nunca de un degradé.
+     0 hundido (base y costuras) · 1 superficie · 2 elevado · 3 alto/hover.
+     De día lo elevado es un paso más claro; lo hundido, uno más oscuro. */
+  --depth-0: var(--silver-400);
+  --depth-1: var(--silver-300);
+  --depth-2: var(--silver-200);
+  --depth-3: var(--silver-100);
+  --plane-edge: rgba(255, 255, 255, 0.6);      /* filo de luz arriba */
+  --plane-shadow: 0 14px 32px rgba(35, 35, 39, 0.12);
+  --plane-shadow-sm: 0 6px 16px rgba(35, 35, 39, 0.1);
+  --seam: clamp(8px, 0.9vw, 14px);
+
+  --color-bg: var(--depth-0);
   --color-text: var(--graphite);
   --color-text-dim: var(--steel-600);
   --color-border: rgba(35, 35, 39, 0.18);
@@ -43,7 +55,6 @@
   /* Superficies de sistema */
   --hud-bg: rgba(230, 231, 235, 0.92);
   --cursor-halo: rgba(230, 231, 235, 0.85);
-  --vignette-ink: rgba(35, 35, 39, 0.16);
   --shadow-ink: 35, 35, 39;
   --intro-glow: rgba(207, 208, 214, 0.95);
 
@@ -54,30 +65,37 @@
   --z-grain: 90;
 }
 
-/* ——— Modo noche: el negativo exacto del plateado. Cada tono es el espejo
-   de su par claro en luminosidad perceptual (OKLab), con el mismo tono frío:
-   el grafito de la tinta pasa a ser superficie y la plata pasa a ser tinta.
-   Los contrastes quedan iguales que de día. Obras se invierte (token
-   --graphite pasa a claro), contacto sigue bordó, el rojo no se toca. ——— */
+/* ——— Modo noche: la plata pasa a ser tinta y la escena se hunde en
+   grafitos profundos, del mismo tono frío. Los planos no son espejo del
+   día: son más hondos, un cuarto oscuro con objetos apilados (lo elevado
+   es más claro y tira sombra). Obras se invierte (token --graphite pasa a
+   claro), contacto sigue bordó, el rojo no se toca. ——— */
 [data-theme='dark'] {
-  --silver-100: #232326;   /* espejo de #e6e7eb */
-  --silver-200: #2b2c30;   /* espejo de #dadbe0 */
-  --silver-300: #343439;   /* espejo de #cfd0d6 — superficie */
-  --silver-400: #404147;   /* espejo de #bfc0c7 */
-  --silver-500: #55565d;   /* espejo de #a6a7af */
-  --steel-600: #84858e;    /* espejo de #75767f */
-  --steel-700: #b0b2bb;    /* espejo de #4c4d55 */
-  --steel-800: #ceced7;    /* espejo de #35353c */
-  --graphite: #e7e7ec;     /* espejo de #232327 — tinta */
+  --silver-100: #232326;   /* tinta de obras (invertida) */
+  --silver-200: #2b2c30;
+  --silver-300: #343439;
+  --silver-400: #404147;
+  --silver-500: #55565d;
+  --steel-600: #92939c;    /* tenue: AA (≥4.5) sobre todos los planos */
+  --steel-700: #b0b2bb;
+  --steel-800: #ceced7;
+  --graphite: #e7e7ec;     /* tinta */
 
-  --color-border: rgba(231, 231, 236, 0.18);
-  --color-border-strong: rgba(231, 231, 236, 0.38);
+  --depth-0: #141416;
+  --depth-1: #1b1b1e;
+  --depth-2: #232327;
+  --depth-3: #2c2c31;
+  --plane-edge: rgba(255, 255, 255, 0.06);
+  --plane-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+  --plane-shadow-sm: 0 8px 20px rgba(0, 0, 0, 0.4);
 
-  --hud-bg: rgba(35, 35, 38, 0.92);
-  --cursor-halo: rgba(35, 35, 38, 0.85);
+  --color-border: rgba(231, 231, 236, 0.16);
+  --color-border-strong: rgba(231, 231, 236, 0.34);
+
+  --hud-bg: rgba(35, 35, 39, 0.94);
+  --cursor-halo: rgba(27, 27, 30, 0.85);
   --shadow-ink: 0, 0, 0;
   --intro-glow: rgba(0, 0, 0, 0.45);
-  --vignette-ink: rgba(0, 0, 0, 0.35);
 }
 
 @media (max-width: 768px) {

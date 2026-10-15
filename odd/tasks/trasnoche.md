@@ -147,5 +147,18 @@ User (2026-10-14): wants the piece more tied to his film references (Pulse, Cure
   - Evidence: build ok; invariants PASS; light-mode mobile screenshot of CH3 dark; 0 errors.
   - T13 delegated: remove the now-dead light-screen palette and renderer branches (no visual change; before/after screenshots).
 
+- 2026-10-14: T13 done (delegated writer).
+  - palette.js deleted (the PALETTE is back in cells.js); renderer is dark-only with constants; the `theme()`/`retheme`/`applyPalette`/`meta.scene` code is removed.
+  - The casing still follows the theme. `git diff --stat`: +76/−233.
+  - Pixel diff vs before: at most 1/255 on ≤9 pixels (constant folding).
+  - Evidence: invariants single-palette RED → PASS; kairo PASS; build ok; console clean.
+- 2026-10-14: side change (inline): removed the duplicate MonkeyMark from the contact footer and the `[↑]` lane offset.
+- 2026-10-14: RDD on the final candidate (11 files, 321 lines, medium).
+  - Ran STATUS → START → consent relayed to the user, who GRANTED → bound STATUS → in-process capture (review-reliability) → APPROVED → acknowledged (burned).
+  - Advisory findings (non-blocking), checked:
+    - WARNING `--ink` pale in both themes: only used by `.tv__pre` inside the dark screen, so no regression.
+    - Footer lane: `[↑]` no longer exists.
+    - No unit test in repo: the scratch invariants cover the palette.
+
 ## Next step
-Review T13. The user commits when he wants. The real phone test needs an https preview (user decision).
+The user commits when he wants. The real phone test needs an https preview (user decision).

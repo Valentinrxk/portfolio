@@ -2,7 +2,7 @@
   position: fixed;
   inset: 0;
   z-index: var(--z-intro);
-  background: var(--silver-300);
+  background: var(--depth-1);
   display: grid;
   place-items: center;
   overflow: hidden;
@@ -59,8 +59,8 @@
   font-size: 1rem;
   font-weight: 700;
   color: var(--graphite);
-  background: var(--silver-300);
-  box-shadow: 0 0 18px 10px var(--silver-300);
+  background: var(--depth-1);
+  box-shadow: 0 0 18px 10px var(--depth-1);
   opacity: 0;
   animation: fade-in 0.5s var(--ease-smooth) 1.2s forwards;
 }

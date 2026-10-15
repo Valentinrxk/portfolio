@@ -9,7 +9,7 @@
   height: 100vh;
   height: 100svh;
   overflow: hidden;
-  background: var(--silver-300);
+  background: var(--depth-1);
 }
 
 /* ——— El retrato manda (el giro 3D vive dentro del canvas) ——— */

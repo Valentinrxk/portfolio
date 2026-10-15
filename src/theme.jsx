@@ -26,14 +26,14 @@ export function ThemeProvider({ children }) {
     const root = document.documentElement;
     if (theme === 'dark') {
       root.dataset.theme = 'dark';
-      root.style.background = '#343439';
+      root.style.background = '#141416';
     } else {
       delete root.dataset.theme;
-      root.style.background = '#cfd0d6';
+      root.style.background = '#bfc0c7';
     }
     document.querySelector('meta[name="theme-color"]')?.setAttribute(
       'content',
-      theme === 'dark' ? '#343439' : '#cfd0d6'
+      theme === 'dark' ? '#141416' : '#bfc0c7'
     );
   }, [theme]);
 

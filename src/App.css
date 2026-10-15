@@ -23,7 +23,13 @@ main {
   position: relative;
 }
 
-/* ——— Textura industrial: grano + viñeta de acero ——— */
+/* Cada sección es una placa sobre la base hundida: entre placa y placa
+   queda una costura del tono más hondo */
+main > section + section {
+  margin-top: var(--seam);
+}
+
+/* ——— Textura industrial: grano + marcas de encuadre ——— */
 .film-layer {
   position: fixed;
   inset: 0;
@@ -37,16 +43,6 @@ main {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   opacity: 0.055;
   animation: grain-shift 0.9s steps(8) infinite;
-}
-
-.film-layer__vignette {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    ellipse 120% 90% at 50% 50%,
-    transparent 68%,
-    var(--vignette-ink) 100%
-  );
 }
 
 /* Marcas de encuadre en las esquinas */

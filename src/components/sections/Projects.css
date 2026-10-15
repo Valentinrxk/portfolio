@@ -180,8 +180,9 @@
   display: contents;
 }
 
+/* el tenue propio de obras (invertida), como el folio: AA en ambos temas */
 .frame__stack dt {
-  color: var(--steel-600);
+  color: var(--silver-500);
 }
 
 .frame__stack dd {

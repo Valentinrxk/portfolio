@@ -13,9 +13,10 @@
   transition: transform 0.7s var(--ease-out-expo);
 }
 
+/* Las dos barras son placas elevadas: filo de luz arriba, sombra abajo */
 .hud--top {
   top: 0;
-  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--plane-shadow-sm);
   justify-content: space-between;
   gap: clamp(1rem, 2.5vw, 2rem);
   transform: translateY(-101%);
@@ -23,7 +24,8 @@
 
 .hud--bottom {
   bottom: 0;
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid var(--plane-edge);
+  box-shadow: 0 -1px 0 var(--depth-0);
   justify-content: space-between;
   gap: clamp(1rem, 4vw, 3rem);
   transform: translateY(101%);

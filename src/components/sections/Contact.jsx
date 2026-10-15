@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react'
 import AsciiField from '../ascii/AsciiField';
 import Scramble from '../ui/Scramble';
 import { useLang, EMAIL } from '../../i18n';
+import { useTheme } from '../../theme';
 import './Contact.css';
 
 /* Flecha diagonal en SVG: el carácter ↗ tiene variante emoji y iOS
@@ -122,6 +123,7 @@ export default function Contact() {
   const sectionRef = useRef(null);
   const reduced = useReducedMotion();
   const { t } = useLang();
+  const { theme } = useTheme();
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -140,9 +142,8 @@ export default function Contact() {
       <div className="contact__frame">
         <div className="contact__field">
           <AsciiField
-            ink="rgba(207, 208, 214, 0.2)"
+            ink={theme === 'dark' ? 'rgba(207, 208, 214, 0.16)' : 'rgba(35, 35, 39, 0.16)'}
             accent="#e10600"
-            accent2="#a6a7af"
             cell={13}
             fontSize={11}
             fps={24}

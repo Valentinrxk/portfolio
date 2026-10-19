@@ -157,8 +157,4 @@
   .is-playing .hero__statement {
     animation: none;
   }
-
-  .hero__canvas {
-    animation: none;
-  }
 }

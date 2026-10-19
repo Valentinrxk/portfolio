@@ -11,12 +11,18 @@ const REST_MS = 1500; // el cursor quieto deja de ser un dedo (CH1)
 const desktopLike = () =>
   typeof window !== 'undefined' && !!window.matchMedia?.('(hover: hover) and (pointer: fine)').matches;
 
+// el teléfono: el complemento exacto del bloque de escritorio de Trasnoche.css
+const phoneLike = () =>
+  typeof window !== 'undefined' && !!window.matchMedia && !window.matchMedia('(min-width: 640px)').matches;
+
 /**
  * 深夜テレビ, trasnoche: un televisor viejo que pasa ASCII; cierra adn. Un
  * deslizón rápido (o ◁ ▷, o las flechas) cambia de canal: estática, el cuadro
  * rueda, un destello y el canal nuevo.
  * Arrastrar despacio es tocar el canal. La pantalla es siempre de noche; el
  * aparato sigue el tema del sitio (eso lo resuelve el CSS).
+ * En el teléfono la pantalla va a sangre, arranca en el arrozal y el aparato
+ * se enciende cada vez que vuelve a la vista.
  */
 export default function Trasnoche() {
   const sectionRef = useRef(null);
@@ -70,6 +76,7 @@ export default function Trasnoche() {
       let taps = []; // toques nuevos, en la grilla
       let tilt = null; // inclinación izquierda-derecha, en grados
       let askedTilt = false;
+      let tiltWait = false; // arrancó en el arrozal: el permiso espera a que se vuelva a él
 
       // ——— la grilla (se rehace al cambiar el tamaño) ———
       const build = () => {
@@ -78,9 +85,14 @@ export default function Trasnoche() {
         const key = `${Math.round(r.width)}x${Math.round(r.height)}@${dpr}`;
         if (!r.width || !r.height || key === size) return;
         size = key;
-        grid = S.gridFor(r.width, r.height, dpr);
+        const phone = phoneLike();
+        grid = S.gridFor(r.width, r.height, dpr, phone);
         if (!shell) {
-          shell = S.createShell({ channels, grid, seed, onChannel: (i) => !disposed && setChannel(i) });
+          // en el teléfono arranca el canal más lleno, el arrozal; sin WebGL2, el cuadro de CH1
+          const first = renderer && phone ? Math.max(0, channels.findIndex((c) => c.id === 'lily')) : 0;
+          shell = S.createShell({ channels, grid, seed, start: first, onChannel: (i) => !disposed && setChannel(i) });
+          tiltWait = channels[first]?.id === 'lily';
+          setChannel(first);
         } else shell.resize(grid);
         if (renderer) {
           renderer.layout(grid);
@@ -150,16 +162,23 @@ export default function Trasnoche() {
           ptr = { x: p.x, y: p.y, id: e.pointerId, mouse: e.pointerType === 'mouse', down: pressed, moved: performance.now() };
         }
       };
-      // iOS pide permiso para la inclinación: se pregunta una vez, al tocar CH3
+      // iOS pide permiso para la inclinación: se pregunta una vez, al tocar CH3.
+      // Si el arrozal fue el canal de arranque, el primer toque (casi siempre un
+      // deslizón) no se corta con el diálogo: se pregunta al volver cambiando de canal
       const askTilt = () => {
         const D = window.DeviceOrientationEvent;
         if (askedTilt || !D || typeof D.requestPermission !== 'function') return;
-        if (channels[shell?.index ?? 0]?.id !== 'lily') return;
+        const lily = channels[shell?.index ?? 0]?.id === 'lily';
+        if (tiltWait) {
+          if (!lily) tiltWait = false;
+          return;
+        }
+        if (!lily) return;
         askedTilt = true;
         D.requestPermission().catch(() => {});
       };
       const onTilt = (e) => {
-        const a = screen.orientation?.angle ?? window.orientation ?? 0;
+        const a = window.screen.orientation?.angle ?? window.orientation ?? 0;
         const v = a === 90 ? e.beta : a === -90 || a === 270 ? -e.beta : e.gamma;
         tilt = typeof v === 'number' && Number.isFinite(v) ? v : null;
       };
@@ -227,7 +246,7 @@ export default function Trasnoche() {
           flicker: still ? 0 : 1,
           band: still ? 0 : 1,
           osdAlpha: f.osd.alpha,
-          barrel: S.BARREL,
+          barrel: grid.barrel,
         });
         if (import.meta.env.DEV) window.__tv?.afterDraw?.(f);
         schedule();
@@ -249,14 +268,41 @@ export default function Trasnoche() {
       });
       ro.observe(screen);
 
-      const io = new IntersectionObserver(([entry]) => {
-        const was = onScreen;
-        onScreen = entry.isIntersecting;
-        if (onScreen && !was) {
-          shell?.showOsd();
-          wake();
+      // ——— el encendido (teléfono): fuera de la vista el aparato se apaga y, al
+      // volver a la mitad de la vista, se enciende. La raya y la apertura son del
+      // CSS; la nieve, el destello y el número, del televisor ———
+      let off = false;
+      const canPower = () => !!renderer && !reducedRef.current && phoneLike();
+      const switchOff = () => {
+        off = true;
+        screen.dataset.power = 'off';
+      };
+      const switchOn = () => {
+        off = false;
+        // con movimiento reducido (o si ya es escritorio), corte seco
+        if (!canPower()) {
+          delete screen.dataset.power;
+          return;
         }
-      });
+        screen.dataset.power = 'on';
+        shell?.powerOn();
+      };
+      if (canPower()) switchOff();
+
+      const io = new IntersectionObserver(
+        ([entry]) => {
+          const was = onScreen;
+          onScreen = entry.isIntersecting;
+          if (!onScreen) {
+            if (canPower()) switchOff();
+          } else if (off && entry.intersectionRatio >= 0.5) switchOn();
+          if (onScreen && !was) {
+            shell?.showOsd();
+            wake();
+          }
+        },
+        { threshold: [0, 0.5] },
+      );
       io.observe(section);
 
       if (renderer) {
@@ -280,6 +326,12 @@ export default function Trasnoche() {
           channel: () => shell?.channel(),
           change,
           extinguish: () => shell?.channel().debug?.extinguish(),
+          // apaga y enciende de nuevo (el reflow reinicia la animación del CSS)
+          power: () => {
+            switchOff();
+            void screen.offsetWidth;
+            switchOn();
+          },
         };
       }
 
@@ -295,6 +347,7 @@ export default function Trasnoche() {
         screen.removeEventListener('pointerleave', onLeave);
         window.removeEventListener('keydown', onKey);
         window.removeEventListener('deviceorientation', onTilt);
+        delete screen.dataset.power;
         shell?.dispose();
         renderer?.dispose();
         engineRef.current = null;

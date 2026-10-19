@@ -1,19 +1,22 @@
 /* 深夜: el televisor cierra adn, sobre el mismo fondo (sin banda).
    El tubo es todo; afuera, una pista y las perillas. La pantalla es siempre
    de noche; el aparato sigue el tema.
-   --tube, --glass e --ink repiten outer, glass y PALE de tv/renderer.js y tv/cells.js. */
+   --tube, --glass, --ink y --flash repiten outer, glass, PALE y FLASH de
+   tv/renderer.js y tv/cells.js. */
 .tv {
   --tube: #020202;
   --glass: #101112;
   --ink: #e6e7eb;
+  --flash: #fffbf7;
   --dim: var(--steel-700);
   --mute: var(--steel-600);
   --bezel: var(--depth-3);
   --lip: rgba(35, 35, 39, 0.22);
   --drop: rgba(35, 35, 39, 0.16);
   --press: var(--color-border);
-  --screen-w: 92vw;
-  --screen-h: 68vh;
+  /* teléfono: a sangre, de barra a barra del HUD (el escritorio las pisa abajo) */
+  --screen-w: 100%;
+  --screen-h: calc(100vh - 2 * var(--hud-h));
   position: relative;
   display: flex;
   flex-direction: column;
@@ -33,7 +36,7 @@
 
 @supports (height: 1svh) {
   .tv {
-    --screen-h: 68svh;
+    --screen-h: calc(100svh - 2 * var(--hud-h));
   }
 }
 
@@ -46,12 +49,12 @@
 
 /* ——— El tubo: vidrio hundido en un bisel fino del color del aparato.
    El bisel es una placa elevada: el anillo corrido 1px arriba asoma como
-   filo de luz, y la sombra lo despega del fondo ——— */
+   filo de luz, y la sombra lo despega del fondo. Las esquinas redondas son
+   del escritorio; en el teléfono va a sangre, sin bisel ——— */
 .tv__screen {
   position: relative;
   height: var(--screen-h);
   overflow: hidden;
-  border-radius: 22px;
   background: var(--tube);
   box-shadow:
     0 0 0 1px var(--lip),
@@ -154,6 +157,115 @@
 
 .tv__btn:active {
   background-color: var(--press);
+}
+
+/* ——— Teléfono: la pantalla a sangre, de barra a barra, sin bisel. La pista
+   y las perillas van sobre el vidrio, abajo, en una franja oscura lisa; la
+   franja deja pasar los toques al canal, salvo en las perillas.
+   (el complemento exacto del bloque de escritorio de abajo) ——— */
+@media not all and (min-width: 640px) {
+  .tv {
+    padding: var(--hud-h) 0;
+  }
+
+  .tv__frame {
+    position: relative;
+  }
+
+  .tv__screen {
+    box-shadow: none;
+  }
+
+  .tv__foot {
+    --dim: rgba(230, 231, 235, 0.86);
+    --mute: rgba(230, 231, 235, 0.6);
+    --press: rgba(230, 231, 235, 0.14);
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 0.375rem 0.5rem 0.375rem 1rem;
+    background: rgba(2, 2, 2, 0.6);
+    pointer-events: none;
+  }
+
+  .tv__dial {
+    pointer-events: auto;
+  }
+
+  /* El encendido: negro, una raya que se abre a lo ancho y la imagen que se
+     abre a lo alto, pasada de brillo. La nieve, el destello y el número los
+     pone el televisor: POWER_S, en tv/shell.js, dura lo mismo que esto */
+  .tv__screen[data-power='off'] .tv__canvas {
+    opacity: 0;
+  }
+
+  .tv__screen[data-power='on'] .tv__canvas {
+    animation: tv-open 0.3s backwards;
+  }
+
+  .tv__screen[data-power='on']::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 0;
+    height: 2px;
+    margin-top: -1px;
+    background: var(--flash);
+    box-shadow: 0 0 10px 1px var(--flash);
+    opacity: 0;
+    pointer-events: none;
+    animation: tv-line 0.3s backwards;
+  }
+}
+
+/* la raya: se abre a lo ancho (120 ms) y se apaga mientras la imagen se abre */
+@keyframes tv-line {
+  from {
+    opacity: 1;
+    transform: scaleX(0);
+    animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  40% {
+    opacity: 1;
+    transform: scaleX(1);
+    animation-timing-function: ease-in;
+  }
+
+  to {
+    opacity: 0;
+    transform: scaleX(1);
+  }
+}
+
+/* la imagen: espera a la raya y se abre a lo alto (180 ms), pasada de brillo */
+@keyframes tv-open {
+  from,
+  40% {
+    transform: scaleY(0);
+    filter: brightness(3);
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  85% {
+    transform: scaleY(1);
+    filter: brightness(1.8);
+    animation-timing-function: ease-out;
+  }
+
+  to {
+    transform: scaleY(1);
+    filter: brightness(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tv__screen[data-power] .tv__canvas,
+  .tv__screen[data-power]::after {
+    animation: none;
+  }
 }
 
 /* ——— Escritorio: 4:3 ——— */

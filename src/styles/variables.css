@@ -1,3 +1,13 @@
+/* IBM Plex Mono Bold, archivo oficial de IBM (split Latin1) sin modificar: la OFL reserva el nombre
+   "Plex" para versiones no modificadas (licencia en /fonts/OFL.txt). Solo la usa el gorila del canvas,
+   que dibuja el ASCII del usuario en negrita, con su misma proporción de celda. */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/IBMPlexMono-Bold-Latin1.woff2') format('woff2');
+}
+
 :root {
   /* Palette — plateados/grises + rojos/bordó. El plateado manda. */
   --silver-100: #e6e7eb;
@@ -34,6 +44,7 @@
   /* Typography — Helvetica en todo */
   --font-sans: 'Helvetica Neue', Helvetica, Arial, 'Liberation Sans', sans-serif;
   --font-mono: ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace;
+  --font-ascii: 'IBM Plex Mono', var(--font-mono);   /* canvas del gorila */
   --track-display: -0.03em;
 
   /* HUD */
@@ -57,6 +68,11 @@
   --cursor-halo: rgba(230, 231, 235, 0.85);
   --shadow-ink: 35, 35, 39;
   --intro-glow: rgba(207, 208, 214, 0.95);
+
+  /* Gorila ASCII del hero: tinta del cuerpo y la cama; la red, más tenue.
+     El rojo del impacto sale de --red. */
+  --ascii-ink: rgba(28, 28, 32, 0.9);
+  --ascii-net: rgba(28, 28, 32, 0.45);
 
   /* Z */
   --z-hud: 80;
@@ -96,6 +112,9 @@
   --cursor-halo: rgba(27, 27, 30, 0.85);
   --shadow-ink: 0, 0, 0;
   --intro-glow: rgba(0, 0, 0, 0.45);
+
+  --ascii-ink: rgba(231, 231, 236, 0.92);
+  --ascii-net: rgba(231, 231, 236, 0.5);
 }
 
 @media (max-width: 768px) {

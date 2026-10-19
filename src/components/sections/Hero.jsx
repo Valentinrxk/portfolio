@@ -34,11 +34,8 @@ export default function Hero({ play }) {
     <section id="hero" ref={sectionRef} className={`hero ${play ? 'is-playing' : ''}`}>
       <div className="hero__frame">
         <div className="hero__portrait">
-          <AsciiGif
-            progressValue={reduced ? null : tear}
-            ink={theme === 'dark' ? 'rgba(231, 231, 236, 0.8)' : 'rgba(35, 35, 39, 0.78)'}
-            className="hero__canvas"
-          />
+          {/* los colores salen de las variables del tema; theme solo avisa que cambiaron */}
+          <AsciiGif progressValue={reduced ? null : tear} theme={theme} className="hero__canvas" />
         </div>
 
         <motion.div className="hero__type" style={typeStyle}>

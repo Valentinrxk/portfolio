@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "ascii:gorilla": "node scripts/gorilla/extract.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
@@ -19,7 +20,9 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@napi-rs/canvas": "^1.0.11",
     "@vitejs/plugin-react": "^4.3.3",
+    "omggif": "^1.0.10",
     "vite": "^5.4.11"
   }
 }

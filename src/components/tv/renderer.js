@@ -454,7 +454,8 @@ export function createRenderer(canvas) {
       gl.uniform1f(u.uBand, band);
       gl.uniform1f(u.uK, barrel);
       gl.uniform1f(u.uScan, grid.ch / 5);
-      gl.uniform1f(u.uRadius, grid.mobile ? 0.085 : 0.075);
+      // a sangre, sin esquinas redondas: las pone el teléfono
+      gl.uniform1f(u.uRadius, grid.bleed ? 0 : grid.mobile ? 0.085 : 0.075);
       const o = osd && osdAlpha > 0 ? osd : null;
       gl.uniform4f(u.uOsdRect, o ? o.x : 0, o ? o.y : 0, o ? o.w : 1, o ? o.h : 1);
       gl.uniform1f(u.uOsdAlpha, o ? osdAlpha : 0);

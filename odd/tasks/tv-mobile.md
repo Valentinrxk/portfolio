@@ -73,5 +73,11 @@ V1–V3 are done (delegated writer). The per-task specs below are kept for refer
   - Build OK.
 - Not measured: real-phone fps. The GPU fills about 45% more pixels (1.19 MP at dpr 2).
 
+- 2026-10-19: user mobile polish feedback, fixed inline by the parent.
+  1. **Safari showed bands above and below the TV.** Phone sizing moved from svh to lvh: `@supports (height: 1lvh)` sets `--screen-h: calc(100lvh − 2·hud-h)`, and the phone `.tv` gets `min-height: 100lvh`. When the user scrolls to the TV the toolbars hide and the visible height is the large one. This needs a real Safari check; Chrome headless has no dynamic toolbars.
+  2. **Hero kicker overlapped the trampoline.** `AsciiGif` takes `clearRef` (Hero's `.hero__type`). On mobile the drawing fits between 0.05H and `typeTop − 16px`, and a ResizeObserver refits it when the text changes height (e.g. language). Verified at 390×844 and 375×667.
+  3. **Contact email was slow to appear.** The CTA opacity and y now follow a second `useScroll` with offset `['start end','start start']` (fade 0.35→0.85). It is fully visible when the frame pins; before, it needed 9–30% of a 180vh scroll. Verified: at section top = 15% of the viewport the email is fully visible.
+  - Build OK.
+
 ## Next step
-User review on a real phone.
+User review on a real phone (Safari).

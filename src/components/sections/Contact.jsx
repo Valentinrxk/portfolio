@@ -130,10 +130,16 @@ export default function Contact() {
     offset: ['start start', 'end end'],
   });
 
+  // El CTA emerge mientras la sección entra en cuadro y ya está entero cuando
+  // el cuadro se fija: no hay que scrollear en el vacío para ver el mail
+  const { scrollYProgress: entering } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'start start'],
+  });
+
   const turbulence = useTransform(scrollYProgress, [0, 0.45], [1, 0.05]);
-  // Rango temprano: llegar por el nav también tiene que mostrar el CTA
-  const opacity = useTransform(scrollYProgress, [0.05, 0.3], [0, 1]);
-  const y = useTransform(scrollYProgress, [0.05, 0.35], [46, 0]);
+  const opacity = useTransform(entering, [0.35, 0.85], [0, 1]);
+  const y = useTransform(entering, [0.35, 0.95], [46, 0]);
 
   const contentStyle = reduced ? undefined : { opacity, y };
 

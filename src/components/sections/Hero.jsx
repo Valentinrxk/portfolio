@@ -13,6 +13,7 @@ import './Hero.css';
  */
 export default function Hero({ play }) {
   const sectionRef = useRef(null);
+  const typeRef = useRef(null);
   const reduced = useReducedMotion();
   const { t } = useLang();
   const { theme } = useTheme();
@@ -35,10 +36,11 @@ export default function Hero({ play }) {
       <div className="hero__frame">
         <div className="hero__portrait">
           {/* los colores salen de las variables del tema; theme solo avisa que cambiaron */}
-          <AsciiGif progressValue={reduced ? null : tear} theme={theme} className="hero__canvas" />
+          {/* en móvil el gorila termina antes del texto: clearRef marca dónde empieza */}
+          <AsciiGif progressValue={reduced ? null : tear} theme={theme} clearRef={typeRef} className="hero__canvas" />
         </div>
 
-        <motion.div className="hero__type" style={typeStyle}>
+        <motion.div ref={typeRef} className="hero__type" style={typeStyle}>
           <p className="hero__kicker label">
             <span className="hero__kicker-slash" aria-hidden="true">///</span>
             {t.hero.kicker}

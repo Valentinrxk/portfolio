@@ -100,7 +100,7 @@ const rowSeed = (r) => {
  * pegar en la cama elástica, una onda cruza la red y saltan chispas rojas.
  * El scroll desarma la señal fila por fila.
  */
-export default function AsciiGif({ progressValue = null, theme, className = '' }) {
+export default function AsciiGif({ progressValue = null, theme, clearRef = null, className = '' }) {
   const canvasRef = useRef(null);
   const frameRef = useRef(0);   // sobrevive a los reinicios del efecto
   const colorsRef = useRef(null);
@@ -207,10 +207,14 @@ export default function AsciiGif({ progressValue = null, theme, className = '' }
 
       // Ajuste al contenido: en escritorio, a la derecha y en la misma franja
       // vertical que antes (~11%–88% del alto, lejos de las barras); en móvil,
-      // centrado arriba, dejándole la franja de abajo al texto
+      // centrado arriba y terminando antes del texto, que se ancla abajo y
+      // cambia de alto con el idioma
       const mobile = W < 760;
+      const top = H * 0.05;
+      const textTop = clearRef?.current ? clearRef.current.offsetTop - 16 : H * 0.71;
+      const availH = mobile ? Math.max(0, Math.min(H * 0.66, textTop - top)) : H * 0.77;
       f = Math.min(
-        (H * (mobile ? 0.66 : 0.77)) / (ROWS * FONT.lineHeight),
+        availH / (ROWS * FONT.lineHeight),
         (W * (mobile ? 0.94 : 0.5)) / (COLS * FONT.advance),
       );
       ctx.font = `${FONT.weight} ${f}px ${family}`;
@@ -222,7 +226,7 @@ export default function AsciiGif({ progressValue = null, theme, className = '' }
       // (una caja de ~0.96H anclada a la derecha, con el dibujo al medio)
       const box = H * 0.96;
       x0 = mobile ? (W - totalW) / 2 : Math.max(W * 0.38, W * 0.95 - box) + box / 2 - totalW / 2;
-      y0 = mobile ? H * 0.05 : (H - ROWS * ch) / 2;
+      y0 = mobile ? top : (H - ROWS * ch) / 2;
       // Cambiar el tamaño borra el canvas: se redibuja siempre (también estático)
       render(performance.now());
     };
@@ -284,6 +288,10 @@ export default function AsciiGif({ progressValue = null, theme, className = '' }
     });
     io.observe(canvas);
 
+    // Si el texto cambia de alto (idioma, fuente), el dibujo se vuelve a ajustar
+    const ro = clearRef?.current ? new ResizeObserver(() => started && resize()) : null;
+    ro?.observe(clearRef.current);
+
     // Se mide con la fuente del ASCII cargada; si tarda o falla, se arranca
     // igual y, si llega después, se vuelve a medir con ella
     const fontLoad = (document.fonts?.load(`${FONT.weight} 16px "${FONT.family}"`) ?? Promise.resolve())
@@ -296,10 +304,11 @@ export default function AsciiGif({ progressValue = null, theme, className = '' }
       clearTimeout(timer);
       cancelAnimationFrame(raf);
       io.disconnect();
+      ro?.disconnect();
       window.removeEventListener('resize', resize);
       redrawRef.current = null;
     };
-  }, [progressValue]);
+  }, [progressValue, clearRef]);
 
   return <canvas ref={canvasRef} className={className} aria-hidden="true" />;
 }

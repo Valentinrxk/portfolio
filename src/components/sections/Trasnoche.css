@@ -34,9 +34,11 @@
   --drop: rgba(0, 0, 0, 0.45);
 }
 
-@supports (height: 1svh) {
+/* lvh, no svh: al scrollear hasta la tele, Safari y Chrome esconden sus barras
+   y el alto visible pasa a ser el grande; con svh quedaban bandas arriba y abajo */
+@supports (height: 1lvh) {
   .tv {
-    --screen-h: calc(100svh - 2 * var(--hud-h));
+    --screen-h: calc(100lvh - 2 * var(--hud-h));
   }
 }
 
@@ -165,6 +167,7 @@
    (el complemento exacto del bloque de escritorio de abajo) ——— */
 @media not all and (min-width: 640px) {
   .tv {
+    min-height: 100lvh;
     padding: var(--hud-h) 0;
   }
 

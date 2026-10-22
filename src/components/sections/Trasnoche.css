@@ -81,6 +81,12 @@
   display: none;
 }
 
+/* las teclas CH del aparato 3D: botones invisibles que el motor pone encima
+   de las de verdad (solo en el escritorio 3D, ver abajo) */
+.tv__key {
+  display: none;
+}
+
 /* Sin WebGL2: un cuadro de CH1, quieto (de noche, como el tubo) */
 .tv__pre {
   position: absolute;
@@ -284,5 +290,38 @@
 
   .tv__hint {
     font-size: 0.75rem;
+  }
+
+  /* ——— Escritorio 3D: el escenario va de lado a lado y el aparato lo dibuja
+     three sobre el fondo de la sección, sin tubo ni bisel de CSS. El alto se
+     reserva desde el principio: three llega después sin mover nada ——— */
+  .tv[data-mode='3d'] {
+    --screen-h: min(86vh, calc(100vh - 2 * var(--hud-h) - 7.5rem));
+    --screen-w: 100%;
+  }
+
+  .tv[data-mode='3d'] .tv__screen {
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+  }
+
+  /* la pista y las perillas, al ancho del aparato */
+  .tv[data-mode='3d'] .tv__foot {
+    width: min(100%, calc(var(--screen-h) * 0.92));
+    margin-inline: auto;
+  }
+
+  .tv[data-mode='3d'] .tv__key {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    border-radius: 4px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .tv[data-mode='3d'] .tv__key:focus {
+    outline: none;
   }
 }

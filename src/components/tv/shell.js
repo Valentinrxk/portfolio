@@ -14,9 +14,14 @@ const BARREL_BLEED = 0.04; // a sangre no hay bisel que tape los bordes: menos c
 
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
-/** Grilla para una pantalla de w × h px css; `bleed`: a sangre, sin bisel (teléfono). */
-export function gridFor(w, h, dpr = 1, bleed = false) {
-  const mobile = w < 640;
+/**
+ * Grilla para una pantalla de w × h px css; `bleed`: a sangre, sin bisel (teléfono).
+ * `flat`: el cuadro plano que va de textura al televisor 3D (solo escritorio):
+ * sin curva, porque la curva la pone el vidrio, y con las columnas del
+ * escritorio aunque el tubo mida menos de 640 px.
+ */
+export function gridFor(w, h, dpr = 1, bleed = false, flat = false) {
+  const mobile = !flat && w < 640;
   const width = Math.max(1, Math.round(w * dpr));
   const height = Math.max(1, Math.round(h * dpr));
   let cols = mobile ? Math.max(24, Math.round(w / 8)) : clamp(Math.round(w / 8.4), 90, 110);
@@ -37,13 +42,17 @@ export function gridFor(w, h, dpr = 1, bleed = false) {
     dpr,
     mobile,
     bleed,
-    barrel: bleed ? BARREL_BLEED : BARREL,
+    flat,
+    barrel: flat ? 0 : bleed ? BARREL_BLEED : BARREL,
     cellW: cw / dpr,
     cellH: ch / dpr,
   };
 }
 
-/** De la pantalla curvada (u, v en 0..1, v hacia abajo) a la grilla, en unidades isótropas. */
+/**
+ * De la pantalla curvada (u, v en 0..1, v hacia abajo) a la grilla, en unidades
+ * isótropas. Con barrel 0 (el cuadro plano del 3D) la cuenta es lineal.
+ */
 export function screenToIso(u, v, grid) {
   const k = grid.barrel ?? BARREL;
   const x = u * 2 - 1;

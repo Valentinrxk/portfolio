@@ -3,6 +3,8 @@
 //   2 · fósforo: lo brillante, a un cuarto, desenfocado
 //   3 · tubo: curvatura, barrido, máscara, aberración, viñeta, parpadeo, rollo
 // La pantalla es siempre de noche, sea cual sea el tema del sitio.
+// Con una grilla `flat` (el televisor 3D) el cuadro sale plano y a sangre:
+// sin curva, sin esquinas redondas y sin reflejo, que los pone el vidrio 3D.
 import { GLYPHS, PALETTE, TONE } from './cells.js';
 
 const FONT = "ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace";
@@ -119,6 +121,7 @@ uniform float uBand;
 uniform float uK;
 uniform float uScan;
 uniform float uRadius;
+uniform float uFlat;
 out vec4 outColor;
 float hash(vec2 p) {
   vec3 q = fract(vec3(p.xyx) * 0.1031);
@@ -183,9 +186,9 @@ void main() {
   c *= fl * (1.0 + uBand * 0.05 * exp(-d * d / 0.005));
   // un cuadro blanco
   c = mix(c, ${FLASH} * (0.9 + 0.1 * (1.0 - sl)), uFlash);
-  // el vidrio: un reflejo apenas, arriba a la izquierda
-  c += vec3(0.016) * smoothstep(1.0, 0.0, length((dc - vec2(-0.55, 0.62)) * vec2(0.8, 1.2)));
-  c = mix(${OUTER}, c, inside);
+  // el vidrio: un reflejo apenas, arriba a la izquierda (plano: lo pone el 3D)
+  c += vec3(0.016) * (1.0 - uFlat) * smoothstep(1.0, 0.0, length((dc - vec2(-0.55, 0.62)) * vec2(0.8, 1.2)));
+  c = mix(${OUTER}, c, max(inside, uFlat));
   outColor = vec4(c, 1.0);
 }`;
 
@@ -271,6 +274,8 @@ function atlas({ cw, ch }) {
 /**
  * createRenderer(canvas) → null sin WebGL2; si no:
  * layout(grid) · osd({ canvas, x, y, w, h } | null) · draw(frame) · dispose().
+ * El canvas puede estar fuera del documento (el cuadro del televisor 3D): el
+ * tamaño en px sale de la grilla, y lo dibujado vale hasta el fin del cuadro.
  */
 export function createRenderer(canvas) {
   const gl = canvas.getContext('webgl2', { antialias: false, alpha: false, depth: false, stencil: false, premultipliedAlpha: false, preserveDrawingBuffer: false });
@@ -305,7 +310,7 @@ export function createRenderer(canvas) {
     const scene = program(gl, QUAD_VS, SCENE_FS, ['uData', 'uAtlas', 'uGrid', 'uCell', 'uOrigin', 'uHeight', 'uPalette']);
     const bright = program(gl, QUAD_VS, BRIGHT_FS, ['uSrc', 'uOut', 'uTexel']);
     const blur = program(gl, QUAD_VS, BLUR_FS, ['uSrc', 'uOut', 'uDir']);
-    const post = program(gl, QUAD_VS, POST_FS, ['uScene', 'uBloom', 'uOsd', 'uOsdRect', 'uOsdAlpha', 'uRes', 'uDpr', 'uTime', 'uRoll', 'uJitter', 'uFlash', 'uFlicker', 'uBand', 'uK', 'uScan', 'uRadius']);
+    const post = program(gl, QUAD_VS, POST_FS, ['uScene', 'uBloom', 'uOsd', 'uOsdRect', 'uOsdAlpha', 'uRes', 'uDpr', 'uTime', 'uRoll', 'uJitter', 'uFlash', 'uFlicker', 'uBand', 'uK', 'uScan', 'uRadius', 'uFlat']);
     gl.useProgram(scene.p);
     gl.uniform1i(scene.u.uData, 0);
     gl.uniform1i(scene.u.uAtlas, 1);
@@ -454,8 +459,9 @@ export function createRenderer(canvas) {
       gl.uniform1f(u.uBand, band);
       gl.uniform1f(u.uK, barrel);
       gl.uniform1f(u.uScan, grid.ch / 5);
-      // a sangre, sin esquinas redondas: las pone el teléfono
-      gl.uniform1f(u.uRadius, grid.bleed ? 0 : grid.mobile ? 0.085 : 0.075);
+      // a sangre, sin esquinas redondas: las pone el teléfono (o el vidrio 3D)
+      gl.uniform1f(u.uRadius, grid.bleed || grid.flat ? 0 : grid.mobile ? 0.085 : 0.075);
+      gl.uniform1f(u.uFlat, grid.flat ? 1 : 0);
       const o = osd && osdAlpha > 0 ? osd : null;
       gl.uniform4f(u.uOsdRect, o ? o.x : 0, o ? o.y : 0, o ? o.w : 1, o ? o.h : 1);
       gl.uniform1f(u.uOsdAlpha, o ? osdAlpha : 0);

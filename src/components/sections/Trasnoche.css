@@ -81,8 +81,9 @@
   display: none;
 }
 
-/* las teclas CH del aparato 3D: botones invisibles que el motor pone encima
-   de las de verdad (solo en el escritorio 3D, ver abajo) */
+/* las teclas del aparato 3D: botones invisibles que el motor pone encima de
+   las de verdad (solo en el escritorio 3D, ver abajo). La de encendido es la
+   única que se enfoca con el teclado */
 .tv__key {
   display: none;
 }
@@ -323,5 +324,19 @@
 
   .tv[data-mode='3d'] .tv__key:focus {
     outline: none;
+  }
+
+  /* la tecla de encendido va fuera de la pantalla, sobre el mismo origen */
+  .tv[data-mode='3d'] .tv__frame {
+    position: relative;
+  }
+
+  .tv[data-mode='3d'] .tv__key--power {
+    border-radius: 50%;
+  }
+
+  .tv[data-mode='3d'] .tv__key--power:focus-visible {
+    outline: 2px solid var(--red);
+    outline-offset: 3px;
   }
 }

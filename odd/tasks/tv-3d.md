@@ -38,6 +38,23 @@ Show the three TV channels (kairo/Pulse, cure, lily) on a 3D late-90s / early-20
   - Headless captures at 1440×900 in both themes and with a channel change.
   - 390×844 unchanged.
 
+### Round 2 (user, 2026-10-22: "más realista y lindo al modelo 3d, además el botón de encendido apagado no funciona")
+- [ ] **T5.** Realism pass on the model, desktop 3D only. Route: delegated writer (`model.js`, `stage.js`).
+  - **Silhouette:** real CRT proportions with a deep tapered bell, and a more 3/4 camera so the depth reads.
+  - **Bezel:** a molded front bezel with a parting seam and a chamfered draft sloping into the tube.
+  - **Glass:** thickness, and real environment reflections with fresnel.
+  - **Plastic:** textured, with micro-normal noise; the silver theme is metallic paint.
+  - **Grille and controls:** a perforated speaker grille; recessed controls with icon decals and an LED lens with a glow.
+  - **Body details:** telescopic chrome antenna; side and back vents; rubber feet; a power cord.
+  - **Lighting:** key, fill and rim lights; soft shadows; a light spill from the screen that follows the picture's brightness.
+- [ ] **T6.** Working power button, desktop 3D only. Route: same writer (`stage.js`, `Trasnoche.jsx`, `Trasnoche.css`, `i18n.jsx`).
+  - Clicking the 3D power key toggles the TV.
+  - **Off:** the CRT collapses to a line, then a fading dot, the LED goes dark, and the channel stops stepping.
+  - **On:** dot → line → expand, with the existing `shell.powerOn()` static.
+  - CH input while off turns the TV on.
+  - The power key is a real accessible button (aria-label, aria-pressed).
+  - Reduced motion uses hard cuts.
+
 ## Acceptance criteria
 - At 1440×900 a 3D CRT TV shows the current channel on its curved screen, in both themes.
 - ◁ ▷, the keys and the 3D buttons change channel with the static cut, and the pointer still drives the channels.
@@ -75,5 +92,40 @@ Show the three TV channels (kairo/Pulse, cure, lily) on a 3D late-90s / early-20
   - A phone in landscape (≥640px wide) gets the 3D TV.
   - On 1x screens cells are about 6 device px, roughly 0.7× today's flat desktop.
 
+- 2026-10-22, round 2 T5 and T6 done (delegated writer):
+  - **model.js:** full rewrite.
+    - Cabinet steps down to a curved tapered bell; total depth 0.9× the width.
+    - Bezel sits proud with a seam and a draft.
+    - Glass has visible thickness and a reflection-only layer.
+    - Grille is perforated; the control panel is recessed, with chamfered keys and icons, an IR window, and an LED lens plus glow.
+    - Telescopic antenna, vents, feet.
+    - Shadow plane plus floor glow.
+  - **New `loft.js`:** geometry helpers.
+  - **New `textures.js`:** procedural maps, created once and disposed.
+  - **New `signal.js`:** pure `powerCurve` and `pictureLight`.
+  - **stage.js:** 3/4 camera (yaw −0.55); key, fill and rim lights; a procedural studio environment; PCF shadows (r186 has no PCFSoft) re-rendered only on motion; power state; screen light spill.
+  - **Trasnoche.jsx/.css:** power behaviour.
+    - The power key is a real accessible button (`aria-pressed`, i18n `tv.power`).
+    - While off: no frame and no draw.
+    - CH input powers the TV on.
+    - The off state survives scrolling.
+    - Reduced motion uses hard cuts.
+  - **Skipped because they looked worse:** the power cord and the glass dust layer.
+- Writer checks:
+  - mapping-check is GREEN 9/9.
+  - signal-check went RED, then GREEN 7/7.
+  - Headless at 1440: 3D keys and keys change channel; no horizontal scroll.
+  - Power sequence verified: 0 draws while off; ArrowRight and ▷ power on with the channel unchanged; the off state survives scrolling; reduced motion gives immediate on and off.
+  - At 390: flat, zero three requests.
+- [x] Parent checks:
+  - The captures were reviewed (dark, light, the power contact sheet); it reads as a product shot of a real CRT.
+  - Inline tweak: the glass `envMapIntensity` went from 0.3 to 0.2, because the softbox reflection washed out the top of the picture. This was not re-captured.
+  - `npm run build` passes: initial 58.67 kB gz (+0.28), stage 151.62 kB gz (+4.68).
+- Native review: still unavailable. The preflight asks for an intended-untracked selection for the 3 new files, and its v1 schema is not exposed. The hook's START belonged to a superseded candidate, so it was not run.
+- Known gaps:
+  - Turning the TV off, then crossing to phone width and back, brings it back on.
+  - The dark-theme side vents are barely visible.
+  - Not exercised: real-GPU fps, Safari, context loss.
+
 ## Next step
-The user reviews on a real desktop browser (Chrome and Safari), checking both themes and a live window resize below and above 640px.
+The user reviews on a real desktop browser (Chrome and Safari), checking both themes, the power key, and a live window resize below and above 640px.

@@ -55,6 +55,7 @@ const DICT = {
       hintDesktop: '← → cambiar de canal',
       prev: 'canal anterior',
       next: 'canal siguiente',
+      power: 'encender / apagar',
       film: 'ver en letterboxd',
       alt: 'un televisor viejo que pasa ascii, de noche. canal 1, 回路 (kairo, de kiyoshi kurosawa): puntos que se buscan cuando están solos y mueren cuando se tocan; el dedo es un punto que no muere. canal 2, キュア (cure, de kiyoshi kurosawa): la llama de un encendedor sobre agua derramada; el dedo lo sostiene y, quieto, entra en trance; a veces, una x roja dura un solo cuadro. canal 3, リリイ・シュシュのすべて (all about lily chou-chou, de shunji iwai): un arrozal verde que el viento peina, una figura lejana con auriculares y un foro que se escribe solo; inclinar el teléfono o arrastrar de costado hace soplar el viento.',
       channels: [
@@ -121,6 +122,7 @@ const DICT = {
       hintDesktop: '← → change channel',
       prev: 'previous channel',
       next: 'next channel',
+      power: 'power on / off',
       film: 'see on letterboxd',
       alt: 'an old television showing ascii, late at night. channel 1, 回路 (kairo, by kiyoshi kurosawa): dots that seek each other when alone and die when they touch; your finger is a dot that never dies. channel 2, キュア (cure, by kiyoshi kurosawa): a lighter flame over spilled water; your finger holds it and, held still, falls into a trance; now and then a red x lasts a single frame. channel 3, リリイ・シュシュのすべて (all about lily chou-chou, by shunji iwai): a green rice field combed by the wind, a distant figure with headphones and a forum that writes itself; tilting the phone or dragging sideways makes the wind blow.',
       channels: [

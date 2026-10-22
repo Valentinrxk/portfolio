@@ -22,7 +22,9 @@ const phoneLike = () =>
  * Arrastrar despacio es tocar el canal. La pantalla es siempre de noche; el
  * aparato sigue el tema del sitio.
  * En el escritorio el aparato es un CRT en 3D (three, lazy): el cuadro de
- * siempre va de textura al vidrio. Si three no arranca, el televisor plano.
+ * siempre va de textura al vidrio, y su tecla de encendido funciona (apagado,
+ * cualquier tecla de canal lo vuelve a encender). Si three no arranca, el
+ * televisor plano.
  * En el teléfono la pantalla va a sangre, arranca en el arrozal y el aparato
  * se enciende cada vez que vuelve a la vista; ahí three no se descarga nunca.
  */
@@ -41,6 +43,7 @@ export default function Trasnoche() {
   // '3d' en el escritorio desde el principio: el alto del escenario queda reservado
   const [mode, setMode] = useState(() => (phoneLike() ? 'flat' : '3d'));
   const [fallback, setFallback] = useState(null); // sin WebGL2: un cuadro en <pre>
+  const [powered, setPowered] = useState(true); // el 3D, para aria-pressed
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -60,6 +63,7 @@ export default function Trasnoche() {
       const channels = list.default;
       const seed = (Date.now() ^ (Math.random() * 4294967296)) >>> 0;
       let carried = null; // el canal del montaje anterior, al cruzar los 640 px
+      let carriedLit = true; // y si el 3D estaba encendido
 
       // un canvas nuevo por montaje: un contexto perdido no se vuelve a usar
       const freshCanvas = () => {
@@ -85,7 +89,11 @@ export default function Trasnoche() {
           const { createStage } = await import('../tv/crt/stage.js');
           if (disposed) throw new Error('disposed');
           canvas = freshCanvas();
-          const keys = { prev: screen.querySelector('[data-key="prev"]'), next: screen.querySelector('[data-key="next"]') };
+          const keys = {
+            prev: screen.querySelector('[data-key="prev"]'),
+            next: screen.querySelector('[data-key="next"]'),
+            power: section.querySelector('[data-key="power"]'),
+          };
           const stage = createStage(canvas, { picture, keys });
           return { renderer, stage, canvas };
         } catch (err) {
@@ -123,6 +131,10 @@ export default function Trasnoche() {
         let tilt = null; // inclinación izquierda-derecha, en grados
         let askedTilt = false;
         let tiltWait = false; // arrancó en el arrozal: el permiso espera a que se vuelva a él
+        // el 3D encendido; apagado no corre el canal ni se dibuja el cuadro
+        let lit = !stage || carriedLit;
+        if (stage && !lit) stage.setPower(false, true);
+        setPowered(lit);
 
         // ——— la grilla (se rehace al cambiar el tamaño) ———
         const build = () => {
@@ -191,7 +203,7 @@ export default function Trasnoche() {
         // el puntero para los canales: dónde, si aprieta, si es mouse, cuánto lleva quieto
         // (fuera de la imagen del 3D, como si se hubiera ido)
         const pointer = (now) => {
-          if (!ptr || !grid) return null;
+          if (!ptr || !grid || !lit) return null;
           const p = toIso(ptr.x, ptr.y);
           if (!p) return null;
           return { x: p.x, y: p.y, down: ptr.down, mouse: ptr.mouse, idle: Math.max(0, now - ptr.moved) / 1000 };
@@ -199,8 +211,30 @@ export default function Trasnoche() {
         // CH1: el cursor quieto no atrae; el dedo apoyado, siempre
         const finger = (p) => (p && (!p.mouse || p.down || p.idle * 1000 < REST_MS) ? { x: p.x, y: p.y } : null);
 
+        // el 3D: prende o apaga el tubo; al prender, la nieve de siempre antes del canal
+        const setLit = (next) => {
+          if (!stage || next === lit) return;
+          lit = next;
+          const still = !!reducedRef.current;
+          stage.setPower(lit, still);
+          taps = [];
+          if (lit && !still) shell?.powerOn();
+          if (!disposed) setPowered(lit);
+          wake();
+        };
+        const togglePower = () => {
+          stage?.press('power', !!reducedRef.current);
+          setLit(!lit);
+        };
+
         const change = (dir) => {
           if (!shell) return;
+          // apagado, cualquier tecla de canal lo enciende en el mismo canal
+          if (!lit) {
+            stage?.press(dir, !!reducedRef.current);
+            setLit(true);
+            return;
+          }
           shell.change(dir, { reduced: !!reducedRef.current });
           // la tecla del aparato se hunde, la aprieten como la aprieten
           stage?.press(dir, !!reducedRef.current);
@@ -213,13 +247,16 @@ export default function Trasnoche() {
           const now = performance.now();
           down = { x: p.x, y: p.y, t: now, id: e.pointerId };
           ptr = { x: p.x, y: p.y, id: e.pointerId, mouse: e.pointerType === 'mouse', down: true, moved: now };
-          const at = grid && toIso(p.x, p.y);
+          const at = grid && lit && toIso(p.x, p.y);
           if (at) taps.push(at);
         };
         const onMove = (e) => {
           const p = local(e);
-          // el aparato 3D se vuelve hacia el mouse
-          if (e.pointerType === 'mouse') stage?.aim(e.clientX, e.clientY);
+          // el aparato 3D se vuelve hacia el mouse (apagado, se dibuja solo si se mueve)
+          if (e.pointerType === 'mouse' && stage) {
+            stage.aim(e.clientX, e.clientY);
+            wake();
+          }
           if (e.pointerType === 'mouse' || (ptr && ptr.id === e.pointerId)) {
             const pressed = e.pointerType === 'mouse' ? e.buttons > 0 : true;
             ptr = { x: p.x, y: p.y, id: e.pointerId, mouse: e.pointerType === 'mouse', down: pressed, moved: performance.now() };
@@ -268,6 +305,7 @@ export default function Trasnoche() {
           if (e.pointerType === 'mouse') {
             ptr = null;
             stage?.aim(null);
+            wake();
           }
         };
 
@@ -296,6 +334,11 @@ export default function Trasnoche() {
             return;
           }
           const still = !!reducedRef.current;
+          // el 3D apagado: ni canal ni cuadro; la escena, solo mientras algo se mueve
+          if (stage && !stage.showsPicture()) {
+            if (stage.render(dt, { still })) schedule();
+            return;
+          }
           const p = pointer(now);
           const f = shell.frame(dt, { finger: finger(p), pointer: p, taps: taps.length ? taps : null, tilt, reduced: still });
           taps = [];
@@ -315,7 +358,7 @@ export default function Trasnoche() {
             barrel: grid.barrel,
           });
           // en el 3D, el cuadro recién dibujado sube al vidrio en este mismo rAF
-          stage?.render(dt, { still });
+          stage?.render(dt, { still, fresh: true, cells: shell.buffer, flash: still ? 0 : f.flash });
           if (import.meta.env.DEV) window.__tv?.afterDraw?.(f);
           schedule();
         };
@@ -328,6 +371,8 @@ export default function Trasnoche() {
           raf = requestAnimationFrame(tick);
         };
 
+        // el 3D avisa cuando hay que volver a dibujar (el tema, el tamaño), aunque esté apagado
+        if (stage) stage.onDirty = () => wake();
         build();
         let resizeTimer = null;
         const ro = new ResizeObserver(() => {
@@ -383,20 +428,26 @@ export default function Trasnoche() {
           window.addEventListener('deviceorientation', onTilt);
         }
 
-        engineRef.current = { change };
+        engineRef.current = { change, power: togglePower };
 
         if (import.meta.env.DEV) {
           // gancho para las pruebas de desarrollo: nada de esto llega a producción
           window.__tv = {
             ...(window.__tv || {}),
             mode: stage ? '3d' : 'flat',
+            stage: () => stage,
             shell: () => shell,
             grid: () => grid,
             channel: () => shell?.channel(),
             change,
             extinguish: () => shell?.channel().debug?.extinguish(),
-            // apaga y enciende de nuevo (el reflow reinicia la animación del CSS)
-            power: () => {
+            // encendido: en el 3D, la tecla; en el teléfono, el ciclo de la vista
+            get power() {
+              return stage ? lit : !off;
+            },
+            setPower: (on) => (stage ? setLit(!!on) : on ? switchOn() : switchOff()),
+            // teléfono: apaga y enciende de nuevo (el reflow reinicia la animación del CSS)
+            cycle: () => {
               switchOff();
               void screen.offsetWidth;
               switchOn();
@@ -406,6 +457,7 @@ export default function Trasnoche() {
 
         return {
           index: () => shell?.index ?? null,
+          lit: () => lit,
           stop: () => {
             if (raf != null) cancelAnimationFrame(raf);
             clearTimeout(resizeTimer);
@@ -436,6 +488,7 @@ export default function Trasnoche() {
         const id = ++gen;
         if (run) {
           carried = run.index();
+          carriedLit = run.lit();
           run.stop();
           run = null;
         }
@@ -509,6 +562,16 @@ export default function Trasnoche() {
           <button type="button" className="tv__key" data-key="prev" tabIndex={-1} aria-hidden="true" onClick={() => engineRef.current?.change(-1)} />
           <button type="button" className="tv__key" data-key="next" tabIndex={-1} aria-hidden="true" onClick={() => engineRef.current?.change(1)} />
         </div>
+        {/* la tecla de encendido del aparato 3D: un botón de verdad, fuera de
+            la imagen (role img esconde a sus hijos), que el motor pone encima */}
+        <button
+          type="button"
+          className="tv__key tv__key--power"
+          data-key="power"
+          aria-label={copy.power}
+          aria-pressed={powered}
+          onClick={() => engineRef.current?.power?.()}
+        />
 
         {live && (
           <footer className="tv__foot">

@@ -50,4 +50,13 @@ export const WORKS = [
     poster: '/works/taxes.jpg',
     link: 'https://www.taxes.com.ar/',
   },
+  {
+    key: 'feedmakers',
+    title: 'feedmakers',
+    domain: 'feedmakers.app',
+    stack: [['front', 'next.js · tailwind']],
+    video: '/works/feedmakers.mp4',
+    poster: '/works/feedmakers.jpg',
+    link: 'https://feedmakers.app/',
+  },
 ];

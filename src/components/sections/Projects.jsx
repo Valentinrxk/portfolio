@@ -14,6 +14,7 @@ const WORK_FRAMES = {
   oclucrm: () => import('../../assets/works/oclucrm-frames.json'),
   grip: () => import('../../assets/works/grip-frames.json'),
   taxes: () => import('../../assets/works/taxes-frames.json'),
+  feedmakers: () => import('../../assets/works/feedmakers-frames.json'),
 };
 
 // Porción visible que necesita la pieza para cobrar vida: apenas por encima

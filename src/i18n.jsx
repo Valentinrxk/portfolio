@@ -74,12 +74,14 @@ const DICT = {
         oclucrm: 'saas multi-tenant',
         grip: 'landing + branding',
         taxes: 'saas + app móvil',
+        feedmakers: 'landing saas',
       },
       items: {
         oclucrm: 'crm para clínicas: pacientes, turnos y administración en una sola pantalla.',
         grip: 'landing para grip®, agencia de marketing de buenos aires.',
         taxes: 'facturación electrónica, sueldos e impuestos para estudios y pymes, con app móvil.',
         riestra: 'sitio del club deportivo riestra, de la d a primera. la página es la camiseta: escudo, sponsor y el partido en vivo.',
+        feedmakers: 'landing de feedmakers: escribís la idea en una línea y la ia arma el post de instagram con el estilo de tu marca.',
       },
     },
     skills: {
@@ -141,12 +143,14 @@ const DICT = {
         oclucrm: 'multi-tenant saas',
         grip: 'landing + branding',
         taxes: 'saas + mobile app',
+        feedmakers: 'saas landing',
       },
       items: {
         oclucrm: 'clinic crm: patients, appointments and admin on a single screen.',
         grip: 'landing for grip®, a buenos aires marketing agency.',
         taxes: 'e-invoicing, payroll and taxes for accounting firms and smes, with a mobile app.',
         riestra: 'site for club deportivo riestra, from the fifth division to the top flight. the page is the jersey: crest, sponsor, live match.',
+        feedmakers: "landing for feedmakers: write the idea in one line and the ai builds the instagram post in your brand's style.",
       },
     },
     skills: {

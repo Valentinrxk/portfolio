@@ -119,45 +119,33 @@
 .contact__meta {
   display: flex;
   align-items: center;
-  gap: clamp(1.5rem, 4vw, 2.5rem);
-  margin-top: clamp(0.8rem, 2vh, 1.4rem);
+  gap: 0.5rem;
+  margin-top: clamp(0.5rem, 1.5vh, 1rem);
 }
 
-.contact__status {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  color: var(--steel-800);
-}
-
-.contact__status i {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--red);
-  animation: rec-blink 1.4s var(--ease-cut) infinite;
-}
-
+/* 44px de toque alrededor de un ícono de 20 */
 .contact__meta a {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
   color: var(--steel-700);
   transition: color 0.25s var(--ease-smooth);
 }
 
-.contact__meta a:hover {
+.contact__meta a:hover,
+.contact__meta a:focus-visible {
   color: var(--red);
 }
 
-.contact__arrow {
-  width: 0.7em;
-  height: 0.7em;
+.contact__icon {
+  width: 20px;
+  height: 20px;
   transition: transform 0.3s var(--ease-out-expo);
 }
 
-.contact__meta a:hover .contact__arrow {
-  transform: translate(2px, -2px);
+.contact__meta a:hover .contact__icon {
+  transform: translateY(-2px);
 }
 
 /* ——— Pie ——— */

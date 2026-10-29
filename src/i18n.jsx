@@ -89,7 +89,6 @@ const DICT = {
     },
     contact: {
       kicker: '¿tenés un proyecto?',
-      status: 'disponible para proyectos',
     },
   },
   en: {
@@ -158,7 +157,6 @@ const DICT = {
     },
     contact: {
       kicker: 'got a project?',
-      status: 'available for projects',
     },
   },
 };

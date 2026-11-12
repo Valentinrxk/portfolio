@@ -14,7 +14,7 @@ const SECTION_IDS = ['hero', 'experience', 'projects', 'skills', 'contact'];
 const LANDING_FRACTION = { contact: 0.55 };
 
 /**
- * Marco industrial: arriba el monograma, el idioma, el tema y el mail;
+ * Marco: arriba la marca (símbolo y nombre), el idioma, el tema y el mail;
  * abajo la navegación en palabras y el playhead.
  */
 export default function Hud({ live }) {
@@ -76,10 +76,11 @@ export default function Hud({ live }) {
       <header className={`hud hud--top ${live ? 'is-live' : ''}`}>
         <button type="button" className="hud__brand" onClick={(e) => asciiCut(() => jumpTo(0), originOf(e))} aria-label="volver arriba">
           <MonkeyMark size={34} compact className="hud__brand-mark" />
+          <span className="hud__brand-name">{t.intro.sign}</span>
         </button>
 
         <div className="hud__right">
-          <div className="hud__lang label" role="group" aria-label="idioma / language">
+          <div className="hud__lang" role="group" aria-label="idioma / language">
             <button
               type="button"
               className={`hud__lang-opt ${lang === 'es' ? 'is-active' : ''}`}
@@ -88,7 +89,6 @@ export default function Hud({ live }) {
             >
               es
             </button>
-            <span className="hud__lang-slash" aria-hidden="true">/</span>
             <button
               type="button"
               className={`hud__lang-opt ${lang === 'en' ? 'is-active' : ''}`}
@@ -106,17 +106,11 @@ export default function Hud({ live }) {
             aria-pressed={theme === 'dark'}
             aria-label={t.theme.dark}
           >
-            <span className="hud__theme-bracket" aria-hidden="true">[</span>
             <span className="hud__theme-dot" aria-hidden="true" />
-            <span className="hud__theme-bracket" aria-hidden="true">]</span>
           </button>
 
-          <a
-            className="hud__mail"
-            href={`mailto:${EMAIL}`}
-            aria-label={t.projects.write}
-          >
-            <span className="hud__mail-bracket">[</span><span className="hud__mail-at">@</span><span className="hud__mail-bracket">]</span>
+          <a className="hud__mail" href={`mailto:${EMAIL}`}>
+            {t.projects.write}
           </a>
         </div>
       </header>

@@ -7,16 +7,17 @@
   display: flex;
   align-items: center;
   background: var(--hud-bg);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
   padding: 0 clamp(1rem, 2.5vw, 2rem);
   transition: transform 0.7s var(--ease-out-expo);
 }
 
-/* Las dos barras son placas elevadas: filo de luz arriba, sombra abajo */
+/* Las dos barras son vidrio esmerilado: lo de atrás se adivina, borroso.
+   La de arriba cierra con una línea fina en vez de sombra. */
 .hud--top {
   top: 0;
-  box-shadow: var(--plane-shadow-sm);
+  border-bottom: 1px solid var(--hud-hairline);
   justify-content: space-between;
   gap: clamp(1rem, 2.5vw, 2rem);
   transform: translateY(-101%);
@@ -35,40 +36,52 @@
   transform: translateY(0);
 }
 
-/* ——— Marca: el monito ——— */
+/* ——— Marca: símbolo y nombre ——— */
 .hud__brand {
   flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
+  gap: 0.7rem;
   color: var(--graphite);
   padding: 0.2rem 0;
+  transition: opacity 0.25s var(--ease-smooth);
 }
 
-.hud__brand-mark {
-  transition: transform 0.35s var(--ease-out-expo);
+.hud__brand:hover {
+  opacity: 0.7;
 }
 
-.hud__brand:hover .hud__brand-mark {
-  transform: rotate(-8deg) scale(1.08);
+.hud__brand-name {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: -0.022em;
+  white-space: nowrap;
 }
 
 /* ——— Lado derecho: idioma, tema y mail ——— */
 .hud__right {
   display: flex;
   align-items: center;
-  gap: clamp(1rem, 2.5vw, 1.75rem);
+  gap: 0.75rem;
 }
 
+/* Idioma: control segmentado, la opción activa es la pastilla llena */
 .hud__lang {
   display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
+  padding: 2px;
+  border-radius: 999px;
+  background: var(--hud-control);
 }
 
 .hud__lang-opt {
-  padding: 0.4rem 0.1rem;
+  position: relative;
+  min-width: 2.15rem;
+  padding: 0.28rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 500;
   color: var(--steel-700);
-  transition: color 0.25s var(--ease-smooth);
+  transition: background 0.25s var(--ease-smooth), color 0.25s var(--ease-smooth);
 }
 
 .hud__lang-opt:hover {
@@ -76,35 +89,31 @@
 }
 
 .hud__lang-opt.is-active {
+  background: var(--hud-control-on);
   color: var(--graphite);
-  font-weight: 700;
+  font-weight: 600;
 }
 
-.hud__lang-slash {
-  color: var(--red);
-  font-weight: 700;
-}
-
-/* [◐] — día y noche en un solo gesto: la mitad llena gira al otro lado */
+/* Tema: día y noche en un solo gesto, la mitad llena gira al otro lado */
 .hud__theme {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.18em;
-  font-size: 1rem;
-  font-weight: 700;
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--hud-control);
   color: var(--graphite);
-  padding: 0.3rem 0;
+  transition: background 0.25s var(--ease-smooth);
 }
 
-.hud__theme-bracket {
-  color: var(--steel-600);
-  font-weight: 400;
-  transition: color 0.25s var(--ease-smooth);
+.hud__theme:hover {
+  background: var(--hud-control-on);
 }
 
 .hud__theme-dot {
-  width: 0.62em;
-  height: 0.62em;
+  width: 0.82rem;
+  height: 0.82rem;
   border: 1.5px solid currentColor;
   border-radius: 50%;
   background: linear-gradient(90deg, currentColor 50%, transparent 50%);
@@ -115,37 +124,22 @@
   transform: rotate(180deg);
 }
 
-.hud__theme:hover .hud__theme-bracket {
-  color: var(--graphite);
-}
-
-/* [@] — el mail siempre a un click, familia del monograma */
+/* Mail: el único llamado a la acción de la barra, y el único rojo lleno */
 .hud__mail {
-  font-size: 1rem;
-  font-weight: 700;
+  position: relative;
+  padding: 0.42rem 0.95rem;
+  border-radius: 999px;
+  background: var(--red);
+  color: #fff;
+  font-size: 0.8125rem;
+  font-weight: 600;
   letter-spacing: -0.01em;
-  color: var(--graphite);
-  padding: 0.3rem 0;
+  white-space: nowrap;
+  transition: filter 0.25s var(--ease-smooth);
 }
 
-.hud__mail-bracket {
-  color: var(--steel-600);
-  font-weight: 400;
-  transition: color 0.25s var(--ease-smooth);
-}
-
-.hud__mail-at {
-  color: var(--red);
-  display: inline-block;
-  transition: transform 0.3s var(--ease-out-expo);
-}
-
-.hud__mail:hover .hud__mail-at {
-  transform: rotate(-14deg) scale(1.15);
-}
-
-.hud__mail:hover .hud__mail-bracket {
-  color: var(--graphite);
+.hud__mail:hover {
+  filter: brightness(1.1);
 }
 
 /* ——— Navegación ——— */
@@ -218,11 +212,21 @@
   }
 
   .hud__right {
-    gap: 0.8rem;
+    gap: 0.55rem;
   }
 
-  .hud__mail {
-    white-space: nowrap;
+  /* en el teléfono no entra el nombre: queda el símbolo solo */
+  .hud__brand-name {
+    display: none;
+  }
+
+  /* área táctil de ~44px sin agrandar las piezas */
+  .hud__lang-opt::before,
+  .hud__theme::before,
+  .hud__mail::before {
+    content: '';
+    position: absolute;
+    inset: -8px -3px;
   }
 
   /* seis secciones: entran justas en 390px sin perder el área táctil */
@@ -233,11 +237,6 @@
   /* área táctil de al menos ~44px sin cambiar la estética */
   .hud__link {
     padding: 0.85rem 0.2rem;
-  }
-
-  .hud__lang-opt,
-  .hud__theme {
-    padding: 0.85rem 0.25rem;
   }
 
   .hud__timeline {

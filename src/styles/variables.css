@@ -48,7 +48,7 @@
   --track-display: -0.03em;
 
   /* HUD */
-  --hud-h: 46px;
+  --hud-h: 52px;
   --frame-x: clamp(1rem, 4vw, 3.5rem);
 
   /* Spacing */
@@ -64,7 +64,10 @@
   --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
   /* Superficies de sistema */
-  --hud-bg: rgba(230, 231, 235, 0.92);
+  --hud-bg: rgba(232, 233, 237, 0.72);
+  --hud-hairline: rgba(35, 35, 39, 0.12);
+  --hud-control: rgba(35, 35, 39, 0.08);
+  --hud-control-on: rgba(255, 255, 255, 0.85);
   --cursor-halo: rgba(230, 231, 235, 0.85);
   --shadow-ink: 35, 35, 39;
 
@@ -107,7 +110,10 @@
   --color-border: rgba(231, 231, 236, 0.16);
   --color-border-strong: rgba(231, 231, 236, 0.34);
 
-  --hud-bg: rgba(35, 35, 39, 0.94);
+  --hud-bg: rgba(24, 24, 27, 0.72);
+  --hud-hairline: rgba(255, 255, 255, 0.09);
+  --hud-control: rgba(255, 255, 255, 0.08);
+  --hud-control-on: rgba(255, 255, 255, 0.18);
   --cursor-halo: rgba(27, 27, 30, 0.85);
   --shadow-ink: 0, 0, 0;
 

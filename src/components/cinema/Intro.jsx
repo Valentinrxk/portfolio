@@ -11,10 +11,10 @@ const DURATION_MS = 2350;
 // El monito se despierta mientras la señal sintoniza: dormido →
 // despierto → guiño → sonrisa. Animación ASCII por swap de caracteres.
 const EXPRESSIONS = [
-  { at: 450, eyes: '-   -', mouth: '.---.' },
-  { at: 1000, eyes: 'o   o', mouth: '.===.' },
-  { at: 1500, eyes: 'o   -', mouth: '\\===/' },
-  { at: 1950, eyes: 'o   o', mouth: '\\===/' },
+  { at: 450, eyes: 'shut', mouth: 'flat' },
+  { at: 1000, eyes: 'open', mouth: 'rest' },
+  { at: 1500, eyes: 'wink', mouth: 'smile' },
+  { at: 1950, eyes: 'open', mouth: 'smile' },
 ];
 
 /**
@@ -71,7 +71,7 @@ export default function Intro({ onDone }) {
 
       <div className="intro__lockup">
         <div className="intro__logo">
-          <MonkeyMark size={168} eyes={face.eyes} mouth={face.mouth} className="intro__monkey" />
+          <MonkeyMark size={230} eyes={face.eyes} mouth={face.mouth} className="intro__monkey" />
         </div>
         <span className="intro__rule" />
         <p className="intro__name label">{t.intro.sign}</p>

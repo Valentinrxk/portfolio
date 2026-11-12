@@ -75,7 +75,7 @@ export default function Hud({ live }) {
     <>
       <header className={`hud hud--top ${live ? 'is-live' : ''}`}>
         <button type="button" className="hud__brand" onClick={(e) => asciiCut(() => jumpTo(0), originOf(e))} aria-label="volver arriba">
-          <MonkeyMark size={34} className="hud__brand-mark" />
+          <MonkeyMark size={34} compact className="hud__brand-mark" />
         </button>
 
         <div className="hud__right">

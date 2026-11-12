@@ -71,7 +71,7 @@ export default function Intro({ onDone }) {
 
       <div className="intro__lockup">
         <div className="intro__logo">
-          <MonkeyMark size={230} eyes={face.eyes} mouth={face.mouth} className="intro__monkey" />
+          <MonkeyMark size={280} eyes={face.eyes} mouth={face.mouth} className="intro__monkey" />
         </div>
         <span className="intro__rule" />
         <p className="intro__name label">{t.intro.sign}</p>

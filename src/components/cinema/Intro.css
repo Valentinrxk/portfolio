@@ -8,9 +8,40 @@
   overflow: hidden;
 }
 
+/* La estática arranca fuerte y se apaga mientras sintoniza: cuando entra el
+   logo ya es una textura de fondo y no compite con él. En oscuro baja más,
+   porque tinta clara sobre negro pesa más que la inversa. */
+.intro {
+  --field-rest: 0.55;
+}
+
+[data-theme='dark'] .intro {
+  --field-rest: 0.36;
+}
+
 .intro__field {
   position: absolute;
   inset: 0;
+  animation: field-settle 1.5s var(--ease-out-expo) forwards;
+}
+
+/* Viñeta: la estática se disuelve hacia el centro, sin borde visible. Los
+   mínimos en px la mantienen del tamaño del logo en pantallas angostas. */
+.intro__field::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(88%, 600px);
+  height: max(124%, 660px);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(closest-side, var(--depth-1) 0%, var(--depth-1) 42%, transparent 100%);
+}
+
+@keyframes field-settle {
+  to {
+    opacity: var(--field-rest);
+  }
 }
 
 .intro__field canvas {
@@ -31,7 +62,6 @@
   color: var(--graphite);
   opacity: 0;
   animation: glitch-in 0.5s steps(5, end) 0.45s forwards;
-  filter: drop-shadow(0 0 22px var(--intro-glow));
 }
 
 .intro__monkey {

@@ -2,7 +2,8 @@
   margin: 0;
   font-family: var(--font-mono);
   font-weight: 700;
-  line-height: 1;
+  /* celda 1:2 — con interlineado 1 el arte queda achatado */
+  line-height: 1.2;
   letter-spacing: 0;
   white-space: pre;
   color: currentColor;
@@ -12,4 +13,13 @@
 
 .monkey-mark__red {
   color: var(--red);
+}
+
+.monkey-symbol {
+  display: block;
+  fill: currentColor;
+}
+
+.monkey-symbol__red {
+  fill: var(--red);
 }

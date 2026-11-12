@@ -67,7 +67,6 @@
   --hud-bg: rgba(230, 231, 235, 0.92);
   --cursor-halo: rgba(230, 231, 235, 0.85);
   --shadow-ink: 35, 35, 39;
-  --intro-glow: rgba(207, 208, 214, 0.95);
 
   /* Gorila ASCII del hero: tinta del cuerpo y la cama; la red, más tenue.
      El rojo del impacto sale de --red. */
@@ -111,7 +110,6 @@
   --hud-bg: rgba(35, 35, 39, 0.94);
   --cursor-halo: rgba(27, 27, 30, 0.85);
   --shadow-ink: 0, 0, 0;
-  --intro-glow: rgba(0, 0, 0, 0.45);
 
   --ascii-ink: rgba(231, 231, 236, 0.92);
   --ascii-net: rgba(231, 231, 236, 0.5);
